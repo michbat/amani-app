@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Enums\OrderStatus;
-use App\Enums\PaymentMethod;
-use App\Enums\PaymentStatus;
 use App\Models\MenuOrder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\OrderStatus;
+use App\Enums\PaymentMode;
+use App\Enums\PaymentStatus;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model
 {
@@ -18,7 +18,7 @@ class Order extends Model
     protected $guarded = ['id'];
 
     protected $casts = [
-        'paymentMethod' => PaymentMethod::class,
+        'paymentMode' => PaymentMode::class,
         'paymentStatus' => PaymentStatus::class,
         'orderStatus' => OrderStatus::class,
     ];
@@ -36,5 +36,4 @@ class Order extends Model
     {
         return $this->hasMany(MenuOrder::class);
     }
-
 }

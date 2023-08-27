@@ -11,7 +11,7 @@ enum PaymentMode: string {
     {
         return match ($this) {
             self::CARD => 'Carte bancaire',
-            self::CASH => 'Cash',
+            self::CASH => 'En liquide',
             self::PAYPAL => 'Paypal',
         };
     }

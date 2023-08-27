@@ -37,7 +37,7 @@
                                     </li>
                                     <li>
                                         <span>Méthode de paiement</span> :
-                                        {{ $order->paymentMethod->label() }}
+                                        {{ $order->paymentMode->label() }}
                                     </li>
                                     <li>
                                         <span>État de la commande</span>:

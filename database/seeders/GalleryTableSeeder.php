@@ -18,7 +18,7 @@ class GalleryTableSeeder extends Seeder
         $galleries = [
             [
                 'restaurant_id' => $resto_id,
-                'title' => 'Amani restaurant promotion video',
+                'title' => 'Amani',
                 'image' => '/uploads/seeders/gallery/video-1.jpg',
                 'videoId' => 'F3zw1Gvn4Mk',
                 'galleryType' => GalleryType::VIDEO->value,

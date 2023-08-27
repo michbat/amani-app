@@ -2,21 +2,21 @@
 
 namespace App\Http\Livewire;
 
-use App\Enums\OrderStatus;
-use App\Enums\PaymentMethod;
-use App\Enums\PaymentStatus;
-use App\Events\OrderConfirmedEvent;
-use App\Models\MenuOrder;
-use App\Models\Order;
-use Cartalyst\Stripe\Stripe;
 use Exception;
-use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Order;
 use Livewire\Component;
+use App\Models\MenuOrder;
+use App\Enums\OrderStatus;
+use App\Enums\PaymentMode;
+use App\Enums\PaymentStatus;
+use Cartalyst\Stripe\Stripe;
+use App\Events\OrderConfirmedEvent;
+use Illuminate\Support\Facades\Auth;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class CheckoutComponent extends Component
 {
-    public $paymentMethod = "card"; // Méthode de paiement par défaut est carte
+    public $paymentMethod = "card"; // Méthode de paiement en ligne par défaut
     public $nameOnCard, $number, $exp_month, $exp_year, $cvc, $user;
 
     public function mount()
@@ -29,7 +29,6 @@ class CheckoutComponent extends Component
         if ($this->user === null) {
             return redirect()->route('login')->with('info', 'Vous devez être connecté pour effectuer le paiement');
         }
-
     }
 
     public function placeOrder()
@@ -104,17 +103,14 @@ class CheckoutComponent extends Component
                     event(new OrderConfirmedEvent($this->user));
 
                     return redirect()->route('checkout.success')->with('success', 'Nous confirmons votre commande. Nous vous informerons dès qu\'elle est prête');
-
                 } else {
                     session()->flash('stripe_error', 'Il y a eu une erreur lors de la transaction!');
                     return redirect()->back();
                 }
-
             } catch (Exception $e) {
                 session()->flash('stripe_error', $e->getMessage());
                 return redirect()->back();
             }
-
         } else if ($this->paymentMethod == "cash") {
 
             $order = $this->makeCashOrder();
@@ -134,9 +130,7 @@ class CheckoutComponent extends Component
             // Après commande, on dirige le client vers la vue checkout.success
 
             return redirect()->route('checkout.success')->with('success', 'Nous confirmons votre commande. Nous vous informerons dès qu\'elle est prête');
-
         }
-
     }
 
     private function fillMenuOrder($orderId)
@@ -164,15 +158,11 @@ class CheckoutComponent extends Component
         $order->nameOnCard = $this->nameOnCard;
         $order->numberOnCard = CheckoutComponent::cardMasking($this->number, 'X');
         $order->expirationDate = $this->exp_month . '/' . $this->exp_year;
-        $order->paymentMethod = PaymentMethod::CARD->value;
-
-        // On instancie un objet $stripe avec ma clé secrète de test fournie lors de l'inscription sur Stripe
-
+        $order->paymentMode = PaymentMode::CARD->value;
         $order->paymentStatus = PaymentStatus::PAID->value;
         $order->orderStatus = OrderStatus::CONFIRMED->value;
 
         return $order;
-
     }
 
     private function makeCashOrder(): Order
@@ -183,8 +173,7 @@ class CheckoutComponent extends Component
         $order->subtotal = Cart::subtotal();
         $order->tva = Cart::tax();
         $order->total = Cart::total();
-
-        $order->paymentMethod = PaymentMethod::CASH->value;
+        $order->paymentMode = PaymentMode::CASH->value;
         $order->paymentStatus = PaymentStatus::DUE->value;
         $order->orderStatus = OrderStatus::CONFIRMED->value;
 
