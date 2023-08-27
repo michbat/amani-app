@@ -35,6 +35,7 @@ class AdminSeeder extends Seeder
             'password' => Hash::make('password'), //password
             'role_id' => $userRole->id,
             'status' => UserStatus::ACTIVE,
+            'canReserveTable' => true,
             'token' => '',
         ]);
 
@@ -46,6 +47,7 @@ class AdminSeeder extends Seeder
             'password' => Hash::make('password'), //password
             'role_id' => $adminRole->id,
             'status' => UserStatus::ACTIVE,
+            'canReserveTable' => true,
             'token' => '',
         ]);
 
@@ -57,6 +59,7 @@ class AdminSeeder extends Seeder
             'password' => Hash::make('password'), //password
             'role_id' => $employeeRole->id,
             'status' => UserStatus::ACTIVE,
+            'canReserveTable' => true,
             'token' => '',
         ]);
     }

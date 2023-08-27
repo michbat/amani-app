@@ -2,19 +2,22 @@
 
 namespace App\Enums;
 
-enum OrderStatus: string {
+enum OrderStatus: string
+{
     case CONFIRMED = 'confirmed';
     case CANCELED = 'canceled';
+    case COMPLETED = 'completed';
     case PENDING = 'pending';
     case PICKEDUP = 'pickedup';
 
     public function label(): string
     {
         return match ($this) {
-            self::CONFIRMED => 'confirmé',
-            self::CANCELED => 'canceled',
-            self::PENDING => 'pending',
-            self::PICKEDUP => 'pickedup'
+            self::CONFIRMED => 'Confirmée',
+            self::CANCELED => 'Annulée',
+            self::COMPLETED => 'Prête',
+            self::PENDING => 'En préparation',
+            self::PICKEDUP => 'Récupérée'
         };
     }
     public function color(): string

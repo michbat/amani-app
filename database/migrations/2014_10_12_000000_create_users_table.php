@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('phone')->unique();
             $table->string('password');
             $table->string('token');
+            $table->boolean('canReserveTable')->default(true);
             $table->enum('status', ['active', 'pending']);
         });
     }

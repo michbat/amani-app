@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('nameOnCard')->nullable();
             $table->string('numberOnCard')->nullable();
             $table->string('expirationDate')->nullable();
-            $table->enum('paymentMethod', ['cash', 'card']);
+            $table->enum('paymentMode', ['cash', 'card']);
             $table->enum('paymentStatus', ['due', 'paid']);
             $table->enum('orderStatus', ['pending', 'confirmed', 'completed', 'pickedup', 'canceled'])->default('confirmed');
             $table->timestamps();

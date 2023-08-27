@@ -24,6 +24,7 @@ class UserFactory extends Factory
             'password' => bcrypt('password'), // password
             'role_id' => 1,  // Un nouveau utilisateur a un rôle 'user' par défault.
             'status' => 'active',
+            'canReserveTable' => true,
             'token' => '',
         ];
     }
@@ -33,7 +34,7 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
     }

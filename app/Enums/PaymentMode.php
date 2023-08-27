@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum PaymentMethod: string {
+enum PaymentMode: string {
     case CARD = 'card';
     case CASH = 'cash';
     case PAYPAL = 'paypal';
@@ -11,7 +11,7 @@ enum PaymentMethod: string {
     {
         return match ($this) {
             self::CARD => 'Carte bancaire',
-            self::CASH => 'cash',
+            self::CASH => 'Cash',
             self::PAYPAL => 'Paypal',
         };
     }
