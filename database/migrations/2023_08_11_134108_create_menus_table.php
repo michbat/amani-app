@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('image');
             $table->decimal('price', 8, 2);
             $table->boolean('available')->default(true);
+            $table->timestamps();
         });
     }
 

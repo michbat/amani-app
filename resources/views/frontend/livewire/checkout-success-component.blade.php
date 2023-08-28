@@ -52,7 +52,7 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Nom produit</th>
+                                                <th>Nom du produit</th>
                                                 <th class="text-center">Prix unitaire</th>
                                                 <th class="text-center">Quantité</th>
                                                 <th>Prix payé</th>

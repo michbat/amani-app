@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Menu;
 use Illuminate\Database\Seeder;
+use  Carbon\Carbon;
 
 class MenuTableSeeder extends Seeder
 {
@@ -24,6 +25,7 @@ class MenuTableSeeder extends Seeder
                 'image' => '/uploads/seeders/recipe/1-tomates_sechees.jpg',
                 'price' => 8.75,
                 'available' => 1,
+
 
             ],
             [
@@ -112,7 +114,7 @@ class MenuTableSeeder extends Seeder
                 'name' => "Soupe de poireaux",
                 'description' => "Au coeur de l'hiver, pour vous réconforter du froid et de la grisaille, vous cherchez une recette facile qui vous tienne au corps sans pour autant peser trop lourd sur la balance... Bienvenue dans le paradis des soupes de légumes qui font la part belle au goût et la part pauvre aux calories. Parmi elles, cette recette de velouté aux poireaux et pommes de terre vous permettra d'enchanter votre souper (ou pourquoi pas votre déjeuner) et celui de ceux que vous aiment",
                 'image' => '/uploads/seeders/recipe/10-soupe_de_poireaux.jpg',
-                'price' => 4.75,
+                'price' => 4.50,
                 'available' => 1,
 
             ],
@@ -122,7 +124,7 @@ class MenuTableSeeder extends Seeder
                 'name' => "Soupe aux lentilles",
                 'description' => "Le bonheur de déguster une bonne soupe lorsque les températures rafraîchissent... Un bonheur simple et sain, qui fait du bien au coeur et au corps. Cette super recette vous propose de réaliser une délicieuse soupe aux lentilles, avec juste ce qu'il faut d'oignons, de persil, de sauce soja... Un délice qui fera l'unanimité autour de la tablée. Voilà donc une recette à tester très très vite, et à garder très très longtemps parce qu'on parie que vous la ressortirez avec plaisir et gourmandise tous les ans !",
                 'image' => '/uploads/seeders/recipe/11-soupe_aux_lentilles.jpg',
-                'price' => 4.75,
+                'price' => 4.25,
                 'available' => 1,
 
             ],
@@ -232,6 +234,21 @@ class MenuTableSeeder extends Seeder
             ],
 
         ];
+
+        $base = Carbon::now();
+
+
+        // Créer des menus à une minute d'intervalle.
+
+        foreach ($menus as $index => $menu) {
+            $timeInterval = $index * 60;
+            $createdAt = Carbon::parse($base)->addSeconds($timeInterval);
+            $updatedAt = $createdAt;
+
+            $menus[$index]['created_at'] = $createdAt;
+            $menus[$index]['updated_at'] = $updatedAt;
+
+        }
 
         Menu::insert($menus);
     }

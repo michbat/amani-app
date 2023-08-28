@@ -16,7 +16,6 @@ class Menu extends Model
 {
     use HasFactory;
 
-    public $timestamps = false;
     protected $guarded = ['id'];
 
     // Matérialisation de la relation un menu ne peut avoir qu'une et une seule catégorie

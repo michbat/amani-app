@@ -88,7 +88,7 @@ class MenuComponent extends Component
                 $query->orderBy('price', 'DESC');
                 break;
             case 'new':
-                $query->orderBy('id', 'DESC');
+                $query->orderBy('created_at', 'DESC');
                 break;
             default:
                 //
