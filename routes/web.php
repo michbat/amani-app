@@ -40,7 +40,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', HomeComponent::class)->name('home');
 Route::get('/menu', MenuComponent::class)->name('menu');
 Route::get('/cart', CartComponent::class)->name('cart');
-Route::get('/menu/{id}', DetailsComponent::class)->name('details');
+Route::get('/menu/{slug}', DetailsComponent::class)->name('details');
 Route::get('/checkout', CheckoutComponent::class)->name('checkout');
 Route::get('/checkout-success', CheckoutSuccessComponent::class)->name('checkout.success');
 

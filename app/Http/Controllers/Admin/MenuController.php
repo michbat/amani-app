@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\MenuCreateRequest;
-use App\Http\Requests\MenuEditRequest;
+use App\Models\Tag;
+use App\Models\Menu;
 use App\Models\Category;
 use App\Models\Ingredient;
-use App\Models\Menu;
 use App\Models\Restaurant;
-use App\Models\Tag;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\MenuEditRequest;
+use App\Http\Requests\MenuCreateRequest;
 
 class MenuController extends Controller
 {
@@ -50,6 +51,7 @@ class MenuController extends Controller
         $menu = new Menu(); // On crée un nouvel objet $recipe de la classe model Recipe.
 
         $menu->name = $request->name;
+        $menu->slug = Str::slug($request->name, '-');
         $menu->description = $request->description;
         $menu->image = uploadImage($image, $path); // On fait appel à notre fonction helper pour traîter l'image
         $menu->price = $request->price;
@@ -86,7 +88,7 @@ class MenuController extends Controller
 
         $menu->load('ingredients');
 
-        $ingredients = Ingredient::get()->map(function ($ingredient) use ($menu) {
+        $ingredients = Ingredient::orderBy('name')->get()->map(function ($ingredient) use ($menu) {
             $ingredient->value = data_get($menu->ingredients->firstWhere('id', $ingredient->id), 'pivot.amount') ?? null;
             return $ingredient;
         });
@@ -114,6 +116,7 @@ class MenuController extends Controller
         // On met à jour les informations
 
         $menu->name = $request->name;
+        $menu->slug = Str::slug($request->name, '-');
         $menu->description = $request->description;
         $menu->image = $charged ? uploadImage($image, $path, $old_path) : $menu->image;
         $menu->price = $request->price;
@@ -161,10 +164,8 @@ class MenuController extends Controller
         if ($menu->hasTag($tag->name)) {
             $menu->tags()->detach($tag);
             return back()->with('toast_success', 'Le tag a été supprimé avec success');
-
         }
 
         return back()->with('toast_info', 'Ce tag n\'est pas assigné à ce menu');
-
     }
 }

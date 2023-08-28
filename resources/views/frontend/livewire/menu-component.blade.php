@@ -160,7 +160,7 @@
                                                 data-effect="mfp-zoom-in"><i class="fas fa-plus"></i></a>
                                         </div>
                                     </div>
-                                    <a href="{{ route('details', $menu->id) }}">
+                                    <a href="{{ route('details', ['slug' => $menu->slug]) }}">
                                         <h3 class="p-2">{{ $menu->name }}</h3>
                                     </a>
                                     @if ($menu->available === 0)

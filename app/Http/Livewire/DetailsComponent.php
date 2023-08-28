@@ -11,10 +11,12 @@ class DetailsComponent extends Component
 
     public $quantity = 1;
     public $menu;
-    public function mount($id)
+    public $slug;
+
+    public function mount($slug)
     {
-        $this->id = $id;
-        $this->menu = Menu::where('id', $this->id)->first();
+        $this->slug = $slug;
+        $this->menu = Menu::where('slug', $this->slug)->first();
     }
 
     public function increaseQuantity()
@@ -27,7 +29,6 @@ class DetailsComponent extends Component
 
             $this->quantity -= 1;
         }
-
     }
 
     public function store($menu_id, $menu_name, $menu_price)
@@ -38,8 +39,7 @@ class DetailsComponent extends Component
     }
     public function render()
     {
-        return view('frontend.livewire.details-component', [
-            'menu' => $this->menu,
-        ]);
+        $menu = $this->menu;
+        return view('frontend.livewire.details-component',compact('menu'));
     }
 }
