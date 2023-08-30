@@ -3,6 +3,8 @@
 namespace App\Http\Livewire;
 
 use Exception;
+use App\Models\User;
+use Omnipay\Omnipay;
 use App\Models\Order;
 use Livewire\Component;
 use App\Models\MenuOrder;
@@ -10,14 +12,27 @@ use App\Enums\OrderStatus;
 use App\Enums\PaymentMode;
 use App\Enums\PaymentStatus;
 use Cartalyst\Stripe\Stripe;
+use Illuminate\Http\Request;
 use App\Events\OrderConfirmedEvent;
 use Illuminate\Support\Facades\Auth;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
 class CheckoutComponent extends Component
 {
-    public $paymentMethod = "card"; // Méthode de paiement en ligne par défaut
+    public $paymentMode = "card"; // Méthode de paiement en ligne par défaut
     public $nameOnCard, $number, $exp_month, $exp_year, $cvc, $user;
+    public $acceptance = false;
+
+    //  Règles de validation
+
+    protected $cardValidationRules = [
+        'nameOnCard' => 'required',
+        'number' => 'required|numeric|digits:16',
+        'exp_month' => 'required|numeric|digits_between:1,2',
+        'exp_year' => 'required|numeric|digits:4',
+        'cvc' => 'required|numeric|digits:3',
+    ];
 
     public function mount()
     {
@@ -33,32 +48,24 @@ class CheckoutComponent extends Component
 
     public function placeOrder()
     {
-        if ($this->paymentMethod == "card") {
+        if ($this->paymentMode == "card") {
 
-            $this->validate(
-                [
-                    'nameOnCard' => 'required',
-                    'number' => 'required|numeric|digits:16',
-                    'exp_month' => 'required|numeric|digits_between:1,2',
-                    'exp_year' => 'required|numeric|digits:4',
-                    'cvc' => 'required|numeric|digits:3',
-                ],
-                [
-                    'nameOnCard.required' => 'Veuillez indiquer le nom et le prénom qui se trouvent sur la carte',
-                    'number.required' => 'Le numéro de carte est requis',
-                    'number.numeric' => 'Le numéro de carte doit être exclusivement en chiffres',
-                    'number.digits' => 'La carte doit comporter 16 chiffres',
-                    'exp_month.required' => 'Le mois d\'expiration',
-                    'exp_month.numeric' => 'Le mois doit être en chiffres',
-                    'exp_month.digits_between' => 'Saisissez un ou deux chiffre pour indiquer le mot d\'expiration. Ex: 9,10',
-                    'exp_year.required' => 'L\'année d\'expiration',
-                    'exp_year.numeric' => 'L\'année doit être en chiffres',
-                    'exp_year.digits' => 'L\'année d\'expiration doit comporter 4 chiffres',
-                    'cvc.required' => 'Le CCV est requis',
-                    'cvc.numeric' => 'Le CCV doit être en chiffres',
-                    'cvc' => 'Le CVV doit comporter 3 chiffres',
-                ]
-            );
+            $this->validate($this->cardValidationRules, [
+                'alpha_num' => 'Veuillez indiquer le nom et le prénom qui se trouvent sur la carte',
+                'number.required' => 'Le numéro de carte est requis',
+                'number.numeric' => 'Le numéro de carte doit être exclusivement en chiffres',
+                'number.digits' => 'La carte doit comporter 16 chiffres',
+                'exp_month.required' => 'Le mois d\'expiration',
+                'exp_month.numeric' => 'Le mois doit être en chiffres',
+                'exp_month.digits_between' => 'Saisissez un ou deux chiffre pour indiquer le mot d\'expiration. Ex: 9,10',
+                'exp_year.required' => 'L\'année d\'expiration',
+                'exp_year.numeric' => 'L\'année doit être en chiffres',
+                'exp_year.digits' => 'L\'année d\'expiration doit comporter 4 chiffres',
+                'cvc.required' => 'Le CCV est requis',
+                'cvc.numeric' => 'Le CCV doit être en chiffres',
+                'cvc' => 'Le CVV doit comporter 3 chiffres',
+            ]);
+
 
             $order = $this->makeCardOrder();
 
@@ -67,19 +74,6 @@ class CheckoutComponent extends Component
             try {
 
                 $stripe = Stripe::make(config('services.stripe.secret'));
-                // $token = $stripe->tokens()->create([
-                //     'card' => [
-                //         'number' => $this->number,
-                //         'exp_month' => $this->exp_month,
-                //         'exp_year' => $this->exp_year,
-                //         'cvc' => $this->cvc,
-                //     ],
-                // ]);
-
-                // if (!isset($token['id'])) {
-                //     session()->flash('stripe_error', 'Stripe n\'a pas correctement généré un token de sécurité');
-                //     return redirect()->back();
-                // }
 
                 $customer = $stripe->customers()->create([
                     'name' => $this->user->firstname . ' ' . $this->user->lastname,
@@ -104,14 +98,18 @@ class CheckoutComponent extends Component
 
                     return redirect()->route('checkout.success')->with('success', 'Nous confirmons votre commande. Nous vous informerons dès qu\'elle est prête');
                 } else {
-                    session()->flash('stripe_error', 'Il y a eu une erreur lors de la transaction!');
+                    session()->flash('payment_error', 'Il y a eu une erreur lors de la transaction!');
                     return redirect()->back();
                 }
             } catch (Exception $e) {
-                session()->flash('stripe_error', $e->getMessage());
+                session()->flash('payment_error', $e->getMessage());
                 return redirect()->back();
             }
-        } else if ($this->paymentMethod == "cash") {
+        }
+
+
+
+        if ($this->paymentMode == "cash") {
 
             $order = $this->makeCashOrder();
 
@@ -131,7 +129,89 @@ class CheckoutComponent extends Component
 
             return redirect()->route('checkout.success')->with('success', 'Nous confirmons votre commande. Nous vous informerons dès qu\'elle est prête');
         }
+
+        if ($this->paymentMode == "paypal") {
+
+            $provider = new PayPalClient;
+            $provider->setApiCredentials(config('paypal'));
+            $provider->setCurrency('EUR');
+            $paypalToken = $provider->getAccessToken();
+
+
+            $response = $provider->createOrder([
+                "intent" => "CAPTURE",
+                "application_context" => [
+                    "return_url" => route('paypal.success', $this->user->id),
+                    "cancel_url" => route('paypal.cancel'),
+                ],
+                "purchase_units" => [
+                    [
+                        "amount" => [
+                            "currency_code" => "EUR",
+                            "value" => Cart::total()
+                        ]
+                    ]
+                ]
+            ]);
+
+            if (isset($response['id']) && $response['id'] != null) {
+                foreach ($response['links'] as $link) {
+                    if ($link['rel'] === 'approve') {
+                        return redirect()->away($link['href']);
+                    }
+                }
+            } else {
+                return redirect()->route('paypal.cancel');
+            }
+        }
     }
+
+    public function success(Request $request, User $user)
+    {
+
+        $provider = new PayPalClient;
+        $provider->setApiCredentials(config('paypal'));
+        $provider->setCurrency('EUR');
+        $paypalToken = $provider->getAccessToken();
+
+        $response = $provider->capturePaymentOrder($request->token);
+
+        // dd($response);
+
+        if (isset($response['status']) && $response['status'] == 'COMPLETED') {
+            // $order = $this->makePayPalOrder();
+            $order = new Order();
+
+            $order->user_id = $user->id;
+            $order->subtotal = Cart::subtotal();
+            $order->tva = Cart::tax();
+            $order->total = Cart::total();
+            $order->paymentMode = PaymentMode::PAYPAL->value;
+            $order->paymentStatus = PaymentStatus::PAID->value;
+            $order->orderStatus = OrderStatus::CONFIRMED->value;
+            $order->save();
+
+            $this->fillMenuOrder($order->id);
+
+            // Destruction du panier
+
+            Cart::destroy();
+
+            // Envoyez l'e-mail au client pour confirmer sa commande en instanciant un événement OrderConfirmedEvent
+
+            event(new OrderConfirmedEvent($user));
+
+            return redirect()->route('checkout.success')->with('success', 'Nous confirmons votre commande. Nous vous informerons dès qu\'elle est prête');
+        } else {
+            return redirect()->route('paypal.cancel');
+        }
+    }
+
+    public function cancel()
+    {
+        return redirect()->back()->with('payment_error', 'Le paiement a été annulé');
+    }
+
 
     private function fillMenuOrder($orderId)
     {
@@ -175,6 +255,21 @@ class CheckoutComponent extends Component
         $order->total = Cart::total();
         $order->paymentMode = PaymentMode::CASH->value;
         $order->paymentStatus = PaymentStatus::DUE->value;
+        $order->orderStatus = OrderStatus::CONFIRMED->value;
+
+        return $order;
+    }
+
+    private function makePayPalOrder(): Order
+    {
+        $order = new Order();
+
+        $order->user_id = $this->user->id;
+        $order->subtotal = Cart::subtotal();
+        $order->tva = Cart::tax();
+        $order->total = Cart::total();
+        $order->paymentMode = PaymentMode::PAYPAL->value;
+        $order->paymentStatus = PaymentStatus::PAID->value;
         $order->orderStatus = OrderStatus::CONFIRMED->value;
 
         return $order;

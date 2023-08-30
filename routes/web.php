@@ -44,12 +44,16 @@ Route::get('/menu/{slug}', DetailsComponent::class)->name('details');
 Route::get('/checkout', CheckoutComponent::class)->name('checkout');
 Route::get('/checkout-success', CheckoutSuccessComponent::class)->name('checkout.success');
 
+// Paypal routes
+
+Route::get('/paypal/success/{user}', [CheckoutComponent::class, 'success'])->name('paypal.success');
+Route::get('/paypal/cancel', [CheckoutComponent::class, 'cancel'])->name('paypal.cancel');
+
+
 // Login & logout routes
 
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/login-submit', [LoginController::class, 'login_submit'])->name('login.submit');
-
-// On n'accède à la route logout que lorsque l'on est connecté. On vérifie cela avec le middleware 'auth'
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
 // Registration routes
@@ -94,7 +98,6 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
 
     Route::post('/menus/{menu}/tags', [MenuController::class, 'assignTags'])->name('menus.tags');
     Route::delete('/menus/{menu}/tags/{tag}', [MenuController::class, 'removeTag'])->name('menus.tags.remove');
-
 });
 
 // Employee routes

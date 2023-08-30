@@ -42,6 +42,7 @@
 
     <!-- YOUR CUSTOM CSS -->
     <link href="{{ asset('frontend/assets/css/custom.css') }}" rel="stylesheet">
+    @stack('styles')
 
     <!-- Livewire CSS Styles -->
     @livewireStyles

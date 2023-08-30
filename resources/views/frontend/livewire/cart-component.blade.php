@@ -96,6 +96,9 @@
                         <a href="{{ route('menu') }}" class="btn btn-warning"><i
                                 class="fas fa-caret-left mx-2 fa-1x"></i>Retournez au menu</a>
                     </div>
+                    <div class="col-sm-12 text-start mt-4">
+                        <p style="color: red">Des produits commandés sont prêts au plus tard dans 40 minutes à partir de la confirmation de la commande. Vous avez 2 heures pour retirer votre commande dès qu'elle est prête. Vous pouvez suivre l'état de votre commande sur votre compte et un e-mail vous sera envoyé dès qu'elle prête.</p>
+                    </div>
                 </div>
                 <!-- /cart_actions -->
             </div>

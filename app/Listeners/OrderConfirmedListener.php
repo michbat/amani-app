@@ -23,7 +23,10 @@ class OrderConfirmedListener
     {
         $subject = "Confirmation de votre commande";
         $message = "Bonjour,<br><br> Par la présente, nous confirmons votre commande.<br>";
-        $message .= "Vous pouvez suivre l'état de votre commande en vous connectant sur votre compte.<br><br>";
+        $message .= "Votre commande sera prête au plus tard dans 30 minutes. Un e-mail vous sera envoyé dès qu'elle est prête.<br>";
+        $message .= "Veuillez prendre note que vous disposez de <b>2 heures</b> pour la retirer à notre restaurant.<br>";
+        $message .= "À defaut de ce retrait, votre commande sera considérée comme annulée à votre detriment (aucun remboursement possible).<br>";
+        $message .= "Vous avez la possibilité de suivre l'état de votre commande en vous connectant sur votre compte.<br><br>";
         $message .= "Cordialement, <br><br>Amani Resto.";
         $view = 'mails.account_activation_mail';
 

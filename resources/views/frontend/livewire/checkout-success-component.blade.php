@@ -44,6 +44,9 @@
                                         {{ $order->orderStatus->label() }}
                                     </li>
                                 </ul>
+                                <div class="mt-3">
+                                    <p style="font-weight: 900; color: red">Votre commande sera prête au plus tard dans 30 minutes. Vous devez  2 heures pour la retirer dans notre restaurant. Passez ces deux heires, votre commande est considérée comme annulée à votre détriment (pas de remboursement).Vous pouvez suivrez l'état de votre commande sur votre compte.</p>
+                                </div>
                                 <div class="my-4">
                                     <hr>
                                 </div>
