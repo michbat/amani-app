@@ -154,6 +154,7 @@ class CheckoutComponent extends Component
                 ]
             ]);
 
+
             if (isset($response['id']) && $response['id'] != null) {
                 foreach ($response['links'] as $link) {
                     if ($link['rel'] === 'approve') {
@@ -176,10 +177,7 @@ class CheckoutComponent extends Component
 
         $response = $provider->capturePaymentOrder($request->token);
 
-        // dd($response);
-
         if (isset($response['status']) && $response['status'] == 'COMPLETED') {
-            // $order = $this->makePayPalOrder();
             $order = new Order();
 
             $order->user_id = $user->id;
@@ -260,20 +258,6 @@ class CheckoutComponent extends Component
         return $order;
     }
 
-    private function makePayPalOrder(): Order
-    {
-        $order = new Order();
-
-        $order->user_id = $this->user->id;
-        $order->subtotal = Cart::subtotal();
-        $order->tva = Cart::tax();
-        $order->total = Cart::total();
-        $order->paymentMode = PaymentMode::PAYPAL->value;
-        $order->paymentStatus = PaymentStatus::PAID->value;
-        $order->orderStatus = OrderStatus::CONFIRMED->value;
-
-        return $order;
-    }
 
     public function render()
     {

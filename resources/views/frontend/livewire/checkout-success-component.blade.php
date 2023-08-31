@@ -45,17 +45,17 @@
                                     </li>
                                 </ul>
                                 <div class="mt-3">
-                                    <p style="font-weight: 900; color: red">Votre commande sera prête au plus tard dans 30 minutes. Vous devez  2 heures pour la retirer dans notre restaurant. Passez ces deux heires, votre commande est considérée comme annulée à votre détriment (pas de remboursement).Vous pouvez suivrez l'état de votre commande sur votre compte.</p>
+                                    <p style="font-weight: 900; color: red">Votre commande sera prête au plus tard dans 30 minutes. Vous avez 2 heures pour la retirer dans notre restaurant. Passées ces deux heures, votre commande est considérée comme annulée et ce, à votre détriment (pas de remboursement).Vous pouvez suivrez l'état de votre commande sur votre compte.</p>
                                 </div>
                                 <div class="my-4">
                                     <hr>
                                 </div>
                                 <div class="row">
-                                    <h4 class="text-center mb-4">Produits commandés</h4>
+                                    <h4 class="text-center mb-4">Lignes de commande</h4>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Nom du produit</th>
+                                                <th>Nom du menu</th>
                                                 <th class="text-center">Prix unitaire</th>
                                                 <th class="text-center">Quantité</th>
                                                 <th>Prix payé</th>

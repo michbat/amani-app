@@ -41,7 +41,7 @@
                 <div class="form-group row mb-4">
                     <div class="col-sm-12">
                         <label for="galleryType" class="form-label">Type de médias</label>
-                        <select class="form-control selectric" name="galleryType" id="type">
+                        <select class="form-control selectric" name="galleryType" id="galleryType">
                             @foreach ($types as $type)
                                 <option value="{{ $type->value }}">
                                     {{ $type->label() }}

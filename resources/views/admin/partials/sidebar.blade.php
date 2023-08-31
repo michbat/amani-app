@@ -111,6 +111,19 @@
                 </ul>
             </li>
 
+            <li class="menu-header">Commandes</li>
+
+            <li class="dropdown {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                        class="fas fa-file-invoice"></i>
+                    <span>Commandes</span></a>
+                <ul class="dropdown-menu">
+                    <li class="{{ request()->routeIs('admin.orders.index') ? 'active' : '' }}"><a class="nav-link"
+                            href="{{ route('admin.orders.index') }}">Commandes</a></li>
+                </ul>
+            </li>
+
+
 
         </ul>
     </aside>

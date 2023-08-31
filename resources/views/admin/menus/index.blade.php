@@ -9,8 +9,6 @@
     <div class="card mt-3">
         <div class="card-header d-flex flex-column justify-content-center align-items-start">
             <h4>Liste de menus</h4>
-            {{-- <p>{{ $ingredients->count() }} sur {{ $ingredients->total() }}</p> --}}
-            {{-- <p>{{ $ingredients->currentPage() }} sur {{ $ingredients->perPage() }}</p> --}}
             <p>{{ $menus->firstItem() }} à {{ $menus->lastItem() }} sur {{ $menus->total() }} menu(s)</p>
         </div>
         <div class="card-body">

@@ -18,7 +18,7 @@ enum PaymentMode: string {
     public function color(): string
     {
         return match ($this) {
-            self::CARD => 'text-dark btn btn-primary',
+            self::CARD => 'text-dark btn btn-secondary',
             self::CASH => 'text-dark btn btn-warning',
             self::PAYPAL => 'text-dark btn btn-info',
         };

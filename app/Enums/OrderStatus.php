@@ -25,6 +25,7 @@ enum OrderStatus: string
         return match ($this) {
             self::CONFIRMED => 'text-dark btn btn-primary',
             self::CANCELED => 'text-dark btn btn-danger',
+            self::COMPLETED => 'text-dark btn btn-warning',
             self::PENDING => 'text-dark btn btn-info',
             self::PICKEDUP => 'text-dark btn btn-success',
         };
