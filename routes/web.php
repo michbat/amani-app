@@ -87,7 +87,13 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
     Route::resource('/units', UnitController::class);
     Route::resource('/galleries', GalleryController::class);
     Route::resource('/sliders', SliderController::class);
-    Route::resource('/orders', OrderController::class);
+
+    // Routes pour gérer les commandes
+
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
+    Route::put('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+    Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
 
     // Routes pour gérer les informations sur le restaurant
 
@@ -117,4 +123,9 @@ Route::middleware(['auth'])->name('user.')->prefix('/user')->group(function () {
     Route::post('/edit-password-submit', [UserAuthController::class, 'edit_password_submit'])->name('edit.password.submit');
     Route::get('/edit-profile', [UserAuthController::class, 'edit_profile'])->name('edit.profile');
     Route::post('/edit-profile-submit', [UserAuthController::class, 'edit_profile_submit'])->name('edit.profile.submit');
+
+    // Commandes de l'utilisateur
+
+    Route::get('/orders', [UserAuthController::class, 'user_orders_index'])->name('index.orders');
+    Route::get('/orders/{order}/cancel', [UserAuthController::class, 'user_order_cancel'])->name('cancel.order');
 });

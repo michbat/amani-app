@@ -25,7 +25,7 @@
 
     <!-- Main content -->
     <main>
-        <div class="container my-5 mx-auto">
+        <div class="my-5">
             @yield('content')
         </div>
     </main>
