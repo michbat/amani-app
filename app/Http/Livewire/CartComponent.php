@@ -13,28 +13,32 @@ class CartComponent extends Component
 
     public function increaseQuantity($rowId)
     {
-        $menu = Cart::get($rowId);
+        $menu = Cart::instance('cart')->get($rowId);
         $qty = $menu->qty + 1;
-        Cart::update($rowId, $qty);
+        Cart::instance('cart')->update($rowId, $qty);
         $this->emitTo('cart-icon-component', 'refreshComponent');
     }
     public function decreaseQuantity($rowId)
     {
-        $menu = Cart::get($rowId);
+        $menu = Cart::instance('cart')->get($rowId);
         $qty = $menu->qty - 1;
-        Cart::update($rowId, $qty);
+        Cart::instance('cart')->update($rowId, $qty);
         $this->emitTo('cart-icon-component', 'refreshComponent');
+
+        if ($qty == 0) {
+            session()->flash('success_message', 'Le menu enlevé de votre panier');
+        }
     }
 
     public function destroy($rowId)
     {
-        Cart::remove($rowId);
+        Cart::instance('cart')->remove($rowId);
         $this->emitTo('cart-icon-component', 'refreshComponent');
-        session()->flash('success_message', 'Le menu a été enlevé de votre panier');
+        session()->flash('success_message', 'Le menu enlevé de votre panier');
     }
     public function clearCart()
     {
-        Cart::destroy();
+        Cart::instance('cart')->destroy();
         $this->emitTo('cart-icon-component', 'refreshComponent');
         return redirect()->route('menu')->with('success', 'Votre panier a été complètement vidé');
     }

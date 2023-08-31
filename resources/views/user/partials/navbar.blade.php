@@ -14,10 +14,10 @@
                                 href="{{ route('admin.index') }}">Administrator</a>
                         </li>
                     @endif
-                    @if (Auth::user()->hasRole('employee'))
+                    @if (Auth::user()->hasRole('personnel'))
                         <li class="nav-item">
-                            <a class="btn btn-success @if (request()->routeIs('employee.index')) active @endif"
-                                href="{{ route('employee.index') }}">Employee</a>
+                            <a class="btn btn-success @if (request()->routeIs('personnel.index')) active @endif"
+                                href="{{ route('personnel.index') }}">Personnel</a>
                         </li>
                     @endif
                 @endauth
@@ -27,7 +27,7 @@
                     <a class="nav-link active mx-2" aria-current="page" href="{{ route('home') }}">Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active mx-2" aria-current="page" href="#">Menu</a>
+                    <a class="nav-link active mx-2" aria-current="page" href="{{ route('menu') }}">Menu</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle mx-2" href="#" role="button" data-bs-toggle="dropdown"
@@ -45,8 +45,7 @@
                 @guest
                     @if (Route::has('login'))
                         <li class="nav-item">
-                            <a class="btn btn-primary me-2" aria-current="page"
-                                href="{{ route('login') }}">Connexion</a>
+                            <a class="btn btn-primary me-2" aria-current="page" href="{{ route('login') }}">Connexion</a>
                         </li>
                     @endif
 

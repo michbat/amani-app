@@ -17,7 +17,7 @@ class MenuComponent extends Component
 
     // Propriété pour afficher le nombre de menus par page
 
-    public $pageItems = 8;
+    public $pageItems = 4;
 
     // Propriétés pour ordonner les menus par prix croissant ou décroissant, nouveauté, défaut
     public $orderBy = "default";
@@ -30,17 +30,49 @@ class MenuComponent extends Component
 
     public $cats = [];
 
+    /**
+     *
+     * La méthode updated() est appelée lorsqu'une propriété de notre composant est mise à jour
+     * via les interactions de l'utilisateur dans la vue associé à MenuComponent.
+     * Ici on reset l'ancienne pagination générée d'une ancienne recherche pour laisser la place à une nouvelle pagination
+     *
+     */
     public function updated()
     {
         $this->resetPage();
     }
 
-    public function store($menu_id, $menu_name, $menu_price)
-    {
-        Cart::add($menu_id, $menu_name, 1, $menu_price)->associate('App\Models\Menu');
-        session()->flash('success_message', 'Menu ajouté dans votre panier');
-        return redirect()->route('cart');
+    // Méthode pour ajouter un menu dans le panier
 
+    public function storeMenu($menu_id, $menu_name, $menu_price)
+    {
+        Cart::instance('cart')->add($menu_id, $menu_name, 1, $menu_price)->associate('App\Models\Menu');
+        $this->emitTo('cart-icon-component', 'refreshComponent');
+        $this->removeMenuToWishList($menu_id);
+        // session()->flash('success_message', 'Menu ajouté dans votre panier');
+        return redirect()->route('menu')->with('success','Menu ajouté dans votre panier');
+    }
+
+    // Méthode pour ajouter un menu dans une wishlist
+
+    public function addMenuToWishList($menu_id, $menu_name, $menu_price)
+    {
+        Cart::instance('wishlist')->add($menu_id, $menu_name, 1, $menu_price)->associate('App\Models\Menu');
+        $this->emitTo('wishlist-icon-component', 'refreshComponent');
+    }
+
+    // Méthode pour enlèver un menu de la wishlist
+
+    public function removeMenuToWishList($menu_id)
+    {
+        foreach (Cart::instance('wishlist')->content() as $content) {
+            if ($content->id == $menu_id) {
+                Cart::instance('wishlist')->remove($content->rowId);
+                $this->emitTo('wishlist-icon-component', 'refreshComponent');
+
+                return;
+            }
+        }
     }
 
     public function render()
@@ -102,5 +134,4 @@ class MenuComponent extends Component
 
         return view('frontend.livewire.menu-component', compact('menus', 'categories'));
     }
-
 }

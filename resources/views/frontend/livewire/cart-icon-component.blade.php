@@ -1,11 +1,11 @@
 <li>
     <div class="dropdown dropdown-cart">
         <a href="{{ route('cart') }}" class="cart_bt"><i class="fas fa-cart-plus"></i>
-            <strong>{{ Cart::count() ?? 0 }}</strong></a>
+            <strong>{{ Cart::instance('cart')->count() ?? 0 }}</strong></a>
         <div class="dropdown-menu">
-            @if (Cart::count() > 0)
+            @if (Cart::instance('cart')->count() > 0)
                 <ul>
-                    @foreach (Cart::content() as $content)
+                    @foreach (Cart::instance('cart')->content() as $content)
                         <li>
                             <figure>
                                 <img src="{{ asset($content->model->image) }}"
@@ -23,9 +23,9 @@
             @endif
             <div class="total_drop">
                 <div class="clearfix add_bottom_15">
-                    <strong>Sous-total</strong><span>{{ Cart::subtotal() }}&euro;</span><br>
-                    <strong>TVA</strong><span>{{ Cart::tax() }}&euro;</span><br>
-                    <strong>Total</strong><span>{{ Cart::total() }}&euro;</span>
+                    <strong>Sous-total</strong><span>{{ Cart::instance('cart')->subtotal() }}&euro;</span><br>
+                    <strong>TVA</strong><span>{{ Cart::instance('cart')->tax() }}&euro;</span><br>
+                    <strong>Total</strong><span>{{ Cart::instance('cart')->total() }}&euro;</span>
                 </div>
                 <a href="{{ route('cart') }}" class="btn_1">Voir votre panier</a>
 

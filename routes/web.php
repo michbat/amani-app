@@ -23,6 +23,7 @@ use App\Http\Livewire\CheckoutSuccessComponent;
 use App\Http\Livewire\DetailsComponent;
 use App\Http\Livewire\HomeComponent;
 use App\Http\Livewire\MenuComponent;
+use App\Http\Livewire\WishlistComponent;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,6 +45,7 @@ Route::get('/cart', CartComponent::class)->name('cart');
 Route::get('/menu/{slug}', DetailsComponent::class)->name('details');
 Route::get('/checkout', CheckoutComponent::class)->name('checkout');
 Route::get('/checkout-success', CheckoutSuccessComponent::class)->name('checkout.success');
+Route::get('/wishlist', WishlistComponent::class)->name('wishlist');
 
 // Paypal routes
 
@@ -110,9 +112,8 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
 
 // Employee routes
 
-Route::middleware(['auth', 'role:employee'])->name('employee.')->prefix('/employee')->group(function () {
-    // Route::get('/', [BackEndController::class, 'index'])->name('index');
-
+Route::middleware(['auth', 'role:personnel'])->name('personnel.')->prefix('/personnel')->group(function () {
+    Route::get('/', [BackEndController::class, 'index'])->name('index');
 });
 
 // Authenticated User routes

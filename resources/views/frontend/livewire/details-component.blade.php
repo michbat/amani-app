@@ -27,6 +27,7 @@
                             @endforeach
                         @endif
                         <span class=" d-block rating mt-4">
+
                             <em>4 Avis</em>
                             <i class="icon_star voted"></i>
                             <i class="icon_star voted"></i>
@@ -35,9 +36,9 @@
                             <i class="icon_star"></i>
                         </span>
                         <p>{!! $menu->description !!}</p>
-                        <div class="prod_options">
-                            <div class="row">
-                                <label class="col-xl-5 col-lg-5  col-md-6 col-6"><strong>Quantité</strong></label>
+                        {{-- <div class="prod_options">
+                            <div class="row"> --}}
+                        {{-- <label class="col-xl-5 col-lg-5  col-md-6 col-6"><strong>Quantité</strong></label>
                                 <div class="col-xl-4 col-lg-5 col-md-6 col-6">
                                     <div class="d-flex justify-content-center align-items-center">
                                         <a href="#"
@@ -48,27 +49,37 @@
                                         <a href="#"
                                             class="btn btn-success btn-sm mx-2 {{ $quantity == 15 || $menu->available == 0 ? 'disabled' : '' }}"
                                             wire:click.prevent="increaseQuantity()">+</a>
-                                    </div>
-                                </div>
+                                    </div> --}}
+                        {{-- </div>
                                 <div>
                                     @if ($quantity == 15)
                                         <span class="text-danger" style="font-size: 15px">Veuillez nous
                                             contacter si vous voulez
                                             commander plus de 15 repas de ce menu!!</span>
                                     @endif
-                                </div>
-                            </div>
-                        </div>
+                                </div> --}}
+                        {{-- </div>
+                        </div> --}}
                         <div class="row">
                             <div class="col-lg-5 col-md-6">
                                 <div class="price_main"><span class="new_price">{{ $menu->price }} &euro;</span></div>
                             </div>
                             <div class="col-lg-4 col-md-6">
                                 <div class="btn_add_to_cart"><a href="#"
-                                        class="btn btn-success {{ $menu->available === 0 ? 'disabled' : '' }}"
+                                        class="btn btn-success {{ $menu->available === 0 || $quantity >= 15 ? 'disabled' : '' }}"
                                         style="min-width: 190px"
-                                        wire:click.prevent="store({{ $menu->id }},'{{ $menu->name }}',{{ $menu->price }})">Ajouter</a>
+                                        wire:click.prevent="storeMenu({{ $menu->id }},'{{ $menu->name }}',{{ $menu->price }})"
+                                        wire:model="$quantity"><i class="fas fa-shopping-cart mx-2"></i>Ajouter
+
+                                        <span class="badge badge-light">{{ $quantity }}</span>
+
+                                    </a>
                                 </div>
+                            </div>
+                            <div class="mt-3">
+                                @if ($quantity >= 15)
+                                    <span class="text-danger text-center">Veuillez nous contacter si vous voulez commander plus de 15 produits</span>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -144,8 +155,8 @@
                     <div id="pane-B" class="card tab-pane fade" role="tabpanel" aria-labelledby="tab-B">
                         <div class="card-header" role="tab" id="heading-B">
                             <h5 class="mb-0">
-                                <a class="collapsed" data-bs-toggle="collapse" href="#collapse-B"
-                                    aria-expanded="false" aria-controls="collapse-B">
+                                <a class="collapsed" data-bs-toggle="collapse" href="#collapse-B" aria-expanded="false"
+                                    aria-controls="collapse-B">
                                     Reviews
                                 </a>
                             </h5>

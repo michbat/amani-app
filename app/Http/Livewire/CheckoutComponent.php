@@ -38,7 +38,7 @@ class CheckoutComponent extends Component
     {
         $this->user = Auth::user(); // On récupère l'utilisateur authentifié.
 
-        if (!Session()->has('cart') || Cart::count() === 0) {
+        if (!Session()->has('cart') || Cart::instance('cart')->count() === 0) {
             return redirect()->route('menu')->with('info', 'Vous n\'avez aucun produit dans le panier!');
         }
         if ($this->user === null) {
@@ -85,14 +85,14 @@ class CheckoutComponent extends Component
                 $charge = $stripe->charges()->create([
                     'customer' => $customer['id'],
                     'currency' => 'eur',
-                    'amount' => Cart::total(),
+                    'amount' => Cart::instance('cart')->total(),
                     'description' => 'Paiement par carte de la commande n° ' . $order->id,
                 ]);
 
                 if ($charge['status'] == 'succeeded') {
                     $order->save();
                     $this->fillMenuOrder($order->id);
-                    Cart::destroy();
+                    Cart::instance('cart')->destroy();
 
                     event(new OrderConfirmedEvent($this->user));
 
@@ -119,7 +119,7 @@ class CheckoutComponent extends Component
 
             // Destruction du panier
 
-            Cart::destroy();
+            Cart::instance('cart')->destroy();
 
             // Envoyez l'e-mail au client pour confirmer sa commande en instanciant un événement OrderConfirmedEvent
 
@@ -148,7 +148,7 @@ class CheckoutComponent extends Component
                     [
                         "amount" => [
                             "currency_code" => "EUR",
-                            "value" => Cart::total()
+                            "value" => Cart::instance('cart')->total()
                         ]
                     ]
                 ]
@@ -181,9 +181,9 @@ class CheckoutComponent extends Component
             $order = new Order();
 
             $order->user_id = $user->id;
-            $order->subtotal = Cart::subtotal();
-            $order->tva = Cart::tax();
-            $order->total = Cart::total();
+            $order->subtotal = Cart::instance('cart')->subtotal();
+            $order->tva = Cart::instance('cart')->tax();
+            $order->total = Cart::instance('cart')->total();
             $order->paymentMode = PaymentMode::PAYPAL->value;
             $order->paymentStatus = PaymentStatus::PAID->value;
             $order->orderStatus = OrderStatus::CONFIRMED->value;
@@ -193,7 +193,7 @@ class CheckoutComponent extends Component
 
             // Destruction du panier
 
-            Cart::destroy();
+            Cart::instance('cart')->destroy();
 
             // Envoyez l'e-mail au client pour confirmer sa commande en instanciant un événement OrderConfirmedEvent
 
@@ -213,7 +213,7 @@ class CheckoutComponent extends Component
 
     private function fillMenuOrder($orderId)
     {
-        foreach (Cart::content() as $content) {
+        foreach (Cart::instance('cart')->content() as $content) {
             $menuOrder = new MenuOrder();
 
             $menuOrder->menu_id = $content->model->id;
@@ -230,9 +230,9 @@ class CheckoutComponent extends Component
         $order = new Order();
 
         $order->user_id = $this->user->id;
-        $order->subtotal = Cart::subtotal();
-        $order->tva = Cart::tax();
-        $order->total = Cart::total();
+        $order->subtotal = Cart::instance('cart')->subtotal();
+        $order->tva = Cart::instance('cart')->tax();
+        $order->total = Cart::instance('cart')->total();
         $order->nameOnCard = $this->nameOnCard;
         $order->numberOnCard = CheckoutComponent::cardMasking($this->number, 'X');
         $order->expirationDate = $this->exp_month . '/' . $this->exp_year;
@@ -248,9 +248,9 @@ class CheckoutComponent extends Component
         $order = new Order();
 
         $order->user_id = $this->user->id;
-        $order->subtotal = Cart::subtotal();
-        $order->tva = Cart::tax();
-        $order->total = Cart::total();
+        $order->subtotal = Cart::instance('cart')->subtotal();
+        $order->tva = Cart::instance('cart')->tax();
+        $order->total = Cart::instance('cart')->total();
         $order->paymentMode = PaymentMode::CASH->value;
         $order->paymentStatus = PaymentStatus::DUE->value;
         $order->orderStatus = OrderStatus::CONFIRMED->value;

@@ -952,7 +952,7 @@ a.btn_top.order:hover {
 ul#top_menu {
     float: right;
     margin: 0 25px 0 25px;
-    padding: 0;
+    padding: 3px 0;
     list-style: none;
     font-size: 13px;
     font-size: 0.8125rem;
@@ -988,7 +988,7 @@ ul#top_menu li a {
 }
 
 ul#top_menu li a:hover::after {
-    color: #d33 !important;
+    color: green !important;
 }
 
 

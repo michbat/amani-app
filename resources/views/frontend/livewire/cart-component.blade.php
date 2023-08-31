@@ -35,8 +35,8 @@
                                     aria-label="Close"></button>
                             </div>
                         @endif
-                        @if (Cart::count() > 0)
-                            @foreach (Cart::content() as $element)
+                        @if (Cart::instance('cart')->count() > 0)
+                            @foreach (Cart::instance('cart')->content() as $element)
                                 <tr>
                                     <td>
                                         <div class="thumb_cart">
@@ -46,13 +46,13 @@
                                         </div>
 
                                         <span class="item_cart">
-                                            <a href="{{ route('details', $element->model->id) }}" class="text-dark">
+                                            <a href="{{ route('details', $element->model->slug) }}" class="text-dark">
                                                 {{ $element->qty }}x {{ $element->model->name }}
                                             </a>
                                             @if ($element->qty == 15)
                                                 <span class="text-danger" style="font-size: 10px">(Veuillez nous
                                                     contacter si vous voulez
-                                                    commander plus de 15 repas de ce menu!!)</span>
+                                                    commander plus de 15 produits!!)</span>
                                             @endif
                                         </span>
                                     </td>
@@ -88,7 +88,7 @@
                 <div class="row add_top_30 flex-sm-row-reverse cart_actions">
                     <div class="col-sm-4 text-end">
                         <button type="button"
-                            class="btn btn-outline-success {{ Cart::count() == 0 ? 'disabled' : '' }}"
+                            class="btn btn-outline-success {{ Cart::instance('cart')->count() == 0 ? 'disabled' : '' }}"
                             wire:click="clearCart()">Vider votre
                             panier</button>
                     </div>
@@ -97,7 +97,7 @@
                                 class="fas fa-caret-left mx-2 fa-1x"></i>Retournez au menu</a>
                     </div>
                     <div class="col-sm-12 text-start mt-4">
-                        <p style="color: red">Des produits commandés sont prêts au plus tard dans 40 minutes à partir de la confirmation de la commande. Vous avez 2 heures pour retirer votre commande dès qu'elle est prête. Vous pouvez suivre l'état de votre commande sur votre compte et un e-mail vous sera envoyé dès qu'elle prête.</p>
+                        <p style="color: red">Des produits commandés sont prêts au plus tard dans 30 minutes à partir de la confirmation de la commande. Vous avez 2 heures pour retirer votre commande dès qu'elle est prête. Vous pouvez suivre l'état de votre commande sur votre compte et un e-mail vous sera envoyé dès qu'elle prête.</p>
                     </div>
                 </div>
                 <!-- /cart_actions -->
@@ -111,20 +111,20 @@
                     <div class="col-xl-4 col-lg-4 col-md-6">
                         <ul>
                             <li>
-                                <span>Sous-total</span> {{ Cart::subtotal() }} &euro;
+                                <span>Sous-total</span> {{ Cart::instance('cart')->subtotal() }} &euro;
                             </li>
                             <li>
-                                <span>TVA</span> {{ Cart::tax() }} &euro;
+                                <span>TVA</span> {{ Cart::instance('cart')->tax() }} &euro;
                             </li>
                             <li>
-                                <span>Total</span> {{ Cart::total() }} &euro;
+                                <span>Total</span> {{ Cart::instance('cart')->total() }} &euro;
                             </li>
                         </ul>
                         {{-- Pour accéder à la page checkout, il faut être connecté. Si la personne est un guest, il est automatiquement dirigé vers
                             la page login pour s'authentifier. Si le panier est vide, le bouton est désactivé --}}
 
                         <a href="#" wire:click.prevent="checkout"
-                            class="btn btn-success btn-lg cart {{ Cart::count() == 0 ? 'disabled' : '' }}">Procéder au
+                            class="btn btn-success btn-lg cart {{ Cart::instance('cart')->count() == 0 ? 'disabled' : '' }}">Procéder au
                             paiement</a>
                     </div>
                 </div>

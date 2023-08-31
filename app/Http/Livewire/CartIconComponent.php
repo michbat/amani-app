@@ -11,13 +11,13 @@ class CartIconComponent extends Component
     protected $listeners = ['refreshComponent' => '$refresh'];
     public function destroy($rowId)
     {
-        Cart::remove($rowId);
+        Cart::instance('cart')->remove($rowId);
         $this->emitTo('cart-component', 'refreshComponent');
     }
     public function checkout()
     {
         // Si la personne qui simule le panier est connecté, on le dirige vers la page Checkout si authentifiée sinon vers la page login
-        
+
         if (Auth::check()) {
             return redirect()->route('checkout');
         } else {

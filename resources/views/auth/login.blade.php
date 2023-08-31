@@ -1,7 +1,7 @@
 @extends('user.layouts.app')
 @section('content')
     <div class="row my-4">
-        <div class="col-12 col-sm-8 col-lg-6 m-auto">
+        <div class="col-sm-12 col-lg-4 mx-auto">
             <div class="card border-0 shadow">
                 <div class="card-body">
                     <h2 class="my-5 text-center">Connexion</h2>

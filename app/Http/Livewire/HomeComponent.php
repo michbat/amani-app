@@ -13,9 +13,9 @@ use Livewire\Component;
 class HomeComponent extends Component
 {
 
-    public function store($menu_id, $menu_name, $menu_price)
+    public function storeMenu($menu_id, $menu_name, $menu_price)
     {
-        Cart::add($menu_id, $menu_name, 1, $menu_price)->associate('App\Models\Menu');
+        Cart::instance('cart')->add($menu_id, $menu_name, 1, $menu_price)->associate('App\Models\Menu');
         session()->flash('success_message', 'Menu ajouté dans votre panier');
         return redirect()->route('cart');
     }

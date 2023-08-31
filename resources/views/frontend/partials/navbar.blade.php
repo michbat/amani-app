@@ -7,15 +7,19 @@
                 alt=""></a>
     </div>
     <ul>
+
+        <li class="submenu">
+            @livewire('wishlist-icon-component')
+        </li>
         @auth
             @if (Auth::user()->hasRole('admin'))
                 <li class="submenu">
                     <a href="{{ route('admin.index') }}" class="show-submenu">Administrator</a>
                 </li>
             @endif
-            @if (Auth::user()->hasRole('employee'))
+            @if (Auth::user()->hasRole('personnel'))
                 <li class="submenu">
-                    <a href="{{ route('employee.index') }}" class="show-submenu">Employee</a>
+                    <a href="{{ route('personnel.index') }}" class="show-submenu">Personnel</a>
                 </li>
             @endif
             <li class="submenu">
@@ -40,7 +44,7 @@
         <li class="submenu">
             <a href="#" class="show-submenu">Contactez-nous</a>
         </li>
-      
+
         @guest
             @if (Route::has('login'))
                 <li class="nav-item">
@@ -57,19 +61,19 @@
             @endif
         @else
             <li class="nav-item dropdown">
-                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                <a id="navbarDropdown" class="btn btn-outline-success dropdown-toggle" href="#" role="button"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                     Bonjour, {{ Auth::user()->firstname }}
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{{ route('user.dashboard') }}">
+                    <a class="dropdown-item" href="{{ route('user.dashboard') }}"><i class="fas fa-user-alt mx-2"></i>
                         Mon Compte
                     </a>
-                    <a class="dropdown-item" href="{{ route('logout') }}"
+                    <a class="dropdown-item" href="#"
                         onclick="event.preventDefault();
                                          document.getElementById('logout-form').submit();">
-                        Deconnexion
+                        <i class="fas fa-sign-out-alt mx-2"></i>Deconnexion
                     </a>
 
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
