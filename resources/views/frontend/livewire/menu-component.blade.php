@@ -132,12 +132,12 @@
         <!-- /filters -->
         <div class="pattern_2">
             <div class="container margin_60_40">
-                {{-- @if ($message = Session::get('success_message'))
+                @if ($message = Session::get('success_message'))
                     <div class="alert alert-success alert-dismissible fade show my-4" role="alert">
                         <strong>{{ $message }}</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                @endif --}}
+                @endif
                 <div class="main_title center">
                     <span style="background-color: green!important"><em
                             style="background-color: green!important"></em></span>

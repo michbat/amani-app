@@ -54,6 +54,13 @@ class CartComponent extends Component
     }
     public function render()
     {
+        // Si le client est authentifié, on sauvegarde son panier et sa wishlist
+
+        if (Auth::check()) {
+            Cart::instance('cart')->store(Auth::user()->id);
+            Cart::instance('wishlist')->store(Auth::user()->id);
+        }
+
         return view('frontend.livewire.cart-component');
     }
 }

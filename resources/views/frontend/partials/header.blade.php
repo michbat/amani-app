@@ -10,13 +10,13 @@
             </a>
         </div>
         <ul id="top_menu">
-            <li>
-                <a href="#0" class="search-overlay-menu-btn">
-
-                </a>
-            </li>
+            <li><a href="#0" class="search-overlay-menu-btn"></a></li>
             @livewire('cart-icon-component')
         </ul>
+        <!-- /top_menu -->
+        <a href="#0" class="open_close">
+            <i class="icon_menu"></i><span>Menu</span>
+        </a>
         @include('frontend.partials.navbar')
     </div>
 </header>

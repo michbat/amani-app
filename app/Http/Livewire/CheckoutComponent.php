@@ -22,7 +22,7 @@ class CheckoutComponent extends Component
 {
     public $paymentMode = "card"; // Méthode de paiement en ligne par défaut
     public $nameOnCard, $number, $exp_month, $exp_year, $cvc, $user;
-    public $acceptance = false;
+    public $acceptance =  false;
 
     //  Règles de validation
 
@@ -34,7 +34,8 @@ class CheckoutComponent extends Component
         'cvc' => 'required|numeric|digits:3',
     ];
 
-    public function mount()
+
+   public function mount()
     {
         $this->user = Auth::user(); // On récupère l'utilisateur authentifié.
 
@@ -65,6 +66,15 @@ class CheckoutComponent extends Component
                 'cvc.numeric' => 'Le CCV doit être en chiffres',
                 'cvc' => 'Le CVV doit comporter 3 chiffres',
             ]);
+
+            $this->validate(
+                [
+                    'acceptance' => 'required',
+                ],
+                [
+                    'acceptance.required' => 'Vous devez accepter les termes et conditions de vente',
+                ]
+            );
 
 
             $order = $this->makeCardOrder();

@@ -1,6 +1,6 @@
 <li>
     <div class="dropdown dropdown-cart">
-        <a href="{{ route('cart') }}" class="cart_bt"><i class="fas fa-cart-plus"></i>
+        <a href="" class="cart_bt"><i class="fas fa-cart-plus"></i>
             <strong>{{ Cart::instance('cart')->count() ?? 0 }}</strong></a>
         <div class="dropdown-menu">
             @if (Cart::instance('cart')->count() > 0)
@@ -15,8 +15,6 @@
                             <strong><span>{{ $content->qty }}x
                                     {{ $content->model->name }}</span>{{ $content->model->price }}
                                 &euro;</strong>
-                            <a href="#" class="action" wire:click.prevent="destroy('{{ $content->rowId }}')"><i
-                                    class="icon_trash_alt"></i></a>
                         </li>
                     @endforeach
                 </ul>
@@ -32,9 +30,7 @@
                 {{-- Pour accéder à la page checkout, il faut être connecté. Si la personne est un guest, il est automatiquement dirigé vers
                 la page login pour s'authentifier. Si le panier est vide, le bouton est désactivé --}}
 
-                <a href="#" wire:click.prevent="checkout"
-                    class="btn btn-success mt-2 {{ Cart::count() == 0 ? 'disabled' : '' }}"
-                    style="min-width: 100%">Payer</a>
+                <a href="{{ route('menu') }}" class="btn btn-success mt-2" style="min-width: 100%">Retour au menu</a>
             </div>
         </div>
     </div>

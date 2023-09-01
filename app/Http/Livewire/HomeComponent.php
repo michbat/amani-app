@@ -2,13 +2,14 @@
 
 namespace App\Http\Livewire;
 
-use App\Enums\GalleryType;
-use App\Models\Gallery;
 use App\Models\Menu;
-use App\Models\Restaurant;
 use App\Models\Slider;
-use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Models\Gallery;
 use Livewire\Component;
+use App\Enums\GalleryType;
+use App\Models\Restaurant;
+use Illuminate\Support\Facades\Auth;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class HomeComponent extends Component
 {
@@ -35,6 +36,14 @@ class HomeComponent extends Component
         // On affiche à la page d'accueil les menus les moins chers
 
         $menus = Menu::orderBy('price', 'ASC')->limit(8)->get();
+
+        // Si le client est authentifié, il est dirigé vers l'accueil. On restaure son panier et sa wishlist sauvegardés
+        // avant le rendu de la vue "home-component"
+
+        if (Auth::check()) {
+            Cart::instance('cart')->restore(Auth::user()->id);
+            Cart::instance('wishlist')->restore(Auth::user()->id);
+        }
 
         // On injecte les objets récupérés dans la vue
 

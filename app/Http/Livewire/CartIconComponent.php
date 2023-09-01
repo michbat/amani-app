@@ -4,16 +4,12 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
-use Gloudemans\Shoppingcart\Facades\Cart;
+
 
 class CartIconComponent extends Component
 {
     protected $listeners = ['refreshComponent' => '$refresh'];
-    public function destroy($rowId)
-    {
-        Cart::instance('cart')->remove($rowId);
-        $this->emitTo('cart-component', 'refreshComponent');
-    }
+
     public function checkout()
     {
         // Si la personne qui simule le panier est connecté, on le dirige vers la page Checkout si authentifiée sinon vers la page login

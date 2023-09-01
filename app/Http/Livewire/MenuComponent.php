@@ -2,11 +2,12 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Category;
 use App\Models\Menu;
-use Gloudemans\Shoppingcart\Facades\Cart;
 use Livewire\Component;
+use App\Models\Category;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Auth;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class MenuComponent extends Component
 {
@@ -49,8 +50,8 @@ class MenuComponent extends Component
         Cart::instance('cart')->add($menu_id, $menu_name, 1, $menu_price)->associate('App\Models\Menu');
         $this->emitTo('cart-icon-component', 'refreshComponent');
         $this->removeMenuToWishList($menu_id);
-        // session()->flash('success_message', 'Menu ajouté dans votre panier');
-        return redirect()->route('menu')->with('success','Menu ajouté dans votre panier');
+        session()->flash('success_message', 'Menu ajouté dans votre panier');
+        return redirect()->back();
     }
 
     // Méthode pour ajouter un menu dans une wishlist
@@ -59,6 +60,8 @@ class MenuComponent extends Component
     {
         Cart::instance('wishlist')->add($menu_id, $menu_name, 1, $menu_price)->associate('App\Models\Menu');
         $this->emitTo('wishlist-icon-component', 'refreshComponent');
+        session()->flash('success_message', 'Menu ajouté à votre liste de souhaits');
+        return redirect()->back();
     }
 
     // Méthode pour enlèver un menu de la wishlist
@@ -69,8 +72,8 @@ class MenuComponent extends Component
             if ($content->id == $menu_id) {
                 Cart::instance('wishlist')->remove($content->rowId);
                 $this->emitTo('wishlist-icon-component', 'refreshComponent');
-
-                return;
+                session()->flash('success_message', 'Menu enlevé de votre liste de souhaits');
+                return redirect()->back();
             }
         }
     }
@@ -131,6 +134,14 @@ class MenuComponent extends Component
         $menus = $query->paginate($this->pageItems);
 
         $categories = Category::orderBy('designation', 'ASC')->get();
+
+        // Si le client est authentifié, on sauvegarde son panier et sa wishlist
+
+        if(Auth::check())
+        {
+            Cart::instance('cart')->store(Auth::user()->id);
+            Cart::instance('wishlist')->store(Auth::user()->id);
+        }
 
         return view('frontend.livewire.menu-component', compact('menus', 'categories'));
     }

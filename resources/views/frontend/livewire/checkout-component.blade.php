@@ -5,31 +5,27 @@
     </div>
 @endsection
 @push('styles')
-    @push('styles')
-        <style>
-            .button-wrapper {
-                position: relative;
-            }
+    <style>
+        .button-wrapper {
+            position: relative;
+        }
 
-            .button-wrapper .message {
-                display: none;
-                position: absolute;
-                padding: 15px;
-                text-align: center;
-                width: 100%;
-                box-sizing: border-box;
-                transform: translateY(50%);
-                bottom: -20px;
-                left: 0;
-            }
+        .button-wrapper .message {
+            display: none;
+            position: absolute;
+            padding: 15px;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+            transform: translateY(50%);
+            bottom: -20px;
+            left: 0;
+        }
 
-            .button-wrapper:hover .message {
-                display: block;
-            }
-        </style>
-    @endpush
-
-
+        .button-wrapper:hover .message {
+            display: block;
+        }
+    </style>
 @endpush
 <main>
     <div class="pattern_2">
@@ -169,22 +165,17 @@
                             </div>
                         </div>
 
-                        <div>
-                            <div
-                                class="button-wrapper d-flex flex-column justify-content-center align-items-center mb-5">
-                                <button type="submit" id="commander"
-                                    class="btn btn-success btn-lg {{ $acceptance == false ? 'disabled' : '' }}"
-                                    wire:click.prevent="placeOrder">
-                                    Commander
-                                </button>
-                                <span class="message text-danger {{ $acceptance == false ? 'disabled' : '' }}">Vous
-                                    devez accepter d'abord les termes et conditions
-                                    de vente</span>
-                            </div>
+
+                        <div class="button-wrapper d-flex flex-column justify-content-center align-items-center mb-5">
+                            <button type="submit" id="commander"
+                                class="btn btn-success btn-lg {{ $acceptance == false ? 'disabled' : '' }}"
+                                wire:click.prevent="placeOrder">
+                                Commander
+                            </button>
+                            <span class="message text-danger {{ $acceptance == false ? 'disabled' : '' }}">Vous
+                                devez accepter d'abord les termes et conditions
+                                de vente</span>
                         </div>
-
-
-                        paymentMode = {{ var_export($paymentMode) }}
                     </div>
                 </div>
                 <div class="col-xl-4 col-lg-4" id="sidebar_fixed">

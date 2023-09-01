@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
 class WishlistComponent extends Component
@@ -38,6 +39,13 @@ class WishlistComponent extends Component
 
     public function render()
     {
+        // Si le client est authentifié, on sauvegarde son panier et sa wishlist
+        
+        if (Auth::check()) {
+
+            Cart::instance('cart')->store(Auth::user()->id);
+            Cart::instance('wishlist')->store(Auth::user()->id);
+        }
 
         return view('frontend.livewire.wishlist-component');
     }
