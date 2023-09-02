@@ -4,6 +4,8 @@ namespace App\Http\Livewire;
 
 use App\Models\Order;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class CheckoutSuccessComponent extends Component
 {
@@ -21,7 +23,15 @@ class CheckoutSuccessComponent extends Component
     {
         // On récupére la toute dernière commande qui vient d'être effectuée
 
+        if(Auth::check())
+        {
+            Cart::instance('cart')->store(Auth::user()->id);
+            Cart::instance('wishlist')->store(Auth::user()->id);
+
+        }
+
         $order = Order::latest()->first();
+        $this->js("alert('Post saved!')"); 
         return view('frontend.livewire.checkout-success-component', compact('order'));
     }
 }

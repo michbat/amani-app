@@ -2,12 +2,12 @@
 
 namespace App\Console;
 
+use DateTimeZone;
 use Carbon\Carbon;
 use App\Models\Menu;
 use App\Models\Order;
 use App\Enums\OrderStatus;
 use App\Events\OrderPendingEvent;
-use App\Events\PageRefreshed;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -21,10 +21,9 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
 
         $schedule->call(function () {
-            $orders = Order::where('orderStatus', OrderStatus::CONFIRMED->value)->get();
+            $orders = Order::where('orderStatus', OrderStatus::CONFIRMED->value)->where('created_at', '<=', Carbon::now()->subMinutes(2))->get();
 
-            if (count($orders) > 0)
-            {
+            if (count($orders) > 0) {
                 foreach ($orders as $order) {
                     $order->orderStatus = OrderStatus::PENDING->value;
                     $user = $order->user;
@@ -32,14 +31,14 @@ class Kernel extends ConsoleKernel
                     $order->update();
                 }
             }
-        })->everyMinute();
+        })->everyFiveSeconds();
 
 
         $schedule->call(function () {
             $menus = Menu::all();
             $currentTime = Carbon::now('Europe/Brussels')->format('H:i');
-            $openKitchenTime = '03:35';
-            $closeKitchenTime = '05:40';
+            $openKitchenTime = '20:35';
+            $closeKitchenTime = '23:30';
 
 
             if ($currentTime >= $openKitchenTime && $currentTime <= $closeKitchenTime) {
@@ -53,7 +52,16 @@ class Kernel extends ConsoleKernel
                     $menu->update();
                 }
             }
-        })->everyMinute();
+        })->everyFiveSeconds();
+    }
+
+
+    /**
+     * Get the timezone that should be used by default for scheduled events.
+     */
+    protected function scheduleTimezone(): DateTimeZone|string|null
+    {
+        return 'Europe/Brussels';
     }
 
     /**

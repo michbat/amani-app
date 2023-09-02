@@ -41,11 +41,14 @@ class HomeComponent extends Component
         // avant le rendu de la vue "home-component"
 
         if (Auth::check()) {
+
             Cart::instance('cart')->restore(Auth::user()->id);
             Cart::instance('wishlist')->restore(Auth::user()->id);
 
             Cart::instance('cart')->store(Auth::user()->id);
             Cart::instance('wishlist')->store(Auth::user()->id);
+
+
 
 
         }
