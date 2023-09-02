@@ -134,7 +134,7 @@
                                             </em>
                                         </div>
                                         <p>{!! str()->limit($menu->description, 100) !!}</p>
-                                        <a class="btn btn-success {{ $menu->available === 0 ? 'disabled' : '' }}"
+                                        <a class="btn btn-success {{ $menu->available === 0 || $menu->canBeCommended === 0 ? 'disabled' : '' }}"
                                             href="#"
                                             wire:click.prevent="storeMenu({{ $menu->id }},'{{ $menu->name }}',{{ $menu->price }})"><i
                                                 class="fas fa-shopping-cart mx-2"></i>Ajouter</a>

@@ -167,7 +167,7 @@
                             <div class="col-md-4 col-xl-3" wire:key="menu-{{ $menu->id }}">
                                 <div
                                     class="d-flex flex-column justify-content-center align-items-center item menu_item_grid h-100">
-                                    <div class="item-img magnific-gall"ery">
+                                    <div class="item-img magnific-gallery">
                                         <img src="{{ asset($menu->image) }}" alt="{{ $menu->name }}" loading="lazy">
                                         <div class="content">
                                             <a href="{{ asset($menu->image) }}" title="{{ $menu->name }}"
@@ -188,7 +188,7 @@
                                         </span>
                                         <div class="d-flex justify-content-center align-items-center">
                                             <button title="Ajouter ce menu au panier" type="button"
-                                                class="btn btn-success {{ $menu->available === 0 ? 'disabled' : '' }}"
+                                                class="btn btn-success {{ $menu->available === 0 || $menu->canBeCommended === 0 ? 'disabled' : '' }}"
                                                 wire:click.prevent="storeMenu({{ $menu->id }},'{{ $menu->name }}',{{ $menu->price }})">
                                                 <span style="color: white;">
                                                     <i class="fas fa-shopping-cart mx-2"></i>Ajouter
@@ -232,3 +232,13 @@
         </div>
     </main>
 </div>
+
+@push('scripts')
+    <script>
+        document.addEventListener('livewire:load', function() {
+            Livewire.on('refreshPage', function() {
+                location.reload();
+            });
+        });
+    </script>
+@endpush

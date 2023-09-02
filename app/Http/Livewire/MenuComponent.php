@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Carbon\Carbon;
 use App\Models\Menu;
 use Livewire\Component;
 use App\Models\Category;
@@ -9,12 +10,15 @@ use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
+
 class MenuComponent extends Component
 {
     use WithPagination;
 
+
     public $hideOnSinglePage = true;
     protected $paginationTheme = 'bootstrap';
+
 
     // Propriété pour afficher le nombre de menus par page
 
@@ -30,6 +34,10 @@ class MenuComponent extends Component
     // Propriété pour filtrer par catégories
 
     public $cats = [];
+
+    // Propriété pour actver ou désactiver le bouton ajouter en fonction de la plage d'horaire autorisée
+
+    public $canBeCommended;
 
     /**
      *
@@ -137,8 +145,7 @@ class MenuComponent extends Component
 
         // Si le client est authentifié, on sauvegarde son panier et sa wishlist
 
-        if(Auth::check())
-        {
+        if (Auth::check()) {
             Cart::instance('cart')->store(Auth::user()->id);
             Cart::instance('wishlist')->store(Auth::user()->id);
         }

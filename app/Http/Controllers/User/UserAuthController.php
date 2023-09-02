@@ -6,6 +6,7 @@ use App\Enums\OrderStatus;
 use App\Enums\UserStatus;
 use App\Events\EditPasswordSubmitEvent;
 use App\Events\EditProfileSubmitEvent;
+use App\Events\OrderCanceledEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EditPasswordSubmitRequest;
 use App\Http\Requests\EditProfileSubmitRequest;
@@ -118,6 +119,12 @@ class UserAuthController extends Controller
         if ($order->orderStatus->value == OrderStatus::CONFIRMED->value) {
             $order->orderStatus = OrderStatus::CANCELED->value;
             $order->update();
+
+            // On envoit un e-mail informant l'utilisateur de l'annulation de sa commande
+            
+            $user = $order->user;
+            event(new OrderCanceledEvent($user));
+
             return redirect()->back()->with('success', 'Votre commande a été annulée');
         } else {
             return redirect()->back()->with('warning', 'Trop tard. Seules des commandes avec le status "confirmé" peuvent être annulées');

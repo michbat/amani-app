@@ -43,6 +43,11 @@ class HomeComponent extends Component
         if (Auth::check()) {
             Cart::instance('cart')->restore(Auth::user()->id);
             Cart::instance('wishlist')->restore(Auth::user()->id);
+
+            Cart::instance('cart')->store(Auth::user()->id);
+            Cart::instance('wishlist')->store(Auth::user()->id);
+
+
         }
 
         // On injecte les objets récupérés dans la vue

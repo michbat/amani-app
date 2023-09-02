@@ -6,7 +6,9 @@ use App\Events\EditPasswordSubmitEvent;
 use App\Events\EditProfileSubmitEvent;
 use App\Events\ForgotPasswordSubmitEvent;
 use App\Events\LoginSubmitDeniedEvent;
+use App\Events\OrderCanceledEvent;
 use App\Events\OrderConfirmedEvent;
+use App\Events\OrderPendingEvent;
 use App\Events\RegisterConfirmationEvent;
 use App\Events\RegisterVerifyEvent;
 use App\Events\ResentLinkSubmitEvent;
@@ -15,7 +17,9 @@ use App\Listeners\EditPasswordSubmitListener;
 use App\Listeners\EditProfileSubmitListener;
 use App\Listeners\ForgotPasswordSubmitListener;
 use App\Listeners\LoginSubmitDeniedListener;
+use App\Listeners\OrderCanceledListener;
 use App\Listeners\OrderConfirmedListener;
+use App\Listeners\OrderPendingListener;
 use App\Listeners\RegisterConfirmationListener;
 use App\Listeners\RegisterVerifyListener;
 use App\Listeners\ResentLinkSubmitListener;
@@ -72,6 +76,14 @@ class EventServiceProvider extends ServiceProvider
         OrderConfirmedEvent::class => [
             OrderConfirmedListener::class,
         ],
+
+        OrderPendingEvent::class => [
+            OrderPendingListener::class,
+        ],
+
+        OrderCanceledEvent::class=>[
+            OrderCanceledListener::class,
+        ]
     ];
 
     /**
