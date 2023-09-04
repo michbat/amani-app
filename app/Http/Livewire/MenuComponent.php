@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use Carbon\Carbon;
 use App\Models\Menu;
 use Livewire\Component;
 use App\Models\Category;

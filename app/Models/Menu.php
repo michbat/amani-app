@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Tag;
+use App\Models\Review;
 use App\Models\Category;
 use App\Models\Ingredient;
 use App\Models\Restaurant;
-use App\Models\Tag;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Menu extends Model
 {
@@ -57,5 +58,12 @@ class Menu extends Model
     public function menuOrders(): HasMany
     {
         return $this->hasMany(menuOrders::class);
+    }
+
+    // Un menu peut faire l'objet de plusieurs commentaires
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
     }
 }

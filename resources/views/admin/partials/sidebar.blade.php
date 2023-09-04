@@ -11,6 +11,8 @@
                 <a href="{{ route('home') }}" class="nav-link"><i class="fas fa-home"></i><span>Frontend</span></a>
             </li>
 
+            {{-- Section Rôles et Utilisateurs --}}
+
             <li class="menu-header">Rôles & Utilisateurs</li>
 
             <li class="dropdown {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
@@ -31,6 +33,31 @@
                             href="{{ route('admin.users.index') }}">Utilisateurs</a></li>
                 </ul>
             </li>
+
+            <li class="dropdown {{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-comment"></i>
+                    <span>Commentaires</span></a>
+                <ul class="dropdown-menu">
+                    <li class="{{ request()->routeIs('admin.reviews.index') ? 'active' : '' }}"><a class="nav-link"
+                            href="{{ route('admin.reviews.index') }}">Commentaires</a></li>
+                </ul>
+            </li>
+
+            {{-- Section Commandes --}}
+
+            <li class="menu-header">Commandes</li>
+
+            <li class="dropdown {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                        class="fas fa-file-invoice"></i>
+                    <span>Commandes</span></a>
+                <ul class="dropdown-menu">
+                    <li class="{{ request()->routeIs('admin.orders.index') ? 'active' : '' }}"><a class="nav-link"
+                            href="{{ route('admin.orders.index') }}">Commandes</a></li>
+                </ul>
+            </li>
+
+            {{-- Section Menus --}}
 
             <li class="menu-header">Menu</li>
 
@@ -79,19 +106,21 @@
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-apple-alt"></i>
                     <span>Ingredients</span></a>
                 <ul class="dropdown-menu">
-                    <li class="{{ request()->routeIs('admin.ingredients.index') ? 'active' : '' }}"><a class="nav-link"
-                            href="{{ route('admin.ingredients.index') }}">Ingredients</a></li>
+                    <li class="{{ request()->routeIs('admin.ingredients.index') ? 'active' : '' }}"><a
+                            class="nav-link" href="{{ route('admin.ingredients.index') }}">Ingredients</a></li>
                 </ul>
             </li>
 
-            <li class="menu-header">Restaurant Section</li>
+            {{-- Section Restaurant --}}
+
+            <li class="menu-header">Restaurant</li>
 
             <li class="dropdown {{ request()->routeIs('admin.restaurants.*') ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-store"></i>
                     <span>Restaurant Info</span></a>
                 <ul class="dropdown-menu">
-                    <li class="{{ request()->routeIs('admin.restaurants.index') ? 'active' : '' }}"><a class="nav-link"
-                            href="{{ route('admin.restaurants.index') }}">Restaurant Info</a></li>
+                    <li class="{{ request()->routeIs('admin.restaurants.index') ? 'active' : '' }}"><a
+                            class="nav-link" href="{{ route('admin.restaurants.index') }}">Restaurant Info</a></li>
                 </ul>
             </li>
             <li class="dropdown {{ request()->routeIs('admin.galleries.*') ? 'active' : '' }}">
@@ -110,20 +139,6 @@
                             href="{{ route('admin.sliders.index') }}">Sliders</a></li>
                 </ul>
             </li>
-
-            <li class="menu-header">Commandes</li>
-
-            <li class="dropdown {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                        class="fas fa-file-invoice"></i>
-                    <span>Commandes</span></a>
-                <ul class="dropdown-menu">
-                    <li class="{{ request()->routeIs('admin.orders.index') ? 'active' : '' }}"><a class="nav-link"
-                            href="{{ route('admin.orders.index') }}">Commandes</a></li>
-                </ul>
-            </li>
-
-
 
         </ul>
     </aside>

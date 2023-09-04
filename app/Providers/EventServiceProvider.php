@@ -7,23 +7,29 @@ use App\Events\EditProfileSubmitEvent;
 use App\Events\ForgotPasswordSubmitEvent;
 use App\Events\LoginSubmitDeniedEvent;
 use App\Events\OrderCanceledEvent;
+use App\Events\OrderCompletedEvent;
 use App\Events\OrderConfirmedEvent;
 use App\Events\OrderPendingEvent;
 use App\Events\RegisterConfirmationEvent;
 use App\Events\RegisterVerifyEvent;
 use App\Events\ResentLinkSubmitEvent;
 use App\Events\ResetPasswordConfirmationEvent;
+use App\Events\ReviewModeratedEvent;
+use App\Events\ReviewPublishedEvent;
 use App\Listeners\EditPasswordSubmitListener;
 use App\Listeners\EditProfileSubmitListener;
 use App\Listeners\ForgotPasswordSubmitListener;
 use App\Listeners\LoginSubmitDeniedListener;
 use App\Listeners\OrderCanceledListener;
+use App\Listeners\OrderCompletedListener;
 use App\Listeners\OrderConfirmedListener;
 use App\Listeners\OrderPendingListener;
 use App\Listeners\RegisterConfirmationListener;
 use App\Listeners\RegisterVerifyListener;
 use App\Listeners\ResentLinkSubmitListener;
 use App\Listeners\ResetPasswordConfirmationListener;
+use App\Listeners\ReviewModeratedListenerEvent;
+use App\Listeners\ReviewPublishedListenerEvent;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
@@ -81,9 +87,21 @@ class EventServiceProvider extends ServiceProvider
             OrderPendingListener::class,
         ],
 
-        OrderCanceledEvent::class=>[
+        OrderCanceledEvent::class => [
             OrderCanceledListener::class,
-        ]
+        ],
+
+        OrderCompletedEvent::class => [
+            OrderCompletedListener::class,
+        ],
+
+        ReviewPublishedEvent::class => [
+            ReviewPublishedListenerEvent::class,
+        ],
+
+        ReviewModeratedEvent::class => [
+            ReviewModeratedListenerEvent::class,
+        ],
     ];
 
     /**

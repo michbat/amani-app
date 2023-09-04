@@ -3,8 +3,10 @@
 namespace App\Http\Livewire;
 
 use App\Models\Menu;
-use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Models\Review;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class DetailsComponent extends Component
 {
@@ -39,10 +41,7 @@ class DetailsComponent extends Component
          */
 
         $item->first() != null ? $this->quantity = $item->first()->qty :  $this->quantity = 0;
-
     }
-
-
 
     public function storeMenu($menu_id, $menu_name, $menu_price)
     {
@@ -53,6 +52,8 @@ class DetailsComponent extends Component
     public function render()
     {
         $menu = $this->menu;
-        return view('frontend.livewire.details-component', compact('menu'));
+        $reviews = Review::where('published', 1)->where('censored', 0)->where('menu_id', $this->menu->id)->orderBy('created_at', 'DESC')->get();
+        $user = Auth::user();
+        return view('frontend.livewire.details-component', compact('menu', 'reviews', 'user'));
     }
 }

@@ -66,7 +66,7 @@
                             </div>
                             <div class="col-lg-4 col-md-6">
                                 <div class="btn_add_to_cart"><a href="#"
-                                        class="btn btn-success {{ $menu->available === 0 || $quantity >= 15 ? 'disabled' : '' }}"
+                                        class="btn btn-success {{ $menu->available === 0 || $quantity >= 15 || $menu->canBeCommended === 0 ? 'disabled' : '' }}"
                                         style="min-width: 190px"
                                         wire:click.prevent="storeMenu({{ $menu->id }},'{{ $menu->name }}',{{ $menu->price }})"
                                         wire:model="$quantity"><i class="fas fa-shopping-cart mx-2"></i>Ajouter
@@ -78,7 +78,8 @@
                             </div>
                             <div class="mt-3">
                                 @if ($quantity >= 15)
-                                    <span class="text-danger text-center">Veuillez nous contacter si vous voulez commander plus de 15 produits</span>
+                                    <span class="text-danger text-center">Veuillez nous contacter si vous voulez
+                                        commander plus de 15 produits</span>
                                 @endif
                             </div>
                         </div>
@@ -163,74 +164,43 @@
                         </div>
                         <div id="collapse-B" class="collapse" role="tabpanel" aria-labelledby="heading-B">
                             <div class="card-body">
-                                <div class="row justify-content-between">
-                                    <div class="col-lg-6">
-                                        <div class="review_content">
-                                            <div class="clearfix add_bottom_10">
-                                                <span class="rating"><i class="icon_star"></i><i
-                                                        class="icon_star"></i><i class="icon_star"></i><i
-                                                        class="icon_star"></i><i
-                                                        class="icon_star"></i><em>5.0/5.0</em></span>
-                                                <em>Published 54 minutes ago</em>
-                                            </div>
-                                            <h4>"Commpletely satisfied"</h4>
-                                            <p>Eos tollit ancillae ea, lorem consulatu qui ne, eu eros eirmod scaevola
-                                                sea. Et nec tantas accusamus salutatus, sit commodo veritus te, erat
-                                                legere fabulas has ut. Rebum laudem cum ea, ius essent fuisset ut.
-                                                Viderer petentium cu his.</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="review_content">
-                                            <div class="clearfix add_bottom_10">
-                                                <span class="rating"><i class="icon_star"></i><i
-                                                        class="icon_star"></i><i class="icon_star"></i><i
-                                                        class="icon_star empty"></i><i
-                                                        class="icon_star empty"></i><em>4.0/5.0</em></span>
-                                                <em>Published 1 day ago</em>
-                                            </div>
-                                            <h4>"Always the best"</h4>
-                                            <p>Et nec tantas accusamus salutatus, sit commodo veritus te, erat legere
-                                                fabulas has ut. Rebum laudem cum ea, ius essent fuisset ut. Viderer
-                                                petentium cu his.</p>
-                                        </div>
-                                    </div>
-                                </div>
                                 <!-- /row -->
                                 <div class="row justify-content-between">
-                                    <div class="col-lg-6">
-                                        <div class="review_content">
-                                            <div class="clearfix add_bottom_10">
-                                                <span class="rating"><i class="icon_star"></i><i
-                                                        class="icon_star"></i><i class="icon_star"></i><i
-                                                        class="icon_star"></i><i
-                                                        class="icon_star empty"></i><em>4.5/5.0</em></span>
-                                                <em>Published 3 days ago</em>
+                                    @if (count($reviews) > 0)
+                                        @foreach ($reviews as $review)
+                                            <div class="col-lg-6">
+                                                <div class="review_content">
+                                                    <div class="clearfix add_bottom_10">
+                                                        <span class="rating"><i class="icon_star"></i><i
+                                                                class="icon_star"></i><i class="icon_star"></i><i
+                                                                class="icon_star"></i><i
+                                                                class="icon_star empty"></i><em>4.5/5.0</em></span>
+                                                        <em>Publié le
+                                                            {{ $review->created_at->format('d/m/Y à H:i:s') }}</em>
+                                                    </div>
+                                                    <h4>{{ $review->title }}
+                                                        <span
+                                                            style="font-size: 12px; color: green; margin-left: 15px;">par
+                                                            {{ $review->user->firstname }}
+                                                            {{ $review->user->lastname }}</span>
+                                                    </h4>
+                                                    <p>{{ $review->comment }}</p>
+                                                </div>
                                             </div>
-                                            <h4>"Outstanding"</h4>
-                                            <p>Eos tollit ancillae ea, lorem consulatu qui ne, eu eros eirmod scaevola
-                                                sea. Et nec tantas accusamus salutatus, sit commodo veritus te, erat
-                                                legere fabulas has ut. Rebum laudem cum ea, ius essent fuisset ut.
-                                                Viderer petentium cu his.</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="review_content">
-                                            <div class="clearfix add_bottom_10">
-                                                <span class="rating"><i class="icon_star"></i><i
-                                                        class="icon_star"></i><i class="icon_star"></i><i
-                                                        class="icon_star"></i><i
-                                                        class="icon_star"></i><em>5.0/5.0</em></span>
-                                                <em>Published 4 days ago</em>
-                                            </div>
-                                            <h4>"Excellent"</h4>
-                                            <p>Sit commodo veritus te, erat legere fabulas has ut. Rebum laudem cum ea,
-                                                ius essent fuisset ut. Viderer petentium cu his.</p>
-                                        </div>
-                                    </div>
+                                        @endforeach
+                                    @endif
                                 </div>
                                 <!-- /row -->
-                                <p class="text-end"><a href="leave-review.html" class="btn_1">Leave a review</a></p>
+                                <p class="text-end">
+                                    @auth
+                                        <a href="{{ route('review', ['slug' => $menu->slug, 'user' => Auth::user()->id]) }}"
+                                            class="btn btn-success {{ auth()->user()->moderatedComments >= 5 ? 'disabled' : '' }}"><i
+                                                class="fas fa-comment mx-2"></i>Commentez</a>
+                                    @else
+                                        <a href="{{ route('login') }}" class="btn btn-success">Connectez-vous pour
+                                            commenter</a>
+                                    @endauth
+                                </p>
                             </div>
                             <!-- /card-body -->
                         </div>

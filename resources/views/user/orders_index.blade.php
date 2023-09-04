@@ -11,6 +11,7 @@
         <div class="card">
             <div class="card-header d-flex flex-column justify-content-center align-items-center">
                 <h4 class="display-6">Vos commandes</h4>
+                <p class="text-success">(Appuyey sur le bouton détails pour voir le détail de votre commande)</p>
                 <p>{{ $orders->firstItem() }} à {{ $orders->lastItem() }} sur {{ $orders->total() }} commande(s)</p>
             </div>
             <div class="card-body">
@@ -54,8 +55,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <span class="{{ $order->paymentStatus->color() }}"
-                                            style="border-radius: 50px ;">
+                                        <span class="{{ $order->paymentStatus->color() }}" style="border-radius: 50px ;">
                                             {{ $order->paymentStatus->label() }}
                                         </span>
                                     </td>

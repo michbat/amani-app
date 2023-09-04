@@ -4,16 +4,17 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use App\Enums\UserStatus;
-use App\Models\Order;
 use App\Models\Role;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use App\Models\Order;
+use App\Models\Review;
+use App\Enums\UserStatus;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
@@ -28,7 +29,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-  
+
     protected $guarded = ['id'];
 
     /**
@@ -68,6 +69,13 @@ class User extends Authenticatable
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    // Matérialisation de la relation, un utilisateur a plusieurs critiques
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
     }
 
     // Méthode hasRole($name) est utilisée par notre middleware pour vérifier si un utilisateur a droit d'accéder à une route ou pas en fonction de son rôle

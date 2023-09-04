@@ -21,17 +21,16 @@ class CheckoutSuccessComponent extends Component
 
     public function render()
     {
-        // On récupére la toute dernière commande qui vient d'être effectuée
+        // On sauvegarde le panier et la wishlist du client connecté.
 
-        if(Auth::check())
-        {
+        if (Auth::check()) {
             Cart::instance('cart')->store(Auth::user()->id);
             Cart::instance('wishlist')->store(Auth::user()->id);
-
         }
 
+        // On récupére la toute dernière commande qui vient d'être effectuée
+
         $order = Order::latest()->first();
-        $this->js("alert('Post saved!')"); 
         return view('frontend.livewire.checkout-success-component', compact('order'));
     }
 }

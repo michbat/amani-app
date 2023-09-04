@@ -1,0 +1,75 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Events\ReviewModeratedEvent;
+use App\Events\ReviewPublishedEvent;
+use App\Models\Review;
+use App\Http\Controllers\Controller;
+
+class ReviewController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $reviews =  Review::orderBy('created_at', 'DESC')->get();
+
+        return view('admin.reviews.index', compact('reviews'));
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Review $review)
+    {
+        return view('admin.reviews.show', compact('review'));
+    }
+
+    /**
+     * Autorise a publication of the review
+     */
+
+    public function publish(Review $review)
+    {
+
+        $review->published =  1;
+        $review->censored = 0;
+        $review->update();
+        $user = $review->user;
+
+        event(new ReviewPublishedEvent($user));
+
+        return redirect()->route('admin.reviews.index')->with('toast_success', 'Commentaire autorisé à la publication');
+    }
+
+    /**
+     * Censor a review
+     */
+
+    public function censor(Review $review)
+    {
+
+        $review->published = 0;
+        $review->censored = 1;
+        $review->update();
+        $user = $review->user;
+        $user->moderatedComments += 1;
+        $user->update();
+
+        event(new ReviewModeratedEvent($user));
+
+        return redirect()->route('admin.reviews.index')->with('toast_success', 'Commentaire censurée');
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Review $review)
+    {
+        $review->delete();
+        return redirect()->route('admin.reviews.index')->with('toast_success', 'Commentaire supprimé');
+    }
+}

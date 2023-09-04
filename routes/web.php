@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\IngredientController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\RestaurantController;
+use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\TagController;
@@ -23,6 +24,7 @@ use App\Http\Livewire\CheckoutSuccessComponent;
 use App\Http\Livewire\DetailsComponent;
 use App\Http\Livewire\HomeComponent;
 use App\Http\Livewire\MenuComponent;
+use App\Http\Livewire\ReviewComponent;
 use App\Http\Livewire\WishlistComponent;
 use Illuminate\Support\Facades\Route;
 
@@ -46,6 +48,7 @@ Route::get('/menu/{slug}', DetailsComponent::class)->name('details');
 Route::get('/checkout', CheckoutComponent::class)->name('checkout');
 Route::get('/checkout-success', CheckoutSuccessComponent::class)->name('checkout.success');
 Route::get('/wishlist', WishlistComponent::class)->name('wishlist');
+Route::get('/review/{slug}/{user}', ReviewComponent::class)->name('review');
 
 // Paypal routes
 
@@ -90,19 +93,28 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
     Route::resource('/galleries', GalleryController::class);
     Route::resource('/sliders', SliderController::class);
 
+
     // Routes pour gérer les commandes
 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
-    Route::put('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
-    Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+    Route::put('/orders/{order}/update', [OrderController::class, 'update'])->name('orders.update');
+    Route::delete('/orders/{order}/destroy', [OrderController::class, 'destroy'])->name('orders.destroy');
 
     // Routes pour gérer les informations sur le restaurant
 
     Route::get('/restaurants', [RestaurantController::class, 'index'])->name('restaurants.index');
-    Route::get('/restaurants/{restaurant}', [RestaurantController::class, 'show'])->name('restaurants.show');
+    Route::get('/restaurants/{restaurant}/show', [RestaurantController::class, 'show'])->name('restaurants.show');
     Route::get('/restaurants/{restaurant}/edit', [RestaurantController::class, 'edit'])->name('restaurants.edit');
-    Route::put('/restaurants/{restaurant} ', [RestaurantController::class, 'update'])->name('restaurants.update');
+    Route::put('/restaurants/{restaurant}/update ', [RestaurantController::class, 'update'])->name('restaurants.update');
+
+    // Routes pour gérer les commentaires sur nos menus
+
+    Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
+    Route::get('/reviews/{review}/show',[ReviewController::class,'show'])->name('reviews.show');
+    Route::delete('/reviews/{review}/destroy',[ReviewController::class,'destroy'])->name('reviews.destroy');
+    Route::get('/reviews/{review}/publish',[ReviewController::class,'publish'])->name('reviews.publish');
+    Route::get('/reviews/{review}/censor',[ReviewController::class,'censor'])->name('reviews.censor');
 
     // Routes pour assigner des tags et enlèver un tag à un menu
 

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('token');
             $table->boolean('canReserveTable')->default(true);
+            $table->integer('moderatedComments')->default(0);
             $table->enum('status', ['active', 'pending']);
         });
     }
