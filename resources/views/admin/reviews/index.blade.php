@@ -2,12 +2,12 @@
 @section('title', 'Reviews Index')
 
 @section('content')
-    <div class="card mt-3">
+    <div class="card mt-5 w-100">
         <div class="card-header">
             <h4>Liste des commentaires</h4>
         </div>
-        <div class="card-body">
-            <table class="table table-striped ">
+        <div class="card-body d-flex justify-content-center">
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>N°</th>
@@ -50,9 +50,8 @@
                                 </td>
                                 <td>
                                     <span style="font-weight: 900">
-                                        {{ str()->limit($review->comment, 20) }}
+                                        {{ str()->limit($review->comment, 10) }}
                                     </span>
-                                </td>
                                 <td>
                                     <span style="font-weight: 900">
                                         {{ $review->created_at->format('d/m/Y H:i:s') }}
@@ -100,8 +99,10 @@
                     @endif
                 </tbody>
             </table>
+
         </div>
     </div>
+
 @endsection
 
 @section('scripts')

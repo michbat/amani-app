@@ -4,10 +4,18 @@
         <p>Cuisine délicieuse au prix démocratique</p>
     </div>
 @endsection
+
 <div>
     <main>
-        <div class="container margin_60_40">
+        <div class="container margin_60_40" style="position: relative">
+            @if ($message = Session::get('success_message'))
+                <div class="alert alert-success alert-dismissible fade show my-4" role="alert">
+                    <strong>{{ $message }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             <div class="row">
+                <p class="text-center text-danger">Nous n'acceptons des commandes qu'entre 10 heures et 22 heures!</p>
                 <div class="col-lg-6 magnific-gallery">
                     <p class="shop_setails_img">
                         <a href="{{ asset($menu->image) }}" title="{{ $menu->name }}" data-effect="mfp-zoom-in"><img
@@ -15,6 +23,12 @@
                     </p>
                 </div>
                 <div class="col-lg-6" id="sidebar_fixed">
+                    {{-- On récupère les id des menus qui ont été ajouté à la wishlist --}}
+                    @php
+                        $wishmenus = Cart::instance('wishlist')
+                            ->content()
+                            ->pluck('id');
+                    @endphp
                     <div class="prod_info">
                         <h2>{{ $menu->name }} <span class="text-danger"
                                 style="font-size: 20px">{{ $menu->available === 0 ? 'indisponible' : '' }}</span>
@@ -36,36 +50,13 @@
                             <i class="icon_star"></i>
                         </span>
                         <p>{!! $menu->description !!}</p>
-                        {{-- <div class="prod_options">
-                            <div class="row"> --}}
-                        {{-- <label class="col-xl-5 col-lg-5  col-md-6 col-6"><strong>Quantité</strong></label>
-                                <div class="col-xl-4 col-lg-5 col-md-6 col-6">
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <a href="#"
-                                            class="btn btn-success btn-sm mx-2 {{ $quantity == 1 || $menu->available == 0 ? 'disabled' : '' }}"
-                                            wire:click.prevent="decreaseQuantity()">-</a>
-                                        <span class="border border-1 p-1 text-center"
-                                            style="min-width: 100px;">{{ $quantity }}</span>
-                                        <a href="#"
-                                            class="btn btn-success btn-sm mx-2 {{ $quantity == 15 || $menu->available == 0 ? 'disabled' : '' }}"
-                                            wire:click.prevent="increaseQuantity()">+</a>
-                                    </div> --}}
-                        {{-- </div>
-                                <div>
-                                    @if ($quantity == 15)
-                                        <span class="text-danger" style="font-size: 15px">Veuillez nous
-                                            contacter si vous voulez
-                                            commander plus de 15 repas de ce menu!!</span>
-                                    @endif
-                                </div> --}}
-                        {{-- </div>
-                        </div> --}}
                         <div class="row">
                             <div class="col-lg-5 col-md-6">
                                 <div class="price_main"><span class="new_price">{{ $menu->price }} &euro;</span></div>
                             </div>
-                            <div class="col-lg-4 col-md-6">
-                                <div class="btn_add_to_cart"><a href="#"
+                            <div class="col-lg-4 col-md-6 d-flex justify-content-center">
+                                <div class="btn_add_to_cart">
+                                    <a href="#"
                                         class="btn btn-success {{ $menu->available === 0 || $quantity >= 15 || $menu->canBeCommended === 0 ? 'disabled' : '' }}"
                                         style="min-width: 190px"
                                         wire:click.prevent="storeMenu({{ $menu->id }},'{{ $menu->name }}',{{ $menu->price }})"
@@ -74,6 +65,27 @@
                                         <span class="badge badge-light">{{ $quantity }}</span>
 
                                     </a>
+                                </div>
+                                <div class="btn_add_to_cart">
+                                    {{-- Si l'id du menu est dans la wishmenus, cela veut dire qu'il y a été ajouté. On colore le bouton en rouge avec la classe bootstrap danger --}}
+                                    @if ($wishmenus->contains($menu->id))
+                                        <button title="Enlèver ce menu à la liste de souhaits"
+                                            class="btn btn-danger mx-2" style="min-width: 200px;"
+                                            wire:click.prevent="removeMenuToWishList({{ $menu->id }})">
+                                            <span>
+                                                <i class="far fa-heart mx-2"></i>Wishlist
+                                            </span>
+                                        </button>
+                                    @else
+                                        {{-- sinon on affiche un bouton outline (vide) --}}
+                                        <button title="Ajouter ce menu à la liste de souhaits"
+                                            class="btn btn-outline-danger mx-2" style="min-width: 200px;"
+                                            wire:click.prevent="addMenuToWishList({{ $menu->id }},'{{ $menu->name }}',{{ $menu->price }})">
+                                            <span>
+                                                <i class="far fa-heart mx-2"></i>Wishlist
+                                            </span>
+                                        </button>
+                                    @endif
                                 </div>
                             </div>
                             <div class="mt-3">
@@ -156,8 +168,8 @@
                     <div id="pane-B" class="card tab-pane fade" role="tabpanel" aria-labelledby="tab-B">
                         <div class="card-header" role="tab" id="heading-B">
                             <h5 class="mb-0">
-                                <a class="collapsed" data-bs-toggle="collapse" href="#collapse-B" aria-expanded="false"
-                                    aria-controls="collapse-B">
+                                <a class="collapsed" data-bs-toggle="collapse" href="#collapse-B"
+                                    aria-expanded="false" aria-controls="collapse-B">
                                     Reviews
                                 </a>
                             </h5>
@@ -194,7 +206,7 @@
                                 <p class="text-end">
                                     @auth
                                         <a href="{{ route('review', ['slug' => $menu->slug, 'user' => Auth::user()->id]) }}"
-                                            class="btn btn-success {{ auth()->user()->moderatedComments >= 5 ? 'disabled' : '' }}"><i
+                                            class="btn btn-success {{ auth()->user()->censoredComments >= 5 ? 'disabled' : '' }}"><i
                                                 class="fas fa-comment mx-2"></i>Commentez</a>
                                     @else
                                         <a href="{{ route('login') }}" class="btn btn-success">Connectez-vous pour

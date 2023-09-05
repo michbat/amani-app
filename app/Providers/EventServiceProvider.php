@@ -14,6 +14,7 @@ use App\Events\RegisterConfirmationEvent;
 use App\Events\RegisterVerifyEvent;
 use App\Events\ResentLinkSubmitEvent;
 use App\Events\ResetPasswordConfirmationEvent;
+use App\Events\ReviewCensoredEvent;
 use App\Events\ReviewModeratedEvent;
 use App\Events\ReviewPublishedEvent;
 use App\Listeners\EditPasswordSubmitListener;
@@ -28,6 +29,7 @@ use App\Listeners\RegisterConfirmationListener;
 use App\Listeners\RegisterVerifyListener;
 use App\Listeners\ResentLinkSubmitListener;
 use App\Listeners\ResetPasswordConfirmationListener;
+use App\Listeners\ReviewCensoredListenerEvent;
 use App\Listeners\ReviewModeratedListenerEvent;
 use App\Listeners\ReviewPublishedListenerEvent;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -99,8 +101,8 @@ class EventServiceProvider extends ServiceProvider
             ReviewPublishedListenerEvent::class,
         ],
 
-        ReviewModeratedEvent::class => [
-            ReviewModeratedListenerEvent::class,
+        ReviewCensoredEvent::class => [
+            ReviewCensoredListenerEvent::class,
         ],
     ];
 

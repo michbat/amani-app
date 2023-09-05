@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Events\ReviewModeratedEvent;
-use App\Events\ReviewPublishedEvent;
 use App\Models\Review;
+use App\Events\ReviewCensoredEvent;
+use App\Events\ReviewPublishedEvent;
 use App\Http\Controllers\Controller;
 
 class ReviewController extends Controller
@@ -55,10 +55,10 @@ class ReviewController extends Controller
         $review->censored = 1;
         $review->update();
         $user = $review->user;
-        $user->moderatedComments += 1;
+        $user->censoredComments += 1;
         $user->update();
 
-        event(new ReviewModeratedEvent($user));
+        event(new ReviewCensoredEvent($user));
 
         return redirect()->route('admin.reviews.index')->with('toast_success', 'Commentaire censurée');
     }

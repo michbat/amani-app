@@ -44,10 +44,10 @@ class LoginController extends Controller
          *  l'utilisateur ne peut pas se connecter. Il doit impérativement activer son compte grâce au lien qui lui a été envoyé lors de son inscription.
          */
 
-        $accountStatus = $user->status;
+        $accountStatus = $user->status->value;
 
 
-        if ($credentialsIsOk && $accountStatus ==  UserStatus::ACTIVE) {
+        if ($credentialsIsOk && $accountStatus ==  UserStatus::ACTIVE->value) {
 
             /**
              * Lorsque les credentials sont bons et que le compte est activé, on redirige l'utilisateur vers son compte
@@ -55,6 +55,7 @@ class LoginController extends Controller
              * en argument un tableau $credentials contenant des variables 'email','password','status'
              *
              */
+
             $credentials = [
                 'email' => $request->email,
                 'password' => $request->password,
@@ -76,12 +77,13 @@ class LoginController extends Controller
                 $user->update(); // On met à jour les informations de l'utilisateur.
             }
 
-            if (Auth::attempt($credentials)) {
-
+            if (Auth::attempt($credentials))
+            {
                 return redirect()->route('home')->with('success', 'Bonjour ' . $user->firstname . ', Vous êtes connecté!');
-            } else {
+            }
+            else
+            {
                 return redirect()->back()->with('error', 'Une erreur s\'est produite. Veuillez retenter une connexion.');
-
             }
 
         }

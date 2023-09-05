@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Carbon\Carbon;
 use App\Models\Menu;
 use Livewire\Component;
 use App\Models\Category;
@@ -21,7 +22,7 @@ class MenuComponent extends Component
 
     // Propriété pour afficher le nombre de menus par page
 
-    public $pageItems = 4;
+    public $pageItems = 12;
 
     // Propriétés pour ordonner les menus par prix croissant ou décroissant, nouveauté, défaut
     public $orderBy = "default";
@@ -58,7 +59,7 @@ class MenuComponent extends Component
         $this->emitTo('cart-icon-component', 'refreshComponent');
         $this->removeMenuToWishList($menu_id);
         session()->flash('success_message', 'Menu ajouté dans votre panier');
-        return redirect()->back();
+        return redirect()->route('cart');
     }
 
     // Méthode pour ajouter un menu dans une wishlist
@@ -68,7 +69,8 @@ class MenuComponent extends Component
         Cart::instance('wishlist')->add($menu_id, $menu_name, 1, $menu_price)->associate('App\Models\Menu');
         $this->emitTo('wishlist-icon-component', 'refreshComponent');
         session()->flash('success_message', 'Menu ajouté à votre liste de souhaits');
-        return redirect()->back();
+        return back();
+
     }
 
     // Méthode pour enlèver un menu de la wishlist
@@ -80,10 +82,11 @@ class MenuComponent extends Component
                 Cart::instance('wishlist')->remove($content->rowId);
                 $this->emitTo('wishlist-icon-component', 'refreshComponent');
                 session()->flash('success_message', 'Menu enlevé de votre liste de souhaits');
-                return redirect()->back();
+                return back();
             }
         }
     }
+
 
     public function render()
     {

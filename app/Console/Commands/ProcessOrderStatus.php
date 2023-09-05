@@ -30,10 +30,10 @@ class ProcessOrderStatus extends Command
     public function handle()
     {
         $ordersToPending = Order::where('orderStatus', OrderStatus::CONFIRMED->value)
-            ->where('created_at', '<=', now()->subMinutes(2))
+            ->where('created_at', '<=', now()->subMinutes(5))
             ->get();
         $ordersToComplete = Order::where('orderStatus', OrderStatus::PENDING->value)
-            ->where('created_at', '<=', now()->subMinutes(5))
+            ->where('created_at', '<=', now()->subMinutes(30))
             ->get();
 
         if ($ordersToPending->count() > 0) {

@@ -2,9 +2,10 @@
 
 namespace App\Http\Livewire;
 
-use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class CartComponent extends Component
 {
@@ -43,6 +44,15 @@ class CartComponent extends Component
         return redirect()->route('menu')->with('success', 'Votre panier a été complètement vidé');
     }
 
+    // Méthode appelé lorque les commandes sont fermées.
+
+    public function closedOrders()
+    {
+        Cart::instance('cart')->destroy();
+        $this->emitTo('cart-icon-component', 'refreshComponent');
+        return redirect()->route('menu')->with('info', 'Désolé, vous ne pouvez commander qu\'entre 10h et 22h. Merci de votre compréhension.');
+    }
+
     public function checkout()
     {
         // Si la personne qui simule le panier est connecté, on le dirige vers la page Checkout si authentifiée sinon vers la page login
@@ -59,6 +69,16 @@ class CartComponent extends Component
         if (Auth::check()) {
             Cart::instance('cart')->store(Auth::user()->id);
             Cart::instance('wishlist')->store(Auth::user()->id);
+        }
+
+        $currentTime = Carbon::now('Europe/Brussels')->format('H:i');
+        $openKitchenTime = '00:00';
+        $closeKitchenTime = '22:00';
+
+        if ($currentTime >= $openKitchenTime && $currentTime <= $closeKitchenTime) {
+            return view('frontend.livewire.cart-component');
+        } else {
+            $this->closedOrders();
         }
 
         return view('frontend.livewire.cart-component');

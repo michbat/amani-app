@@ -53,12 +53,12 @@
     <div id="preloader">
         <div data-loader="circle-side"></div>
     </div>
-
-    @include('frontend.partials.header')
-
     <!-- Sweetalert included  -->
 
     @include('sweetalert::alert')
+
+
+    @include('frontend.partials.header')
 
 
     <main>
@@ -129,8 +129,8 @@
 
     <!-- Livewire JS  -->
 
-    @livewireScripts
     @stack('scripts')
+    @livewireScripts
 </body>
 
 </html>

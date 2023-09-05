@@ -29,7 +29,7 @@ class MenuOrderPermission extends Command
     {
         $menus = Menu::all();
         $currentTime = Carbon::now('Europe/Brussels')->format('H:i');
-        $openKitchenTime = '10:00';
+        $openKitchenTime = '00:00';
         $closeKitchenTime = '22:00';
 
 

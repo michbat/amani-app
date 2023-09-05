@@ -37,6 +37,9 @@
                         @endif
                         @if (Cart::instance('cart')->count() > 0)
                             @foreach (Cart::instance('cart')->content() as $element)
+                                @php
+                                    $cbc = $element->model->canBeCommended;
+                                @endphp
                                 <tr>
                                     <td>
                                         <div class="thumb_cart">
@@ -97,7 +100,10 @@
                                 class="fas fa-caret-left mx-2 fa-1x"></i>Retour au menu</a>
                     </div>
                     <div class="col-sm-12 text-start mt-4">
-                        <p style="color: red">Des produits commandés sont prêts au plus tard dans 30 minutes à partir de la confirmation de la commande. Vous avez 2 heures pour retirer votre commande dès qu'elle est prête. Vous pouvez suivre l'état de votre commande sur votre compte et un e-mail vous sera envoyé dès qu'elle prête.</p>
+                        <p style="color: red">Des produits commandés sont prêts au plus tard dans 30 minutes à partir de
+                            la confirmation de la commande. Vous avez 2 heures pour retirer votre commande dès qu'elle
+                            est prête. Vous pouvez suivre l'état de votre commande sur votre compte et un e-mail vous
+                            sera envoyé dès qu'elle prête.</p>
                     </div>
                 </div>
                 <!-- /cart_actions -->
@@ -124,7 +130,8 @@
                             la page login pour s'authentifier. Si le panier est vide, le bouton est désactivé --}}
 
                         <a href="#" wire:click.prevent="checkout"
-                            class="btn btn-success btn-lg cart {{ Cart::instance('cart')->count() == 0 ? 'disabled' : '' }}">Procéder au
+                            class="btn btn-success btn-lg cart {{ Cart::instance('cart')->count() === 0 || $cbc === 0 ? 'disabled' : '' }}">Procéder
+                            au
                             paiement</a>
                     </div>
                 </div>

@@ -4,6 +4,29 @@
         <p>Cuisine délicieuse et démocratique</p>
     </div>
 @endsection
+@push('styles')
+    <style>
+        .container.margin_60_40 {
+            position: relative;
+            /* Assurez-vous que le container a une position relative */
+        }
+
+        .fixed-alert {
+            position: absolute;
+            /* Position absolue à l'intérieur du container */
+            top: 0;
+            /* Position en haut du container */
+            left: 0;
+            /* Position à gauche du container */
+            right: 0;
+            /* Position à droite du container */
+            z-index: 9999;
+            /* Pour être au-dessus du contenu du container */
+            width: 100%;
+            /* Ajustez la largeur selon les besoins */
+        }
+    </style>
+@endpush
 <div>
     <main>
         <div class="filters_full clearfix">
@@ -131,13 +154,14 @@
         </div>
         <!-- /filters -->
         <div class="pattern_2">
-            <div class="container margin_60_40">
+            <div class="container margin_60_40 flash-container">
                 @if ($message = Session::get('success_message'))
-                    <div class="alert alert-success alert-dismissible fade show my-4" role="alert">
+                    <div class="fixed-alert alert alert-success alert-dismissible fade show my-4" role="alert">
                         <strong>{{ $message }}</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
+
                 <div class="main_title center">
                     <span style="background-color: green!important"><em
                             style="background-color: green!important"></em></span>
@@ -233,12 +257,3 @@
     </main>
 </div>
 
-@push('scripts')
-    <script>
-        document.addEventListener('livewire:load', function() {
-            Livewire.on('refreshPage', function() {
-                location.reload();
-            });
-        });
-    </script>
-@endpush
