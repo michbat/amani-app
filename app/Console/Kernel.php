@@ -3,11 +3,6 @@
 namespace App\Console;
 
 use DateTimeZone;
-use Carbon\Carbon;
-use App\Models\Menu;
-use App\Models\Order;
-use App\Enums\OrderStatus;
-use App\Events\OrderPendingEvent;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -22,6 +17,8 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('orders:process')->everyFiveSeconds()->runInBackground();
         $schedule->command('menus:order')->everyFiveSeconds()->runInBackground();
+        $schedule->command('ingredients:monitoring')->everySecond()->runInBackground();
+
     }
 
 

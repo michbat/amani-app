@@ -14,6 +14,7 @@ class ReviewComponent extends Component
     public $user_id;
     public $menu;
     public $title, $comment, $rating;
+    public $alreadyCommented;
 
     // Règles de validation
 
@@ -29,6 +30,15 @@ class ReviewComponent extends Component
         $this->slug = $slug;
         $this->user_id = $user;
         $this->menu = Menu::where('slug', $this->slug)->first();
+
+        // Je vérifie que si le client a déjà commenté ce menu auquel cas, il n'a plus droit de le commenter.
+
+        $this->alreadyCommented =  Review::where('user_id', $this->user_id)->where('menu_id', $this->menu->id)->first();
+
+        // Si c'est le cas (si l'objet éloquent renvoyé lors de la requête n'est pas nul, on crée un message flash à destination du client)
+        if ($this->alreadyCommented != null) {
+            session()->flash('warning_message', 'Vous avez déjà commenté ce menu. Vous ne pouvez pas commenter un produit plus d\'une fois.');
+        }
     }
 
     public function updated($fields)
@@ -62,17 +72,21 @@ class ReviewComponent extends Component
         ]);
 
 
-        $review = new Review();
+        // Si ce n'est que lorsque le client n'a pas commenté une seule un menu que l'on va sauvegarder son message.
 
-        $review->rating = $this->rating;
-        $review->title = $this->title;
-        $review->comment = $this->comment;
-        $review->user_id = $this->user_id;
-        $review->menu_id = $this->menu->id;
+        if ($this->alreadyCommented == null) {
+            $review = new Review();
 
-        $review->save();
+            $review->rating = $this->rating;
+            $review->title = $this->title;
+            $review->comment = $this->comment;
+            $review->user_id = $this->user_id;
+            $review->menu_id = $this->menu->id;
+            $review->save();
 
-        return redirect()->route('details', $this->menu->slug)->with('success', 'Nous avons bien reçu votre commentaire. Il sera publié après l\'évaluation de nos modérateurs');
+            session()->flash('success_message','Votre avis a été ajouté avec succès! Il est en cours d\'examen par notre équipe de modérateurs avant publication.');
+            return redirect()->route('details',$this->slug);  // On revient à la vue 'details'
+        }
     }
     public function render()
     {

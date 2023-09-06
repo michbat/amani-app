@@ -69,7 +69,7 @@
                                 <td style="font-weight: bolder">{{ $menu->price }}</td>
                                 <td>
                                     <span
-                                        class="btn btn-sm text-dark {{ $menu->available == 1 ? 'btn-info' : 'btn-warning' }}"
+                                        class="btn btn-sm text-dark {{ $menu->available == 1 ? 'btn-info' : 'btn-danger' }}"
                                         style="border-radius: 50px; min-width: 100px;">
                                         {{ $menu->available == 1 ? 'Disponible' : 'Non disponible' }}
                                     </span>

@@ -43,11 +43,37 @@
 
                 <div class="form-group row mb-4">
                     <div class="col-sm-12">
-                        <label for="quantity" class="form-label">Quantité en stock</label>
-                        <input type="number" class="form-control" name="quantity" id="quantity"
-                            placeholder="Quantité en stock" value="{{ $ingredient->quantity }}">
+                        <label for="quantityInSock" class="form-label">Quantité en stock</label>
+                        <input type="number" class="form-control" name="quantityInStock" id="quantityInSock"
+                            placeholder="Quantité en stock" value="{{ $ingredient->quantityInStock }}">
 
                         @error('quantity')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="form-group row mb-4">
+                    <div class="col-sm-12">
+                        <label for="quantityMinimum" class="form-label">Quantité minimum exigée</label>
+                        <input type="number" class="form-control" name="quantityMinimum" id="quantityMinimum"
+                            placeholder="Quantité minimum en stock" value="{{ $ingredient->quantityMinimum }}">
+
+                        @error('quantityMinimum')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="form-group row mb-4">
+                    <div class="col-sm-12">
+                        <label for="stockStatus" class="form-label">Disponibilité</label>
+                        <select class="form-control selectric" name="stockStatus" id="stockStatus">
+                            @foreach ($stockStatus as $status)
+                                <option value="{{ $status->value }}" @selected($ingredient->stockStatus->value === $status->value)>
+                                    {{ $status->label() }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('stockStatus')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>

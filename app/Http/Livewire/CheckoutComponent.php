@@ -35,7 +35,7 @@ class CheckoutComponent extends Component
     ];
 
 
-   public function mount()
+    public function mount()
     {
         $this->user = Auth::user(); // On récupère l'utilisateur authentifié.
 
@@ -102,7 +102,16 @@ class CheckoutComponent extends Component
                 if ($charge['status'] == 'succeeded') {
                     $order->save();
                     $this->fillMenuOrder($order->id);
+
+                    // Mise à jour du stock des produits après le checkout
+
+                    $this->decreaseQuantityInStock($order);
+
+                    // Destruction du panier
+
                     Cart::instance('cart')->destroy();
+
+                    // On envoit un e-mail au client pour confirmer sa commande
 
                     event(new OrderConfirmedEvent($this->user));
 
@@ -126,6 +135,10 @@ class CheckoutComponent extends Component
             $order->save();
 
             $this->fillMenuOrder($order->id);
+
+            // Mise à jour du stock des produits après le checkout
+
+            $this->decreaseQuantityInStock($order);
 
             // Destruction du panier
 
@@ -201,6 +214,10 @@ class CheckoutComponent extends Component
 
             $this->fillMenuOrder($order->id);
 
+            // Mise à jour du stock des produits après le checkout
+
+            $this->decreaseQuantityInStock($order);
+
             // Destruction du panier
 
             Cart::instance('cart')->destroy();
@@ -235,6 +252,8 @@ class CheckoutComponent extends Component
         }
     }
 
+
+
     private function makeCardOrder(): Order
     {
         $order = new Order();
@@ -268,6 +287,23 @@ class CheckoutComponent extends Component
         return $order;
     }
 
+    private function decreaseQuantityInStock(Order $order)
+    {
+        foreach ($order->menuOrders as $menuOrder) {
+
+            /**
+             *  On récupère pour chaque objet $moe la propriété 'quantity' autrement dit on récupère la quantité de chaque menu
+             *  composant les lignes de commandes (table menu_order) de la commande passée
+             */
+
+            $quantity = $menuOrder->quantity;
+
+            foreach ($menuOrder->menu->ingredients as $moei) {
+                $moei->quantityInStock = $moei->quantityInStock - $moei->pivot->amount * $quantity;
+                $moei->update();
+            }
+        }
+    }
 
     public function render()
     {

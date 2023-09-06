@@ -167,6 +167,8 @@
 @section('scripts')
     <script src="{{ asset('assets/js/page/features-post-create.js') }}"></script>
     <script>
+        // Lorsque les éléments du DOM sont chargés
+
         document.addEventListener('DOMContentLoaded', function() {
 
             // On récupère tous les checkbox dans le DOM ayant la classe .ingredient-enable
@@ -196,7 +198,7 @@
                         // On active ou désactive le input element en fonction de la valeur booléenne de la variable enable
                         ingredientAmountElement.disabled = !enabled;
                         ingredientAmountElement.value =
-                            null; // On met la variable à nul  pour pouvoir acceuillir un autre élément à la prochaine itération.
+                            null; // On met la variable à nulle  pour pouvoir acceuillir un autre élément à la prochaine itération.
                     }
                 });
             });

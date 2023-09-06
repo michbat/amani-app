@@ -2,25 +2,26 @@
 
 namespace App\Models;
 
-use App\Enums\StockStatus;
-use App\Models\Recipe;
+use App\Models\Menu;
 use App\Models\Unit;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\StockStatus;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Ingredient extends Model
 {
     use HasFactory;
 
-     // On empêche la migration automatique des champs timestamps
+    // On empêche la migration automatique des champs timestamps
     public $timestamps = false;
 
     // Tous les champs de la table 'ingredients' peuvent faire l'objet de mass assignment sauf le champ id qui s'autoincremente.
     protected $guarderd = ['id'];
 
-     // La prise en compte du champ 'mediatype' de type enum 'StockStatus' dans le modèle 'Ingredient'
+    // La prise en compte du champ 'mediatype' de type enum 'StockStatus' dans le modèle 'Ingredient'
     protected $casts = [
         'stockStatus' => StockStatus::class,
     ];
@@ -41,9 +42,13 @@ class Ingredient extends Model
 
     // Matérialisation de la relation un ingredient peut entrer dans la composition de plusieurs recettes
 
-    public function recipes(): HasMany
-    {
-        return $this->hasMany(Recipe::class);
-    }
+    // public function menus(): HasMany
+    // {
+    //     return $this->hasMany(Menu::class);
+    // }
 
+    public function menus(): BelongsToMany
+    {
+        return $this->belongsToMany(Menu::class);
+    }
 }

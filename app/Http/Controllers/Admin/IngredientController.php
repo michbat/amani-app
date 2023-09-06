@@ -43,7 +43,7 @@ class IngredientController extends Controller
             [
                 'name' => 'required|unique:ingredients,name',
                 'quantityInStock' => 'required|numeric',
-                'quantityMinimum' => 'required|numeric',
+                'quantityMinimum' => ['required', 'numeric', 'stock_check'],
                 'stockStatus' => ['required', new Enum(StockStatus::class)],
             ],
             [
@@ -53,7 +53,9 @@ class IngredientController extends Controller
                 'quantityInStock.numeric' => 'La quantité doit être sous format numérique',
                 'quantityMinimum.required' => 'Vous devez indiquer le seuil minimum exigé',
                 'quantityMinimum.numeric' => 'La quantité doit être sous format numérique',
+                'quantityMinimum.stock_check' => 'Le seuil de quantité minimale dans le stock doit être 3x inférieure au stock principal ',
                 'stockStatus.required' => 'Vous devez indiquer le status de disponibilité de cet ingredient',
+
 
             ]
         );
@@ -72,7 +74,6 @@ class IngredientController extends Controller
 
 
         return redirect()->route('admin.ingredients.index')->with('toast_success', 'L\'ingrédient a été crée avec succès');
-
     }
 
     /**
@@ -90,7 +91,8 @@ class IngredientController extends Controller
     {
         $types = Type::orderBy('name')->get();
         $units = Unit::orderBy('name')->get();
-        return view('admin.ingredients.edit', compact('ingredient', 'types', 'units'));
+        $stockStatus = StockStatus::cases();
+        return view('admin.ingredients.edit', compact('ingredient', 'types', 'units', 'stockStatus'));
     }
 
     /**
@@ -101,20 +103,37 @@ class IngredientController extends Controller
         $request->validate(
             [
                 'name' => 'required|unique:ingredients,name,' . $ingredient->id,
-                'quantity' => 'required|numeric',
+                'quantityInStock' => 'required|numeric',
+                'quantityMinimum' => 'required|numeric',
+                'stockStatus' => ['required', new Enum(StockStatus::class)],
             ],
             [
                 'name.required' => 'Vous devez indiquer le nom de l\'ingrédient',
                 'name.unique' => 'Ce nom est déjà dans la base de données',
-                'quantity.required' => 'Vous devez indiquer la quantité que vous voulez introduire en stock',
-                'quantity.numeric' => 'La quantité doit être sous format numérique',
+                'quantityInStock.required' => 'Vous devez indiquer la quantité que vous voulez introduire en stock',
+                'quantityInStock.numeric' => 'La quantité doit être sous format numérique',
+                'quantityMinimum.required' => 'Vous devez indiquer le seuil minimum exigé',
+                'quantityMinimum.numeric' => 'La quantité doit être sous format numérique',
+                'stockStatus.required' => 'Vous devez indiquer le status de disponibilité de cet ingredient',
+
             ]
         );
 
         $ingredient->name = $request->name;
-        $ingredient->quantity = $request->quantity;
+        $ingredient->quantityInStock = $request->quantityInStock;
+        $ingredient->quantityMinimum = $request->quantityMinimum;
+        $ingredient->stockStatus = $request->stockStatus;
         $ingredient->type_id = $request->type_id;
         $ingredient->unit_id = $request->unit_id;
+
+        if ($request->quantityInStock > $request->quantityMinimum) {
+            $ingredient->stockStatus = StockStatus::AVAILABLE->value;
+            foreach ($ingredient->menus as $menu) {
+                $menu->available =  1;
+                $menu->update();
+            }
+        }
+
 
         $ingredient->update();
 

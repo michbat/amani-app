@@ -8,12 +8,19 @@
 <div>
     <main class="pattern_2">
         <div class="container margin_60_40">
+            @if ($message = Session::get('warning_message'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>{{ $message }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="write_review">
                         <h1>Écrivez un commentaire</h1>
                         <p style="color: red; font-size: 12px;">(Tout commentaire
-                            hors-sujet ou contenant des propos inconvenants ne sera pas publié! Avec 5 messages censurés, vous ne pouvez plus commenter!)</p>
+                            hors-sujet ou contenant des propos inconvenants ne sera pas publié! Avec 5 messages
+                            censurés, vous ne pouvez plus commenter!)</p>
                         <h6><a href="{{ route('details', $menu->slug) }}" title="Revenir en arrière">Produit concerné:
                                 {{ $menu->name }}</a></h6>
                         <p>
@@ -65,13 +72,14 @@
                             </div>
 
                             <div>
-                                <button type="submit" class="btn btn-success">Envoyez</button>
+                                <button type="submit"
+                                    class="btn btn-success {{ $alreadyCommented != null ? 'disabled' : '' }}">Envoyez</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-            <!-- /row -->
+            <!-- /row --
         </div>
         <!-- /container -->
     </main>

@@ -73,7 +73,7 @@ class CartComponent extends Component
 
         $currentTime = Carbon::now('Europe/Brussels')->format('H:i');
         $openKitchenTime = '00:00';
-        $closeKitchenTime = '22:00';
+        $closeKitchenTime = '10:00';
 
         if ($currentTime >= $openKitchenTime && $currentTime <= $closeKitchenTime) {
             return view('frontend.livewire.cart-component');
