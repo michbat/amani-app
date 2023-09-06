@@ -4,9 +4,10 @@ namespace App\Console\Commands;
 
 use App\Models\Order;
 use App\Enums\OrderStatus;
-use App\Events\OrderCompletedEvent;
 use Illuminate\Console\Command;
 use App\Events\OrderPendingEvent;
+use App\Events\OrderCompletedEvent;
+use App\Events\OrderPickupFailEvent;
 
 class ProcessOrderStatus extends Command
 {
@@ -30,10 +31,13 @@ class ProcessOrderStatus extends Command
     public function handle()
     {
         $ordersToPending = Order::where('orderStatus', OrderStatus::CONFIRMED->value)
-            ->where('created_at', '<=', now()->subMinutes(5))
+            ->where('created_at', '<=', now()->subMinutes(2))
             ->get();
         $ordersToComplete = Order::where('orderStatus', OrderStatus::PENDING->value)
-            ->where('created_at', '<=', now()->subMinutes(30))
+            ->where('created_at', '<=', now()->subMinutes(5))
+            ->get();
+        $ordersToPickupFail = Order::where('orderStatus', OrderStatus::COMPLETED->value)
+            ->where('created_at', '<', now()->subMinutes(8))
             ->get();
 
         if ($ordersToPending->count() > 0) {
@@ -52,5 +56,14 @@ class ProcessOrderStatus extends Command
                 $order->update();
             }
         }
+        if ($ordersToPickupFail->count() > 0) {
+            foreach ($ordersToPickupFail as $order) {
+                $order->orderStatus = OrderStatus::CANCELED->value;
+                $user = $order->user;
+                event(new OrderPickupFailEvent($user));
+                $order->update();
+            }
+        }
     }
+
 }

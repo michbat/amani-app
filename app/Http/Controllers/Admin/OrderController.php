@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentMode;
 use App\Enums\PaymentStatus;
+use App\Events\OrderCanceledEvent;
+use App\Events\OrderPickedUpEvent;
 use App\Models\User;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -85,14 +87,25 @@ class OrderController extends Controller
         $order->paymentStatus = $request->paymentStatus;
         $order->orderStatus = $request->orderStatus;
 
-        if($request->paymentMode === PaymentMode::CARD->value)
-        {
+        if ($request->paymentMode === PaymentMode::CARD->value) {
             $order->nameOnCard = $request->nameOnCard;
         }
 
         $order->save();
 
-        return redirect()->route('admin.orders.index')->with('toast_success','La commande a été mise à jour');
+        switch ($order->orderStatus->value) {
+            case OrderStatus::CANCELED->value:
+                event(new OrderCanceledEvent($order->user));
+                break;
+            case OrderStatus::PICKEDUP->value:
+                event(new OrderPickedUpEvent($order->user));
+                break;
+            default:
+                # code...
+                break;
+        }
+
+        return redirect()->route('admin.orders.index')->with('toast_success', 'La commande a été mise à jour');
     }
 
     /**
@@ -101,6 +114,6 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         $order->delete();
-        return redirect()->route('admin.orders.index')->with('toast_success','La commande a été supprimée');
+        return redirect()->route('admin.orders.index')->with('toast_success', 'La commande a été supprimée');
     }
 }

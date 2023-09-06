@@ -69,9 +69,14 @@
                                             <button class="btn btn-warning mx-2" type="button" data-bs-toggle="collapse"
                                                 data-bs-target="#order_{{ $order->id }}"><i
                                                     class="fas fa-eye mx-2"></i>Détails</button>
+                                            <a class="btn btn-success mx-2"
+                                                href="{{ route('user.invoice.download', $order->id) }}">
+                                                <i class="fas fa-file-alt mx-2"></i>Facture
+                                            </a>
                                             <a class="btn btn-danger mx-2"
                                                 href="{{ route('user.cancel.order', $order->id) }}"><i
                                                     class="far fa-window-close mx-2"></i>Annuler</a>
+
                                         </div>
                                     </td>
                                 </tr>

@@ -126,6 +126,10 @@ class IngredientController extends Controller
         $ingredient->type_id = $request->type_id;
         $ingredient->unit_id = $request->unit_id;
 
+        // À la mise à jour, on vérifie si quanity stock est strictement supérieur à quantityMinimu auquel cas,
+        // On met la propriété stockStatus à AVAILABLE
+        // Les menus liés à cet ingrédient redeviennent disponibles à la commande
+
         if ($request->quantityInStock > $request->quantityMinimum) {
             $ingredient->stockStatus = StockStatus::AVAILABLE->value;
             foreach ($ingredient->menus as $menu) {

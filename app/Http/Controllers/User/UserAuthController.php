@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Enums\OrderStatus;
+use App\Models\User;
+use App\Models\Order;
+use PDF;
 use App\Enums\UserStatus;
-use App\Events\EditPasswordSubmitEvent;
-use App\Events\EditProfileSubmitEvent;
+use App\Enums\OrderStatus;
+use Illuminate\Http\JsonResponse;
 use App\Events\OrderCanceledEvent;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\EditPasswordSubmitRequest;
-use App\Http\Requests\EditProfileSubmitRequest;
-use App\Models\Order;
-use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use App\Events\EditProfileSubmitEvent;
+use App\Events\EditPasswordSubmitEvent;
+use App\Http\Requests\EditProfileSubmitRequest;
+use App\Http\Requests\EditPasswordSubmitRequest;
 
 class UserAuthController extends Controller
 {
@@ -22,12 +23,12 @@ class UserAuthController extends Controller
         return view('user.dashboard');
     }
 
-    public function edit_password()
+    public function editPassword()
     {
         return view('user.edit_password'); // Renvoie la vue ou le formulaire
     }
 
-    public function edit_password_submit(EditPasswordSubmitRequest $request)
+    public function editPasswordsubmit(EditPasswordSubmitRequest $request)
     {
         // On vérifie si nos règles de validation définies dans EditPasswordSubmitRequest sont respectées lors de la saisie du nouveau MDP
 
@@ -48,7 +49,7 @@ class UserAuthController extends Controller
         return redirect()->route('user.dashboard')->with('success', 'Votre mot de passe a été modifié');
     }
 
-    public function edit_profile()
+    public function editProfile()
     {
         // On récupère l'utilisateur connecté que l'on va injecter par la suite dans la vue pour afficher ses informations courantes
 
@@ -56,7 +57,7 @@ class UserAuthController extends Controller
         return view('user.edit_profile', compact('user'));
     }
 
-    public function edit_profile_submit(EditProfileSubmitRequest $request)
+    public function editProfileSubmit(EditProfileSubmitRequest $request)
     {
 
         $request->validated();
@@ -108,20 +109,20 @@ class UserAuthController extends Controller
 
     // Commandes
 
-    public function user_orders_index()
+    public function UserOrdersIndex()
     {
         $orders = Order::where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->paginate(10);
         return view('user.orders_index', compact('orders'));
     }
 
-    public function user_order_cancel(Order $order)
+    public function userOrderCancel(Order $order)
     {
         if ($order->orderStatus->value == OrderStatus::CONFIRMED->value) {
             $order->orderStatus = OrderStatus::CANCELED->value;
             $order->update();
 
             // On envoit un e-mail informant l'utilisateur de l'annulation de sa commande
-            
+
             $user = $order->user;
             event(new OrderCanceledEvent($user));
 
@@ -129,5 +130,16 @@ class UserAuthController extends Controller
         } else {
             return redirect()->back()->with('warning', 'Trop tard. Seules des commandes avec le status "confirmé" peuvent être annulées');
         }
+    }
+
+    public function getOrderInvoice(Order $order)
+    {
+        return view('user.invoice', compact('order'));
+    }
+
+    public function downloadPDFInvoice(Order $order)
+    {
+        $pdf = PDF::loadView('user.invoice', compact('order'));
+        return $pdf->download('facture_' . $order->id . '.pdf');
     }
 }

@@ -10,6 +10,8 @@ use App\Events\OrderCanceledEvent;
 use App\Events\OrderCompletedEvent;
 use App\Events\OrderConfirmedEvent;
 use App\Events\OrderPendingEvent;
+use App\Events\OrderPickedUpEvent;
+use App\Events\OrderPickupFailEvent;
 use App\Events\RegisterConfirmationEvent;
 use App\Events\RegisterVerifyEvent;
 use App\Events\ResentLinkSubmitEvent;
@@ -25,6 +27,8 @@ use App\Listeners\OrderCanceledListener;
 use App\Listeners\OrderCompletedListener;
 use App\Listeners\OrderConfirmedListener;
 use App\Listeners\OrderPendingListener;
+use App\Listeners\OrderPickedUpListener;
+use App\Listeners\OrderPickupFailListener;
 use App\Listeners\RegisterConfirmationListener;
 use App\Listeners\RegisterVerifyListener;
 use App\Listeners\ResentLinkSubmitListener;
@@ -97,6 +101,14 @@ class EventServiceProvider extends ServiceProvider
             OrderCompletedListener::class,
         ],
 
+        OrderPickupFailEvent::class => [
+            OrderPickupFailListener::class,
+        ],
+
+        OrderPickedUpEvent::class => [
+            OrderPickedUpListener::class,
+        ],
+
         ReviewPublishedEvent::class => [
             ReviewPublishedListenerEvent::class,
         ],
@@ -104,6 +116,8 @@ class EventServiceProvider extends ServiceProvider
         ReviewCensoredEvent::class => [
             ReviewCensoredListenerEvent::class,
         ],
+
+
     ];
 
     /**

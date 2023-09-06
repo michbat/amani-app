@@ -43,7 +43,7 @@
                 <div class="form-group row mb-4">
                     <div class="col-sm-12">
                         <label for="quantityInStock" class="form-label">Quantité en stock</label>
-                        <input type="number" class="form-control" name="quantityInStock" id="quantityInStock"
+                        <input type="number" class="form-control" name="quantityInStock" id="quantityInStock" min="1" max="1000" step="1"
                             placeholder="Quantité en stock" value="{{ old('quantityInStock') }}">
 
                         @error('quantityInStock')
@@ -54,7 +54,7 @@
                 <div class="form-group row mb-4">
                     <div class="col-sm-12">
                         <label for="quantityMinimum" class="form-label">Quantité minimum exigée</label>
-                        <input type="number" class="form-control" name="quantityMinimum" id="quantityMinimum"
+                        <input type="number" class="form-control" name="quantityMinimum" id="quantityMinimum" min="1" max="1000" step="1"
                             placeholder="Quantité minimum en stock" value="{{ old('quantityMinimum') }}">
 
                         @error('quantityMinimum')

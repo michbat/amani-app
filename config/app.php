@@ -165,6 +165,8 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
         Cartalyst\Stripe\Laravel\StripeServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
+
 
         /*
          * Application Service Providers...
@@ -194,6 +196,8 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
         'Stripe' => Cartalyst\Stripe\Laravel\Facades\Stripe::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
+
     ])->toArray(),
 
 ];

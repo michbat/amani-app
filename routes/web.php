@@ -111,10 +111,10 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
     // Routes pour gérer les commentaires sur nos menus
 
     Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
-    Route::get('/reviews/{review}/show',[ReviewController::class,'show'])->name('reviews.show');
-    Route::delete('/reviews/{review}/destroy',[ReviewController::class,'destroy'])->name('reviews.destroy');
-    Route::get('/reviews/{review}/publish',[ReviewController::class,'publish'])->name('reviews.publish');
-    Route::get('/reviews/{review}/censor',[ReviewController::class,'censor'])->name('reviews.censor');
+    Route::get('/reviews/{review}/show', [ReviewController::class, 'show'])->name('reviews.show');
+    Route::delete('/reviews/{review}/destroy', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+    Route::get('/reviews/{review}/publish', [ReviewController::class, 'publish'])->name('reviews.publish');
+    Route::get('/reviews/{review}/censor', [ReviewController::class, 'censor'])->name('reviews.censor');
 
     // Routes pour assigner des tags et enlèver un tag à un menu
 
@@ -132,13 +132,18 @@ Route::middleware(['auth', 'role:personnel'])->name('personnel.')->prefix('/pers
 
 Route::middleware(['auth'])->name('user.')->prefix('/user')->group(function () {
     Route::get('/dashboard', [UserAuthController::class, 'dashboard'])->name('dashboard');
-    Route::get('/edit-password', [UserAuthController::class, 'edit_password'])->name('edit.password');
-    Route::post('/edit-password-submit', [UserAuthController::class, 'edit_password_submit'])->name('edit.password.submit');
-    Route::get('/edit-profile', [UserAuthController::class, 'edit_profile'])->name('edit.profile');
-    Route::post('/edit-profile-submit', [UserAuthController::class, 'edit_profile_submit'])->name('edit.profile.submit');
+    Route::get('/edit-password', [UserAuthController::class, 'editPassword'])->name('edit.password');
+    Route::post('/edit-password-submit', [UserAuthController::class, 'editPasswordSubmit'])->name('edit.password.submit');
+    Route::get('/edit-profile', [UserAuthController::class, 'editProfile'])->name('edit.profile');
+    Route::post('/edit-profile-submit', [UserAuthController::class, 'editProfileSubmit'])->name('edit.profile.submit');
 
     // Commandes de l'utilisateur
 
-    Route::get('/orders', [UserAuthController::class, 'user_orders_index'])->name('index.orders');
-    Route::get('/orders/{order}/cancel', [UserAuthController::class, 'user_order_cancel'])->name('cancel.order');
+    Route::get('/orders', [UserAuthController::class, 'userOrdersIndex'])->name('index.orders');
+    Route::get('/orders/{order}/cancel', [UserAuthController::class, 'userOrderCancel'])->name('cancel.order');
+
+    // La facture de la commande
+
+    Route::get('/invoice/{order}/generate', [UserAuthController::class, 'getOrderInvoice'])->name('invoice.generate');
+    Route::get('/invoice/{order}/download', [UserAuthController::class, 'downloadPDFInvoice'])->name('invoice.download');
 });

@@ -3,12 +3,12 @@
 namespace App\Listeners;
 
 use App\Mail\AmaniRestaurantMail;
-use App\Events\OrderCanceledEvent;
+use App\Events\OrderPickedUpEvent;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class OrderCanceledListener
+class OrderPickedUpListener
 {
     /**
      * Create the event listener.
@@ -21,12 +21,12 @@ class OrderCanceledListener
     /**
      * Handle the event.
      */
-    public function handle(OrderCanceledEvent $event): void
+    public function handle(OrderPickedUpEvent $event): void
     {
-        $subject = "Votre commande a été annulée";
+        $subject = "Votre commande a été récupérée";
         $message = "Bonjour,<br><br>";
-        $message .= "Par la présente, nous vous informons de l'annulation de votre commande<br>";
-        $message .= "Veuillez prendre contact avec nous pour le remboursement.<br><br>";
+        $message .= "Nous vous informons que votre commande a été récupérée.<br>";
+        $message .= "Au plaisir de vous revoir la prochaine fois.<br><br>";
         $message .= "Cordialement, <br><br>Amani Resto.";
         $view = 'mails.account_activation_mail';
 
