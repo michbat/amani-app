@@ -6,6 +6,7 @@ use App\Models\Tag;
 use App\Models\Review;
 use App\Models\Category;
 use App\Models\Ingredient;
+use App\Models\OrderLines;
 use App\Models\Restaurant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -55,9 +56,9 @@ class Menu extends Model
 
     // Un menu peut être concerné par plusieurs commandes
 
-    public function menuOrders(): HasMany
+    public function lineOrders(): HasMany
     {
-        return $this->hasMany(menuOrders::class);
+        return $this->hasMany(lineOrders::class);
     }
 
     // Un menu peut faire l'objet de plusieurs commentaires

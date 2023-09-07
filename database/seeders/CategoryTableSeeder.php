@@ -32,9 +32,27 @@ class CategoryTableSeeder extends Seeder
 
             ],
             [
-                'designation' => 'Boissons',
-                'description' => 'Rafraîchissez-vous avec nos boissons artisanales : des cocktails uniques préparés avec soin, une sélection de vins raffinés et des boissons non-alcoolisées créatives. Laissez nos boissons accompagner parfaitement chaque instant de votre repas. Élevez votre expérience culinaire avec chaque gorgée.',
-                'image' => '/uploads/category/boisson.jpg',
+                'designation' => 'Vins',
+                'description' => 'Explorez l\'univers des vins avec une sélection variée de cépages, terroirs, et conseils pour des dégustations inoubliables, et découvrez des accords mets-vins exquis. Éveillez vos sens à travers notre sélection œnologique.',
+                'image' => '/uploads/category/vin.jpg',
+
+            ],
+            [
+                'designation' => 'Softs',
+                'description' => 'Explorez notre gamme de boissons non alcoolisées, regorgeant de saveurs pétillantes comme Coca-Cola, Fanta mais aussi des jus de fruits pour des moments rafraîchissants et délicieux à tout moment de la journée. Découvrez le plaisir "soft" dès maintenant !',
+                'image' => '/uploads/category/soft.jpg',
+
+            ],
+            [
+                'designation' => 'Eaux',
+                'description' => 'Découvrez une sélection rafraîchissante d\'eaux de source, minérales et aromatisées, pour étancher votre soif et vivre une expérience hydratante incomparable. Plongez dans notre univers des eaux et faites le plein de fraîcheur.',
+                'image' => '/uploads/category/eau.jpg',
+
+            ],
+            [
+                'designation' => 'Bières',
+                'description' => 'Découvrez une variété brassicole passionnante avec des bières artisanales, classiques et des conseils de dégustation. Plongez dans le monde de la bière pour une expérience houblonnée sans pareille.',
+                'image' => '/uploads/category/biere.jpg',
 
             ],
         ];

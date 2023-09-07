@@ -37,9 +37,6 @@
                         @endif
                         @if (Cart::instance('cart')->count() > 0)
                             @foreach (Cart::instance('cart')->content() as $element)
-                                @php
-                                    $cbc = $element->model->canBeCommended;
-                                @endphp
                                 <tr>
                                     <td>
                                         <div class="thumb_cart">
@@ -49,9 +46,25 @@
                                         </div>
 
                                         <span class="item_cart">
-                                            <a href="{{ route('details', $element->model->slug) }}" class="text-dark">
-                                                {{ $element->qty }}x {{ $element->model->name }}
-                                            </a>
+                                            @php
+                                                $menu = App\Models\Menu::where('name', $element->model->name)->first();
+                                                $isMenu = false;
+                                                if ($menu) {
+                                                    $isMenu = true;
+                                                }
+                                            @endphp
+
+                                            @if ($isMenu)
+                                                <a href="{{ route('details', $element->model->slug) }}"
+                                                    class="text-dark">
+                                                    {{ $element->qty }}x {{ $element->model->name }}
+                                                </a>
+                                            @else
+                                                <a href="{{ route('details.drink', $element->model->slug) }}"
+                                                    class="text-dark">
+                                                    {{ $element->qty }}x {{ $element->model->name }}
+                                                </a>
+                                            @endif
                                             @if ($element->qty == 15)
                                                 <span class="text-danger" style="font-size: 10px">(Veuillez nous
                                                     contacter si vous voulez
@@ -97,7 +110,9 @@
                     </div>
                     <div class="col-sm-8 text-start">
                         <a href="{{ route('menu') }}" class="btn btn-warning"><i
-                                class="fas fa-caret-left mx-2 fa-1x"></i>Retour au menu</a>
+                                class="fas fa-utensils mx-2"></i>Menus</a>
+                        <a href="{{ route('drink') }}" class="btn btn-info mx-2"><i
+                                class="fas fa-wine-bottle mx-2"></i>Boissons</a>
                     </div>
                     <div class="col-sm-12 text-start mt-4">
                         <p style="color: red">Des produits commandés sont prêts au plus tard dans 30 minutes à partir de
@@ -130,7 +145,7 @@
                             la page login pour s'authentifier. Si le panier est vide, le bouton est désactivé --}}
 
                         <a href="#" wire:click.prevent="checkout"
-                            class="btn btn-success btn-lg cart {{ Cart::instance('cart')->count() === 0 || $cbc === 0 ? 'disabled' : '' }}">Procéder
+                            class="btn btn-success btn-lg cart {{ Cart::instance('cart')->count() === 0 ? 'disabled' : '' }}">Procéder
                             au
                             paiement</a>
                     </div>

@@ -31,7 +31,10 @@
             <a href="{{ route('home') }}" class="show-submenu">Accueil</a>
         </li>
         <li class="submenu">
-            <a href="{{ route('menu') }}" class="show-submenu">Menu</a>
+            <a href="{{ route('menu') }}" class="show-submenu">Menus</a>
+        </li>
+        <li class="submenu">
+            <a href="{{ route('drink') }}" class="show-submenu">Boissons</a>
         </li>
 
         <li class="submenu">

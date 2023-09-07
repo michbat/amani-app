@@ -1,6 +1,6 @@
 @section('breadcrumb')
     <div class="col-xl-9 col-lg-10 col-md-8">
-        <h1>Menu</h1>
+        <h1>Boissons</h1>
         <p>Cuisine délicieuse et démocratique</p>
     </div>
 @endsection
@@ -32,8 +32,8 @@
         <div class="filters_full clearfix">
             <div class="container d-flex justify-content-between">
                 <div class="count_results">
-                    @if ($menus->count() > 0)
-                        <p>{{ $menus->firstItem() }} à {{ $menus->lastItem() }} sur {{ $menus->total() }} item(s)</p>
+                    @if ($drinks->count() > 0)
+                        <p>{{ $drinks->firstItem() }} à {{ $drinks->lastItem() }} sur {{ $drinks->total() }} item(s)</p>
                     @endif
                 </div>
                 <div>
@@ -69,7 +69,7 @@
                                 @foreach ($categories as $category)
                                     <li>
                                         <label class="container_check">{{ $category->designation }}
-                                            <small>{{ $category->menus->count() }}</small>
+                                            <small>{{ $category->drinks->count() }}</small>
                                             <input wire:model="cats" value="{{ $category->designation }}"
                                                 type="checkbox">
                                             <span class="checkmark"></span>
@@ -168,61 +168,60 @@
 
                     <!-- Si il n'y a aucun filtrage par catégorie, on affichage toutes les catégories  -->
                     @empty($cats)
-                        <h2 class="mb-3">Entrées, Plats principaux & Desserts</h2>
+                        <h2 class="mb-3">Boissons</h2>
                     @else
                         @foreach ($cats as $cat)
                             <h2 class="mb-3" style="display: inline-block">{{ $cat }},</h2>
                         @endforeach
                     @endempty
-                    <p style="color: red; font-size: 16px;">Nous n'acceptons des commandes qu'entre 10 heures et 22
-                        heures!</p>
+                    <p style="color: red; font-size: 16px;">Les boissons peuvent être commandées jusqu'à la fermeture du restaurant c'est à dire de 10h à minuit</p>
 
                 </div>
 
                 <div class="row justify-content-center  mb-5 gy-3">
-                    {{-- On récupère les id des menus qui ont été ajouté à la wishlist --}}
+                    {{-- On récupère les id des drinks qui ont été ajouté à la wishlist --}}
                     @php
-                        $wishmenus = Cart::instance('wishlist')
+                        $wishdrinks = Cart::instance('wishlist')
                             ->content()
                             ->pluck('id');
                     @endphp
-                    @if (count($menus) > 0)
-                        @foreach ($menus as $menu)
-                            <div class="col-md-4 col-xl-3" wire:key="menu-{{ $menu->id }}">
+                    @if (count($drinks) > 0)
+                        @foreach ($drinks as $drink)
+                            <div class="col-md-4 col-xl-3" wire:key="menu-{{ $drink->id }}">
                                 <div
                                     class="d-flex flex-column justify-content-center align-items-center item menu_item_grid h-100">
                                     <div class="item-img magnific-gallery">
-                                        <img src="{{ asset($menu->image) }}" alt="{{ $menu->name }}" loading="lazy">
+                                        <img src="{{ asset($drink->image) }}" alt="{{ $drink->name }}" loading="lazy">
                                         <div class="content">
-                                            <a href="{{ asset($menu->image) }}" title="{{ $menu->name }}"
+                                            <a href="{{ asset($drink->image) }}" title="{{ $drink->name }}"
                                                 data-effect="mfp-zoom-in"><i class="fas fa-plus"></i></a>
                                         </div>
                                     </div>
-                                    <a href="{{ route('details', ['slug' => $menu->slug]) }}">
-                                        <h3 class="p-2">{{ $menu->name }}</h3>
+                                    <a href="{{ route('details', ['slug' => $drink->slug]) }}">
+                                        <h3 class="p-2">{{ $drink->name }}</h3>
                                     </a>
 
-                                    @if ($menu->available === 0)
+                                    @if ($drink->available === 0)
                                         <span class="text-danger">indisponible</span>
                                     @endif
                                     <div class="d-flex flex-column price_box mt-auto">
-                                        <p>{{ $menu->category->designation }}</p>
+                                        <p>{{ $drink->category->designation }}</p>
                                         <span class="mb-3">
-                                            {{ $menu->price }} &euro;
+                                            {{ $drink->price }} &euro;
                                         </span>
                                         <div class="d-flex justify-content-center align-items-center">
                                             <button title="Ajouter ce menu au panier" type="button"
-                                                class="btn btn-success {{ $menu->available === 0 || $menu->canBeCommended === 0 ? 'disabled' : '' }}"
-                                                wire:click.prevent="storeMenu({{ $menu->id }},'{{ $menu->name }}',{{ $menu->price }})">
+                                                class="btn btn-success {{ $drink->available === 0 || $drink->canBeCommended === 0 ? 'disabled' : '' }}"
+                                                wire:click.prevent="storeDrink({{ $drink->id }},'{{ $drink->name }}',{{ $drink->price }})">
                                                 <span style="color: white;">
                                                     <i class="fas fa-shopping-cart mx-2"></i>Ajouter
                                                 </span>
                                             </button>
-                                            {{-- Si l'id du menu est dans la wishmenus, cela veut dire qu'il y a été ajouté. On colore le bouton en rouge avec la classe bootstrap danger --}}
-                                            @if ($wishmenus->contains($menu->id))
+                                            {{-- Si l'id du menu est dans la wishdrinks, cela veut dire qu'il y a été ajouté. On colore le bouton en rouge avec la classe bootstrap danger --}}
+                                            @if ($wishdrinks->contains($drink->id))
                                                 <button title="Enlèver ce menu à la liste de souhaits"
                                                     class="btn btn-danger mx-2" type="button"
-                                                    wire:click.prevent="removeMenuToWishList({{ $menu->id }})">
+                                                    wire:click.prevent="removeDrinkToWishList({{ $drink->id }})">
                                                     <span>
                                                         <i class="far fa-heart mx-2"></i>Wishlist
                                                     </span>
@@ -231,7 +230,7 @@
                                                 {{-- sinon on affiche un bouton outline (vide) --}}
                                                 <button title="Ajouter ce menu à la liste de souhaits"
                                                     class="btn btn-outline-danger mx-2" type="button"
-                                                    wire:click.prevent="addMenuToWishList({{ $menu->id }},'{{ $menu->name }}',{{ $menu->price }})">
+                                                    wire:click.prevent="addDrinkToWishList({{ $drink->id }},'{{ $drink->name }}',{{ $drink->price }})">
                                                     <span>
                                                         <i class="far fa-heart mx-2"></i>Wishlist
                                                     </span>
@@ -247,9 +246,9 @@
 
                 <p class="text-center my-5"><a href="#0" class="btn btn-outline-success">Download Menu (PDF)</a>
                 </p>
-                @if ($menus->hasPages())
+                @if ($drinks->hasPages())
                     <div class="d-flex justify-content-center">
-                        {{ $menus->links() }}
+                        {{ $drinks->links() }}
                     </div>
                 @endif
             </div>

@@ -23,8 +23,8 @@ class AdminSeeder extends Seeder
             'name' => 'admin',
         ]);
 
-        $employeeRole = Role::create([
-            'name' => 'employee',
+        $personnelRole = Role::create([
+            'name' => 'personnel',
         ]);
 
         User::create([
@@ -52,12 +52,12 @@ class AdminSeeder extends Seeder
         ]);
 
         User::create([
-            'firstname' => 'Employee',
-            'lastname' => 'Employee',
-            'email' => 'employee@employee.com',
+            'firstname' => 'Personnel',
+            'lastname' => 'Personnel',
+            'email' => 'personnel@personnel.com',
             'phone' => '0214365879',
             'password' => Hash::make('password'), //password
-            'role_id' => $employeeRole->id,
+            'role_id' => $personnelRole->id,
             'status' => UserStatus::ACTIVE,
             'canReserveTable' => true,
             'token' => '',

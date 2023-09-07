@@ -18,6 +18,7 @@ class MenuTableSeeder extends Seeder
     {
         $cat_en_id = Category::where('designation', 'Entrées')->first()->id;
         $cat_pp_id = Category::where('designation', 'Plats principaux')->first()->id;
+        $cat_dsrt_id = Category::where('designation', 'Desserts')->first()->id;
         $resto_id = Restaurant::where('name', 'Amani')->first()->id;
         $menus = [
 
@@ -60,8 +61,8 @@ class MenuTableSeeder extends Seeder
             [
                 'category_id' => $cat_en_id,
                 'restaurant_id' => $resto_id,
-                'name' => 'Piperade au Thermomix',
-                'slug' => Str::slug('Piperade au Thermomix', '-'),
+                'name' => 'Piperade',
+                'slug' => Str::slug('Piperade', '-'),
                 'description' => "Envie de soleil dans votre assiette ? Nous vous proposons une recette du sud-ouest de la France qui régalera petits et grands de la maison. Il vous faut des poivrons, de l’huile, des tomates, des oignons, du sel, du poivre et place à la préparation de votre piperade au Thermomix.",
                 'image' => '/uploads/seeders/recipe/4-piperade_au_thermomix.jpg',
                 'price' => 10.75,
@@ -173,8 +174,8 @@ class MenuTableSeeder extends Seeder
             [
                 'category_id' => $cat_pp_id,
                 'restaurant_id' => $resto_id,
-                'name' => "Risotto aux champignons au Cookeo",
-                'slug' => Str::slug('Risotto aux champignons au Cookeo', '-'),
+                'name' => "Risotto aux champignons",
+                'slug' => Str::slug('Risotto aux champignons', '-'),
                 'description' => "Tout droit venu d'Italie, le risotto est un plat dont nous raffolons ! Sa cuisson est délicate à cause de l'absorption de l’eau, c'est pourquoi il nous faut rester derrière notre casserole. Avec votre Cookeo, il se fera tout seul, sans surveillance grâce à sa cuisson sous pression. Nous ne connaissons pas meilleure solution pour se régaler sans effort ! En avant pour la préparation de votre risotto aux champignons au Cookeo.",
                 'image' => '/uploads/seeders/recipe/14-risotto_aux_champignons.jpeg',
                 'price' => 14.75,
@@ -195,8 +196,8 @@ class MenuTableSeeder extends Seeder
             [
                 'category_id' => $cat_pp_id,
                 'restaurant_id' => $resto_id,
-                'name' => "Sauté de veau aux carottes au Cookeo",
-                'slug' => Str::slug('Sauté de veau aux carottes au Cookeo', '-'),
+                'name' => "Sauté de veau aux carottes",
+                'slug' => Str::slug('Sauté de veau aux carottes', '-'),
                 'description' => "Vous cherchez une idée recette pour votre déjeuner familial de dimanche midi ? Voici une délicieuse recette avec de la viande de veau, des légumes, du bouillon de volaille, un bouquet garni, de la crème, et quelques herbes et aromates. Place à la préparation de votre Sauté de veau aux carottes au Cookeo.",
                 'image' => '/uploads/seeders/recipe/16-saute_de_boeuf_aux_legumes_et_au-riz.png',
                 'price' => 13.75,
@@ -256,6 +257,75 @@ class MenuTableSeeder extends Seeder
                 'description' => "La piperade est un plat d’origine basque reposant traditionnellement sur une compotée de tomates et de piments doux, parfois déclinée avec des poivrons pour plus de douceur. Gorgée de saveurs, elle accompagne aussi bien de la viande que du poisson. Si certains lient leur préparation avec un œuf en fin de cuisson, cette recette reprend l’esprit chakchouka en la servant avec des œufs au plat, qui cuisent directement au milieu des légumes. Un plat unique, pratique et ensoleillé !",
                 'image' => '/uploads/seeders/recipe/21-piperade_oeuf.jpg',
                 'price' => 11.75,
+                'available' => 1,
+
+            ],
+
+            // Desserts
+
+            [
+                'category_id' => $cat_dsrt_id,
+                'restaurant_id' => $resto_id,
+                'name' => "Glace au Kinder",
+                'slug' => Str::slug('Glace au Kinder', '-'),
+                'description' => "La glace au Kinder, une délicieuse fusion de chocolat au lait crémeux et de morceaux de Kinder, vous transporte dans un monde de gourmandise. Découvrez une expérience glacée irrésistible qui éveille vos papilles avec chaque bouchée, pour un plaisir sucré inoubliable. Fondante et exquise, la glace au Kinder ravira les amateurs de chocolat.",
+                'image' => '/uploads/seeders/recipe/22-glace-au-kinder.jpg',
+                'price' => 4.75,
+                'available' => 1,
+
+            ],
+            [
+                'category_id' => $cat_dsrt_id,
+                'restaurant_id' => $resto_id,
+                'name' => "Glace aux cacahuètes",
+                'slug' => Str::slug('Glace aux cacahuètes', '-'),
+                'description' => "La glace aux cacahuètes, une gourmandise onctueuse et croquante qui marie la douceur de la crème glacée à la richesse des cacahuètes grillées. Découvrez une expérience glacée à la fois crémeuse et texturée, pour une explosion de saveurs salées et sucrées en une seule cuillerée. Plongez dans le délice de la glace aux cacahuètes.",
+                'image' => '/uploads/seeders/recipe/23-glace-cacahuete.jpg',
+                'price' => 3.50,
+                'available' => 1,
+
+            ],
+            [
+                'category_id' => $cat_dsrt_id,
+                'restaurant_id' => $resto_id,
+                'name' => "Glace aux fruits",
+                'slug' => Str::slug('Glace aux fruits', '-'),
+                'description' => "La glace aux fruits, une symphonie rafraîchissante de saveurs naturelles qui évoque la fraîcheur des fruits mûrs. Découvrez une expérience glacée légère et fruitée, parfaite pour rafraîchir vos papilles avec une explosion de goûts naturels. Savourez la douceur des fruits dans chaque cuillerée de cette glace délicieuse.",
+                'image' => '/uploads/seeders/recipe/24-glace-aux-fruits.jpg',
+                'price' => 3.50,
+                'available' => 1,
+
+            ],
+            [
+                'category_id' => $cat_dsrt_id,
+                'restaurant_id' => $resto_id,
+                'name' => "Gâteau roulé au chocolat Noir",
+                'slug' => Str::slug('Gâteau roulé au chocolat Noir', '-'),
+                'description' => "Le gâteau roulé au chocolat noir, un délice moelleux où le cacao intense du chocolat noir se marie à la légèreté du biscuit roulé. Découvrez une expérience sucrée et fondante qui ravit les amateurs de chocolat avec chaque bouchée. Succombez au plaisir du gâteau roulé au chocolat noir pour une touche de gourmandise exquise.",
+                'image' => '/uploads/seeders/recipe/25-gateau-chocolat-noir.jpeg',
+                'price' => 6.50,
+                'available' => 1,
+
+            ],
+            [
+                'category_id' => $cat_dsrt_id,
+                'restaurant_id' => $resto_id,
+                'name' => "Tartelettes feuilletées aux fruits",
+                'slug' => Str::slug('Tartelettes feuilletées aux fruits', '-'),
+                'description' => "Les tartelettes feuilletées aux fruits, des délices croustillants et fruités qui combinent la finesse du feuilletage avec la fraîcheur des fruits. Découvrez une explosion de saveurs sucrées et acidulées dans chaque bouchée, pour une expérience gourmande légère et exquise. Succombez au charme des tartelettes feuilletées aux fruits pour un plaisir gustatif irrésistible.",
+                'image' => '/uploads/seeders/recipe/26-tartelettes-aux-fruits.jpeg',
+                'price' => 7.50,
+                'available' => 1,
+
+            ],
+            [
+                'category_id' => $cat_dsrt_id,
+                'restaurant_id' => $resto_id,
+                'name' => "Dessert au yaourt",
+                'slug' => Str::slug('Dessert au yaourt', '-'),
+                'description' => "Le dessert au yaourt, une douceur crémeuse et légère, parfaite pour apaiser votre palais avec une touche de fraîcheur lactée. Découvrez une expérience sucrée et équilibrée, idéale en fin de repas ou en collation. Savourez la simplicité et la délicatesse du dessert au yaourt à chaque cuillerée.",
+                'image' => '/uploads/seeders/recipe/27-dessert-au-yaourt.jpg',
+                'price' => 4.75,
                 'available' => 1,
 
             ],

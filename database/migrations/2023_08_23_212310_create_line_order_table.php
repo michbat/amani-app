@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menu_order', function (Blueprint $table) {
+        Schema::create('line_order', function (Blueprint $table) {
             $table->id();
             $table->foreignId('menu_id')->nullable()->constrained('menus')->nullOnDelete()->cascadeOnUpdate();
+            $table->foreignId('drink_id')->nullable()->constrained('drinks')->nullOnDelete()->cascadeOnUpdate();
             $table->foreignId('order_id')->constrained('orders')->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('quantity');
             $table->decimal('sellPrice', 8, 2);

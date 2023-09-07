@@ -1,0 +1,129 @@
+@section('breadcrumb')
+    <div class="col-xl-9 col-lg-10 col-md-8">
+        <h1>Boisson Détails</h1>
+        <p>Cuisine délicieuse au prix démocratique</p>
+    </div>
+@endsection
+
+<div>
+    <main>
+        <div class="container margin_60_40" style="position: relative">
+            @if ($message = Session::get('success_message'))
+                <div class="alert alert-success alert-dismissible fade show my-4" role="alert">
+                    <strong>{{ $message }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+            <div class="row">
+                <p class="text-center text-danger">Les boissons peuvent être commandées jusqu'à la fermeture du restaurant, c'est à dire de 10h à minuit</p>
+                <div class="col-lg-6 magnific-gallery">
+                    <p class="shop_setails_img">
+                        <a href="{{ asset($drink->image) }}" title="{{ $drink->name }}" data-effect="mfp-zoom-in"><img
+                                src="{{ asset($drink->image) }}" alt="{{ $drink->name }}" class="img-fluid"></a>
+                    </p>
+                </div>
+                <div class="col-lg-6" id="sidebar_fixed">
+                    {{-- On récupère les id des menus qui ont été ajouté à la wishlist --}}
+                    @php
+                        $wishdrinks = Cart::instance('wishlist')
+                            ->content()
+                            ->pluck('id');
+                    @endphp
+                    <div class="prod_info">
+                        <h2>{{ $drink->name }} <span class="text-danger"
+                                style="font-size: 20px">{{ $drink->available === 0 ? 'indisponible' : '' }}</span>
+                        </h2>
+                        <p>{!! $drink->description !!}</p>
+                        <div class="row">
+                            <div class="col-lg-5 col-md-6">
+                                <div class="price_main"><span class="new_price">{{ $drink->price }} &euro;</span></div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 d-flex justify-content-center">
+                                <div class="btn_add_to_cart">
+                                    <a href="#"
+                                        class="btn btn-success {{ $drink->available === 0 || $quantity >= 15 || $drink->canBeCommended === 0 ? 'disabled' : '' }}"
+                                        style="min-width: 190px"
+                                        wire:click.prevent="storeDrink({{ $drink->id }},'{{ $drink->name }}',{{ $drink->price }})"
+                                        wire:model="$quantity"><i class="fas fa-shopping-cart mx-2"></i>Ajouter
+
+                                        <span class="badge badge-light">{{ $quantity }}</span>
+
+                                    </a>
+                                </div>
+                                <div class="btn_add_to_cart">
+                                    {{-- Si l'id de la boisson est dans la wishdrinks, cela veut dire qu'elle y a été ajoutée. On colore le bouton en rouge avec la classe bootstrap danger --}}
+                                    @if ($wishdrinks->contains($drink->id))
+                                        <button title="Enlèver ce menu à la liste de souhaits"
+                                            class="btn btn-danger mx-2" style="min-width: 200px;"
+                                            wire:click.prevent="removeDrinkToWishList({{ $drink->id }})">
+                                            <span>
+                                                <i class="far fa-heart mx-2"></i>Wishlist
+                                            </span>
+                                        </button>
+                                    @else
+                                        {{-- sinon on affiche un bouton outline (vide) --}}
+                                        <button title="Ajouter ce menu à la liste de souhaits"
+                                            class="btn btn-outline-danger mx-2" style="min-width: 200px;"
+                                            wire:click.prevent="addDrinkToWishList({{ $drink->id }},'{{ $drink->name }}',{{ $drink->price }})">
+                                            <span>
+                                                <i class="far fa-heart mx-2"></i>Wishlist
+                                            </span>
+                                        </button>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                @if ($quantity >= 15)
+                                    <span class="text-danger text-center">Veuillez nous contacter si vous voulez
+                                        commander plus de 15 produits</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /prod_info -->
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+
+        <div class="tabs_product">
+            <div class="container">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a id="tab-A" href="#pane-A" class="nav-link active" data-bs-toggle="tab"
+                            role="tab">Catégorie</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /tabs_product -->
+        <div class="tab_content_wrapper">
+            <div class="container">
+                <div class="tab-content" role="tablist">
+                    <div id="pane-A" class="card tab-pane fade show active" role="tabpanel" aria-labelledby="tab-A">
+                        <div class="card-header" role="tab" id="heading-A">
+                            <h5 class="mb-0">
+                                <a class="collapsed" data-bs-toggle="collapse" href="#collapse-A" aria-expanded="false"
+                                    aria-controls="collapse-A">
+                                    Catégorie
+                                </a>
+                            </h5>
+                        </div>
+                        <div id="collapse-A" class="collapse" role="tabpanel" aria-labelledby="heading-A">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h3>{{ $drink->category->designation }}</h3>
+                                        <p>{!! $drink->category->description !!}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /tab-content -->
+            </div>
+        </div>
+    </main>
+</div>

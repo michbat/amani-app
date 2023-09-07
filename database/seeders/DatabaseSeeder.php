@@ -10,6 +10,7 @@ use Database\Seeders\TagTableSeeder;
 use Database\Seeders\MenuTableSeeder;
 use Database\Seeders\TypeTableSeeder;
 use Database\Seeders\UnitTableSeeder;
+use Database\Seeders\DrinkTableSeeder;
 use Database\Seeders\SliderTableSeeder;
 use Database\Seeders\GalleryTableSeeder;
 use Database\Seeders\CategoryTableSeeder;
@@ -29,6 +30,7 @@ class DatabaseSeeder extends Seeder
             RestaurantTableSeeder::class,
             CategoryTableSeeder::class,
             MenuTableSeeder::class,
+            DrinkTableSeeder::class,
             TagTableSeeder::class,
             TypeTableSeeder::class,
             UnitTableSeeder::class,

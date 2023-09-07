@@ -29,8 +29,8 @@ class MenuOrderPermission extends Command
     {
         $menus = Menu::all();
         $currentTime = Carbon::now('Europe/Brussels')->format('H:i');
-        $openKitchenTime = '00:00';
-        $closeKitchenTime = '10:00';
+        $openKitchenTime = '23:00';
+        $closeKitchenTime = '23:59';
 
 
         if ($currentTime >= $openKitchenTime && $currentTime <= $closeKitchenTime) {

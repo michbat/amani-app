@@ -33,8 +33,8 @@ class Order extends Model
 
     // Une commande peut comporter plusieurs lignes de commande
 
-    public function menuOrders(): HasMany
+    public function lineOrders(): HasMany
     {
-        return $this->hasMany(MenuOrder::class);
+        return $this->hasMany(lineOrders::class);
     }
 }

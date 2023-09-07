@@ -1,32 +1,34 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\GalleryController;
-use App\Http\Controllers\Admin\IngredientController;
-use App\Http\Controllers\Admin\MenuController;
-use App\Http\Controllers\Admin\OrderController;
-use App\Http\Controllers\Admin\RestaurantController;
-use App\Http\Controllers\Admin\ReviewController;
-use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Admin\SliderController;
+use App\Http\Livewire\CartComponent;
+use App\Http\Livewire\HomeComponent;
+use App\Http\Livewire\MenuComponent;
+use App\Http\Livewire\DrinkComponent;
+use Illuminate\Support\Facades\Route;
+use App\Http\Livewire\ReviewComponent;
+use App\Http\Livewire\DetailsComponent;
+use App\Http\Livewire\CheckoutComponent;
+use App\Http\Livewire\WishlistComponent;
 use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TypeController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\PasswordController;
-use App\Http\Controllers\Auth\RegistrationController;
-use App\Http\Controllers\User\UserAuthController;
-use App\Http\Livewire\CartComponent;
-use App\Http\Livewire\CheckoutComponent;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Livewire\CheckoutSuccessComponent;
-use App\Http\Livewire\DetailsComponent;
-use App\Http\Livewire\HomeComponent;
-use App\Http\Livewire\MenuComponent;
-use App\Http\Livewire\ReviewComponent;
-use App\Http\Livewire\WishlistComponent;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\ReviewController;
+use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Admin\GalleryController;
+use App\Http\Controllers\Auth\PasswordController;
+use App\Http\Controllers\User\UserAuthController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\IngredientController;
+use App\Http\Controllers\Admin\RestaurantController;
+use App\Http\Controllers\Auth\RegistrationController;
+use App\Http\Livewire\DetailsDrinkComponent;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,8 +45,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeComponent::class)->name('home');
 Route::get('/menu', MenuComponent::class)->name('menu');
+Route::get('/drink', DrinkComponent::class)->name('drink');
 Route::get('/cart', CartComponent::class)->name('cart');
 Route::get('/menu/{slug}', DetailsComponent::class)->name('details');
+Route::get('/drink/{slug}', DetailsDrinkComponent::class)->name('details.drink');
 Route::get('/checkout', CheckoutComponent::class)->name('checkout');
 Route::get('/checkout-success', CheckoutSuccessComponent::class)->name('checkout.success');
 Route::get('/wishlist', WishlistComponent::class)->name('wishlist');

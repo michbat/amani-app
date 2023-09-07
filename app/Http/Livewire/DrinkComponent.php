@@ -2,16 +2,14 @@
 
 namespace App\Http\Livewire;
 
-use Carbon\Carbon;
-use App\Models\Menu;
+use App\Models\Drink;
 use Livewire\Component;
 use App\Models\Category;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
-
-class MenuComponent extends Component
+class DrinkComponent extends Component
 {
     use WithPagination;
 
@@ -20,14 +18,14 @@ class MenuComponent extends Component
     protected $paginationTheme = 'bootstrap';
 
 
-    // Propriété pour afficher le nombre de menus par page
+    // Propriété pour afficher le nombre de boissons par page
 
-    public $pageItems = 12;
+    public $pageItems = 8;
 
-    // Propriétés pour ordonner les menus par prix croissant ou décroissant, nouveauté, défaut
+    // Propriétés pour ordonner les boissons  par prix croissant ou décroissant, nouveauté, défaut
     public $orderBy = "default";
 
-    // Propriétés pour filtrer les menus par intervalles de prix
+    // Propriétés pour filtrer les boissons par intervalles de prix
 
     public $priceIntervals = [];
 
@@ -42,7 +40,7 @@ class MenuComponent extends Component
     /**
      *
      * La méthode updated() est appelée lorsqu'une propriété de notre composant est mise à jour
-     * via les interactions de l'utilisateur dans la vue associé à MenuComponent.
+     * via les interactions de l'utilisateur dans la vue associé à DrinkComponent.
      * Ici on reset l'ancienne pagination générée d'une ancienne recherche pour laisser la place à une nouvelle pagination
      *
      */
@@ -51,36 +49,36 @@ class MenuComponent extends Component
         $this->resetPage();
     }
 
-    // Méthode pour ajouter un menu dans le panier
+    // Méthode pour ajouter une boisson dans le panier
 
-    public function storeMenu($menu_id, $menu_name, $menu_price)
+    public function storeDrink($drink_id, $drink_name, $drink_price)
     {
-        Cart::instance('cart')->add($menu_id, $menu_name, 1, $menu_price)->associate('App\Models\Menu');
+        Cart::instance('cart')->add($drink_id, $drink_name, 1, $drink_price)->associate('App\Models\Drink');
         $this->emitTo('cart-icon-component', 'refreshComponent');
-        $this->removeMenuToWishList($menu_id);
-        session()->flash('success_message', 'Menu ajouté dans votre panier');
+        $this->removeDrinkToWishList($drink_id);
+        session()->flash('success_message', 'Boisson ajoutée dans votre panier');
         return redirect()->route('cart');
     }
 
-    // Méthode pour ajouter un menu dans une wishlist
+    // Méthode pour ajouter une boisson dans une wishlist
 
-    public function addMenuToWishList($menu_id, $menu_name, $menu_price)
+    public function addDrinkToWishList($drink_id, $drink_name, $drink_price)
     {
-        Cart::instance('wishlist')->add($menu_id, $menu_name, 1, $menu_price)->associate('App\Models\Menu');
+        Cart::instance('wishlist')->add($drink_id, $drink_name, 1, $drink_price)->associate('App\Models\Drink');
         $this->emitTo('wishlist-icon-component', 'refreshComponent');
-        session()->flash('success_message', 'Menu ajouté à votre liste de souhaits');
+        session()->flash('success_message', 'Boisson ajoutée à votre liste de souhaits');
         return back();
     }
 
-    // Méthode pour enlèver un menu de la wishlist
+    // Méthode pour enlèver une boisson de la wishlist
 
-    public function removeMenuToWishList($menu_id)
+    public function removeDrinkToWishList($drink_id)
     {
         foreach (Cart::instance('wishlist')->content() as $content) {
-            if ($content->id == $menu_id) {
+            if ($content->id == $drink_id) {
                 Cart::instance('wishlist')->remove($content->rowId);
                 $this->emitTo('wishlist-icon-component', 'refreshComponent');
-                session()->flash('success_message', 'Menu enlevé de votre liste de souhaits');
+                session()->flash('success_message', 'Boisson enlevée de votre liste de souhaits');
                 return back();
             }
         }
@@ -91,7 +89,7 @@ class MenuComponent extends Component
     {
         // La méthode statique query() permet de préparer notre objet $query aux prochaines requêtes eloquent en vue de filtrages
 
-        $query = Menu::query();
+        $query = Drink::query();
 
         // Un fitrage sur l'intervalle de prix
 
@@ -132,7 +130,7 @@ class MenuComponent extends Component
                 $query->orderBy('price', 'DESC');
                 break;
             case 'new':
-                $query->orderBy('created_at', 'DESC');
+                $query->orderBy('id', 'DESC');
                 break;
             default:
                 //
@@ -140,10 +138,8 @@ class MenuComponent extends Component
 
         // Affichage du nombre de produits par page (4,8,12,16,20)
 
-        $menus = $query->paginate($this->pageItems);
-
-        $categories = Category::orderBy('designation', 'ASC')->get();
-        $categories = Category::where('designation', 'Entrées')->orWhere('designation', 'Plats principaux')->orWhere('designation', 'Desserts')->orderBy('designation', 'ASC')->get();
+        $drinks = $query->paginate($this->pageItems);
+        $categories = Category::where('designation', 'Vins')->orWhere('designation', 'Softs')->orWhere('designation', 'Eaux')->orWhere('designation', 'Bières')->orderBy('designation', 'ASC')->get();
 
         // Si le client est authentifié, on sauvegarde son panier et sa wishlist
 
@@ -152,6 +148,6 @@ class MenuComponent extends Component
             Cart::instance('wishlist')->store(Auth::user()->id);
         }
 
-        return view('frontend.livewire.menu-component', compact('menus', 'categories'));
+        return view('frontend.livewire.drink-component', compact('drinks', 'categories'));
     }
 }
