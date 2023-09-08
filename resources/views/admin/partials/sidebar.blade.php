@@ -57,17 +57,17 @@
                 </ul>
             </li>
 
-            {{-- Section Menus --}}
+            {{-- Section Menus & Drinks --}}
 
-            <li class="menu-header">Menu</li>
+            <li class="menu-header">Menus & Boissons</li>
 
 
             <li class="dropdown {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-map"></i>
-                    <span>Catégories de menu</span></a>
+                    <span>Catégories de produits</span></a>
                 <ul class="dropdown-menu">
                     <li class="{{ request()->routeIs('admin.categories.index') ? 'active' : '' }}"><a class="nav-link"
-                            href="{{ route('admin.categories.index') }}">Catégories de menu</a></li>
+                            href="{{ route('admin.categories.index') }}">Catégories de produits</a></li>
                 </ul>
             </li>
             <li class="dropdown {{ request()->routeIs('admin.menus.*') ? 'active' : '' }}">
@@ -76,6 +76,15 @@
                 <ul class="dropdown-menu">
                     <li class="{{ request()->routeIs('admin.menus.index') ? 'active' : '' }}"><a class="nav-link"
                             href="{{ route('admin.menus.index') }}">Menus</a></li>
+                </ul>
+            </li>
+            <li class="dropdown {{ request()->routeIs('admin.drinks.*') ? 'active' : '' }}">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                        class="fas fa-wine-bottle"></i>
+                    <span>Boissons</span></a>
+                <ul class="dropdown-menu">
+                    <li class="{{ request()->routeIs('admin.drinks.index') ? 'active' : '' }}"><a class="nav-link"
+                            href="{{ route('admin.drinks.index') }}">Boissons</a></li>
                 </ul>
             </li>
             <li class="dropdown {{ request()->routeIs('admin.tags.*') ? 'active' : '' }}">
@@ -103,7 +112,8 @@
                 </ul>
             </li>
             <li class="dropdown {{ request()->routeIs('admin.ingredients.*') ? 'active' : '' }}">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-apple-alt"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                        class="fas fa-apple-alt"></i>
                     <span>Ingredients</span></a>
                 <ul class="dropdown-menu">
                     <li class="{{ request()->routeIs('admin.ingredients.index') ? 'active' : '' }}"><a

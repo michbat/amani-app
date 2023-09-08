@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\User\UserAuthController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DrinkController;
 use App\Http\Controllers\Admin\IngredientController;
 use App\Http\Controllers\Admin\RestaurantController;
 use App\Http\Controllers\Auth\RegistrationController;
@@ -41,7 +42,7 @@ use App\Http\Livewire\DetailsDrinkComponent;
 |
  */
 
-// Home routes
+// Frontend routes
 
 Route::get('/', HomeComponent::class)->name('home');
 Route::get('/menu', MenuComponent::class)->name('menu');
@@ -90,12 +91,14 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
     Route::resource('/users', UserController::class);
     Route::resource('/categories', CategoryController::class);
     Route::resource('/menus', MenuController::class);
+    Route::resource('/drinks', DrinkController::class);
     Route::resource('/tags', TagController::class);
     Route::resource('/types', TypeController::class);
     Route::resource('/ingredients', IngredientController::class);
     Route::resource('/units', UnitController::class);
     Route::resource('/galleries', GalleryController::class);
     Route::resource('/sliders', SliderController::class);
+
 
 
     // Routes pour gérer les commandes

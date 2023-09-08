@@ -48,8 +48,10 @@ class MenuController extends Controller
         $image = $request->file('image');
         $path = '/uploads/menu/';
 
-        $menu = new Menu(); // On crée un nouvel objet $recipe de la classe model Recipe.
+        $menu = new Menu(); // On crée un nouvel objet $menu de la classe model 'Menu'.
 
+        // On affecter aux variables de l'objet $menu, les valeurs saisies dans le formulaire
+        
         $menu->name = $request->name;
         $menu->slug = Str::slug($request->name, '-');
         $menu->description = $request->description;

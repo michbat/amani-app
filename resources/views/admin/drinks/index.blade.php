@@ -3,13 +3,13 @@
 
 @section('content')
     <div class="d-flex mt-5 justify-content-end">
-        <a class="btn btn-info btn-lg text-dark" href="{{ route('admin.menus.create') }}"><i
-                class="fas fa-plus mx-2"></i>Ajouter un menu</a>
+        <a class="btn btn-info btn-lg text-dark" href="{{ route('admin.drinks.create') }}"><i
+                class="fas fa-plus mx-2"></i>Ajouter une boisson</a>
     </div>
     <div class="card mt-3">
         <div class="card-header d-flex flex-column justify-content-center align-items-start">
-            <h4>Liste de menus</h4>
-            <p>{{ $menus->firstItem() }} à {{ $menus->lastItem() }} sur {{ $menus->total() }} menu(s)</p>
+            <h4>Liste de boissons</h4>
+            <p>{{ $drinks->firstItem() }} à {{ $drinks->lastItem() }} sur {{ $drinks->total() }} boisson(s)</p>
         </div>
         <div class="card-body">
             <table class="table table-striped ">
@@ -19,73 +19,54 @@
                         <th>Image</th>
                         <th>Nom</th>
                         <th>Catégorie</th>
-                        <th>Ingrédients</th>
                         <th>Description</th>
                         <th>Prix</th>
                         <th>Disponible</th>
+                        <th>Commandable</th>
                         <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if (count($menus) > 0)
-                        @foreach ($menus as $menu)
+                    @if (count($drinks) > 0)
+                        @foreach ($drinks as $drink)
                             <tr>
                                 <td>{{ $loop->index + 1 }}</td>
                                 <td>
-                                    <img src="{{ asset($menu->image) }}" alt="{{ $menu->name }}"
+                                    <img src="{{ asset($drink->image) }}" alt="{{ $drink->name }}"
                                         style="width: 60px; height: 40px;">
                                 </td>
                                 <td>
                                     <span class="btn btn-sm btn-success text-dark"
                                         style="border-radius: 50px; min-width: 100px;">
-                                        {{ $menu->name }}
+                                        {{ $drink->name }}
                                     </span>
                                 </td>
                                 <td style="font-weight: bolder">
-                                    {{ $menu->category_id === null ? 'Pas de catégorie' : $menu->category->designation }}
+                                    {{ $drink->category_id === null ? 'Pas de catégorie' : $drink->category->designation }}
                                 </td>
-                                {{-- <td>
-                                    @if ($recipe->ingredients->count() > 0)
-                                        @foreach ($recipe->ingredients as $ingredient)
-                                            <span class="btn btn-sm btn-warning text-dark"
-                                                style="border-radius: 50px; min-width: 100px;">
-                                                {{ $ingredient->name }}
-                                            </span>
-                                        @endforeach
-                                    @else
-                                        <span>
-                                            pas d'ingrédients
-                                        </span>
-                                    @endif
-                                </td> --}}
-                                <td class="text-center">
-                                    <span style="font-weight: 900">
-
-                                        {{-- {{ $menu->ingredients->count() > 0 ? $menu->ingredients->count() . ' ingrédient(s)' : 'Non' }} --}}
-                                        {{ $menu->ingredients->count() ?? 0 }}
-                                    </span>
-                                </td>
-                                <td>{{ str()->limit($menu->description, 10) }}</td>
-                                <td style="font-weight: bolder">{{ $menu->price }}</td>
+                                <td>{{ str()->limit($drink->description, 10) }}</td>
+                                <td style="font-weight: bolder">{{ $drink->price }} &euro;</td>
                                 <td>
                                     <span
-                                        class="btn btn-sm text-dark {{ $menu->available == 1 ? 'btn-info' : 'btn-danger' }}"
+                                        class="btn btn-sm text-dark {{ $drink->available == 1 ? 'btn-info' : 'btn-danger' }}"
                                         style="border-radius: 50px; min-width: 100px;">
-                                        {{ $menu->available == 1 ? 'Disponible' : 'Non disponible' }}
+                                        {{ $drink->available == 1 ? 'Disponible' : 'Non disponible' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span
+                                        class="btn btn-sm text-dark {{ $drink->canBeCommended == 1 ? 'btn-info' : 'btn-danger' }}"
+                                        style="border-radius: 50px; min-width: 100px;">
+                                        {{ $drink->canBeCommended == 1 ? 'Commandable' : 'Pas commandable' }}
                                     </span>
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-center">
-
-                                        <a class="btn btn-warning text-dark mx-2"
-                                            href="{{ route('admin.menus.show', $menu->id) }}"><i
-                                                class="fas fa-tags mx-2"></i>({{ $menu->tags->count() }}) Tags</a>
-
                                         <a class="btn btn-primary text-dark mx-2"
-                                            href="{{ route('admin.menus.edit', $menu->id) }}"><i
+                                            href="{{ route('admin.drinks.edit', $drink->id) }}"><i
                                                 class="fas fa-edit mx-2"></i>Editer</a>
 
-                                        <form action="{{ route('admin.menus.destroy', $menu->id) }}" method="POST">
+                                        <form action="{{ route('admin.drinks.destroy', $drink->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger text-dark confirm"><i
@@ -108,7 +89,7 @@
         </div>
     </div>
     <div class="d-flex justify-content-center mt-5">
-        {{ $menus->links() }}
+        {{ $drinks->links() }}
     </div>
 @endsection
 
@@ -127,8 +108,8 @@
             //Configuration de la boîte Alert
 
             Swal.fire({
-                title: 'Suppression de menu',
-                text: "Voulez-vous supprimer ce menu?",
+                title: 'Suppression de la boisson',
+                text: "Voulez-vous supprimer cette boisson?",
                 cancelButtonText: "Non",
                 icon: 'warning',
                 showCancelButton: true,

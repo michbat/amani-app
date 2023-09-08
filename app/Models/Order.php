@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\MenuOrder;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentMode;
+use App\Models\LineOrders;
 use App\Enums\PaymentStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -35,6 +36,6 @@ class Order extends Model
 
     public function lineOrders(): HasMany
     {
-        return $this->hasMany(lineOrders::class);
+        return $this->hasMany(LineOrders::class);
     }
 }

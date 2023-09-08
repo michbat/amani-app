@@ -3,13 +3,14 @@
 namespace App\Http\Livewire;
 
 use Exception;
+use App\Models\Menu;
 use App\Models\User;
-use Omnipay\Omnipay;
 use App\Models\Order;
 use Livewire\Component;
 use App\Models\MenuOrder;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentMode;
+use App\Models\LineOrders;
 use App\Enums\PaymentStatus;
 use Cartalyst\Stripe\Stripe;
 use Illuminate\Http\Request;
@@ -241,14 +242,21 @@ class CheckoutComponent extends Component
     private function fillMenuOrder($orderId)
     {
         foreach (Cart::instance('cart')->content() as $content) {
-            $menuOrder = new MenuOrder();
+            $lineOrder = new LineOrders();
 
-            $menuOrder->menu_id = $content->model->id;
-            $menuOrder->order_id = $orderId;
-            $menuOrder->quantity = $content->qty;
-            $menuOrder->sellPrice = $content->model->price * $content->qty;
+            $menu = Menu::where('name', $content->model->name)->first();
 
-            $menuOrder->save();
+            if ($menu) {
+                $lineOrder->menu_id = $content->model->id;
+            } else {
+
+                $lineOrder->drink_id = $content->model->id;
+            }
+            $lineOrder->order_id = $orderId;
+            $lineOrder->quantity = $content->qty;
+            $lineOrder->sellPrice = $content->model->price * $content->qty;
+
+            $lineOrder->save();
         }
     }
 
@@ -289,18 +297,26 @@ class CheckoutComponent extends Component
 
     private function decreaseQuantityInStock(Order $order)
     {
-        foreach ($order->menuOrders as $menuOrder) {
+
+        foreach ($order->lineOrders as $lineOrder) {
 
             /**
-             *  On récupère pour chaque objet $moe la propriété 'quantity' autrement dit on récupère la quantité de chaque menu
-             *  composant les lignes de commandes (table menu_order) de la commande passée
+             *  On récupère pour chaque ligne de commande la propriété 'quantity' autrement dit on récupère la quantité de chaque menu ou boisson
+             *  composant les lignes de commandes (table line_order) de la commande.
              */
 
-            $quantity = $menuOrder->quantity;
+            $quantity = $lineOrder->quantity;
 
-            foreach ($menuOrder->menu->ingredients as $moei) {
-                $moei->quantityInStock = $moei->quantityInStock - $moei->pivot->amount * $quantity;
-                $moei->update();
+            if (!empty($lineOrder->menu->ingredients)) {
+                foreach ($lineOrder->menu->ingredients as $lomi) {
+                    $lomi->quantityInStock = $lomi->quantityInStock - $lomi->pivot->amount * $quantity;
+                    $lomi->update();
+                }
+            }
+
+            if (!empty($lineOrder->drink)) {
+                $lineOrder->drink->quantityInStock = $lineOrder->drink->quantityInStock - $quantity;
+                $lineOrder->drink->update();
             }
         }
     }

@@ -45,7 +45,7 @@
                                     </li>
                                 </ul>
                                 <div class="mt-3">
-                                    <p style="font-weight: 900; color: red">Votre commande sera prête au plus tard dans 30 minutes. Après, vous avez 2 heures pour la retirer dans notre restaurant. Passées ces deux heures, votre commande est considérée comme annulée et ce, à votre détriment (pas de remboursement).Vous pouvez suivrez l'état de votre commande sur votre compte.</p>
+                                    <p style="font-weight: 900; color: red">Si vous avez commandé un menu, il sera prêt au plus tard dans 30 minutes. Après, vous avez 2 heures pour le retirer dans notre restaurant. Passées ces deux heures, votre commande de menu est considérée comme annulée et ce, à votre détriment (pas de remboursement).Vous pouvez suivrez l'état de votre commande de menu sur votre compte.</p>
                                 </div>
                                 <div class="my-4">
                                     <hr>
@@ -55,17 +55,17 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Nom du menu</th>
+                                                <th>Nom du produit</th>
                                                 <th class="text-center">Prix unitaire</th>
                                                 <th class="text-center">Quantité</th>
                                                 <th>Prix payé</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($order->menuOrders as $item)
+                                            @foreach ($order->lineOrders as $item)
                                                 <tr>
-                                                    <td>{{ $item->menu->name }}</td>
-                                                    <td class="text-center">{{ $item->menu->price }}&euro;</td>
+                                                    <td>{{ $item->menu->name ?? $item->drink->name }}</td>
+                                                    <td class="text-center">{{ $item->menu->price ?? $item->drink->price }}&euro;</td>
                                                     <td class="text-center">{{ $item->quantity }}</td>
                                                     <td>{{ $item->sellPrice }}&euro;</td>
                                                 </tr>

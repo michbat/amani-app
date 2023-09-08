@@ -37,5 +37,13 @@ class AppServiceProvider extends ServiceProvider
             $quantityInStock = $validator->getData()['quantityInStock'];
             return $quantityInStock >= 3 * $value;
         });
+
+        // Lors de l'édition d'un produit, nous devons vérifier si la quantité en stock est strictement supérieur au seuil de quantité minimale.
+        
+        Validator::extend('greater_than_minimum', function ($attribute, $value, $parameters, $validator) {
+            $minimumField = $parameters[0];
+            $minimumValue = $validator->getData()[$minimumField];
+            return $value > $minimumValue;
+        });
     }
 }

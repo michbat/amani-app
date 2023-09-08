@@ -1,5 +1,5 @@
 @extends('admin.layouts.app')
-@section('title', 'Créer un menu')
+@section('title', 'Ajouter un menu')
 
 @section('content')
     <div class="d-flex mt-5 justify-content-end">
@@ -10,7 +10,7 @@
         <form action="{{ route('admin.menus.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="card-header">
-                <h4>Création d'un menu</h4>
+                <h4>Ajout d'un menu</h4>
             </div>
             <div class="card-body">
                 <div class="form-group row mb-4">
@@ -53,7 +53,7 @@
                 <div class="form-group row mb-4">
                     <div class="col-sm-12">
                         <label for="price" class="form-label">Prix du menu</label>
-                        <input type="number" min="0.00" max="1000.00" step="0.01" name="price"
+                        <input type="number" min="0.00" max="1000.00" step="0.25" name="price"
                             class="form-control" value="{{ old('price') }}">
                         @error('price')
                             <span class="text-danger">{{ $message }}</span>
@@ -64,7 +64,7 @@
                     <label class="form-label text-left col-12" for="image-upload">Image</label>
                     <div class="col-sm-12">
                         <div id="image-preview" class="image-preview mb-2">
-                            <label for="image-upload" id="image-label">Choose File</label>
+                            <label for="image-upload" id="image-label">Choisir un fichier</label>
                             <input type="file" name="image" id="image-upload" />
                         </div>
                         @error('image')

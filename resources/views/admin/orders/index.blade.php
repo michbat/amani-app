@@ -112,13 +112,22 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($order->menuOrders as $item)
+                                            @foreach ($order->lineOrders as $item)
                                                 <tr>
                                                     <td>{{ $loop->index + 1 }}</td>
-                                                    <td><img src="{{ asset($item->menu->image) }}"
-                                                            alt="{{ $item->menu->name }}" style="width: 60px;"></td>
-                                                    <td>{{ $item->menu->name }}</td>
-                                                    <td>{{ $item->menu->price }}&euro;</td>
+                                                    {{-- Si $item est un menu --}}
+                                                    @if ($item->menu)
+                                                        <td><img src="{{ asset($item->menu->image) }}"
+                                                                alt="{{ $item->menu->name }}" style="width: 60px;"></td>
+                                                        <td>{{ $item->menu->name }}</td>
+                                                        <td>{{ $item->menu->price }}&euro;</td>
+                                                    @else
+                                                        {{-- Si $item est un drink --}}
+                                                        <td><img src="{{ asset($item->drink->image) }}"
+                                                                alt="{{ $item->drink->name }}" style="width: 60px;"></td>
+                                                        <td>{{ $item->drink->name }}</td>
+                                                        <td>{{ $item->drink->price }}&euro;</td>
+                                                    @endif
                                                     <td>{{ $item->quantity }}</td>
                                                     <td>{{ $item->sellPrice }}&euro;</td>
                                                 </tr>

@@ -57,7 +57,7 @@
                 <div class="form-group row mb-4">
                     <div class="col-sm-12">
                         <label for="price" class="form-label">Prix du menu</label>
-                        <input type="number" min="0.0000" max="1000.00" step="0.25" name="price"
+                        <input type="number" min="0.00" max="1000.00" step="0.25" name="price"
                             class="form-control" value="{{ $menu->price }}">
                         @error('price')
                             <span class="text-danger">{{ $message }}</span>
