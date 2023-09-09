@@ -21,7 +21,7 @@ class DetailsDrinkComponent extends Component
 
         /**
          * On récupère un objet cart de type Cart (panier) car nous voudrions offrir la possibilité au client de rajouter
-         * Une boisson à partir de la page d'informations détaillées. Toutefois, la quantité d'une boisson à ajouter dans un panier étant limitée à 15
+         * Une boisson à partir de la page d'informations détaillées. Toutefois, la quantité d'une boisson à ajouter dans un panier étant limitée à 10
          * Nous devons empêcher son ajout dans le panier si cette quantité est atteinte. Nous allons desactiver le bouton "ajouter"
          */
         $cartInstance = Cart::instance('cart');

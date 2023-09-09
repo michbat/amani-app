@@ -2,8 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Menu;
-use App\Models\Drink;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -12,7 +10,7 @@ class WishlistComponent extends Component
 {
     // Méthode pour enlèver un menu de la wishlist
 
-    public function removeItemToWishList($item_id)
+    public function removeMenuToWishList($item_id)
     {
         foreach (Cart::instance('wishlist')->content() as $content) {
             if ($content->id == $item_id) {
@@ -26,28 +24,19 @@ class WishlistComponent extends Component
 
     // Méthode pour ajouter un menu dans le panier
 
-    public function storeItem($item_id, $item_name, $item_price)
+    public function storeMenu($menu_id, $menu_name, $menu_price)
     {
-        // On vérifie si l'item que l'on veut transfèrer dans le panier est un menu ou un drink
 
-        $menu = Menu::where('name', $item_name)->first();
+        Cart::instance('cart')->add($menu_id, $menu_name, 1, $menu_price)->associate('App\Models\Menu');
 
-        //  Si c'est un menu, on le rajouter dans le panier en l'associant au modèle Menu
-        if ($menu) {
-            Cart::instance('cart')->add($item_id, $item_name, 1, $item_price)->associate('App\Models\Menu');
-        }else{
-             //  Si c'est un drink, on le rajouter dans le panier en l'associant au modèle Drink
-
-            Cart::instance('cart')->add($item_id, $item_name, 1, $item_price)->associate('App\Models\Drink');
-        }
         $this->emitTo('cart-icon-component', 'refreshComponent');
 
         // Si le menu est ajouté de la carte, on l'efface de la wishlist, faisant appel à la méthode removeMenuToWishList()
 
-        $this->removeItemToWishList($item_id);
+        $this->removeItemToWishList($menu_id);
 
         // session()->flash('success_message', 'Menu ajouté dans votre panier et retiré de la wishlist');
-        return redirect()->route('wishlist')->with('success', 'Produit ajouté dans votre panier et retiré de la wishlist');
+        return redirect()->route('wishlist')->with('success', 'Menu ajouté dans votre panier et retiré de la wishlist');
     }
 
     public function render()

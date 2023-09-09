@@ -80,16 +80,6 @@
             </div>
 
             <div class="col-xl-3">
-                <!-- seul des utilisateurs disposant un compte peuvent réserver une table. Un visiteur est directement dirigé vers la page de login  -->
-                <a href="{{ auth()->user() === null ? route('login') : route('home') }}" class="img_container">
-                    <img src="{{ asset('frontend/assets/img/banner_5.jpg') }}" class="lazy">
-                    <div class="short_info opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.5)">
-                        <h3>Reservez une table</h3>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-xl-3">
                 <a href="#" class="img_container">
                     <img src="{{ asset('frontend/assets/img/banner_1.jpg') }}" class="lazy">
                     <div class="short_info opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.5)">

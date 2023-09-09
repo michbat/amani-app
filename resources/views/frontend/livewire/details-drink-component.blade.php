@@ -15,7 +15,8 @@
                 </div>
             @endif
             <div class="row">
-                <p class="text-center text-danger">Les boissons peuvent être commandées jusqu'à la fermeture du restaurant, c'est à dire de 10h à minuit</p>
+                <p class="text-center text-danger">Nous n'acceptons des commandes qu'entre 10 heures et 23
+                    heures!</p>
                 <div class="col-lg-6 magnific-gallery">
                     <p class="shop_setails_img">
                         <a href="{{ asset($drink->image) }}" title="{{ $drink->name }}" data-effect="mfp-zoom-in"><img
@@ -23,12 +24,6 @@
                     </p>
                 </div>
                 <div class="col-lg-6" id="sidebar_fixed">
-                    {{-- On récupère les id des menus qui ont été ajouté à la wishlist --}}
-                    @php
-                        $wishdrinks = Cart::instance('wishlist')
-                            ->content()
-                            ->pluck('id');
-                    @endphp
                     <div class="prod_info">
                         <h2>{{ $drink->name }} <span class="text-danger"
                                 style="font-size: 20px">{{ $drink->available === 0 ? 'indisponible' : '' }}</span>
@@ -41,7 +36,7 @@
                             <div class="col-lg-4 col-md-6 d-flex justify-content-center">
                                 <div class="btn_add_to_cart">
                                     <a href="#"
-                                        class="btn btn-success {{ $drink->available === 0 || $quantity >= 15 || $drink->canBeCommended === 0 ? 'disabled' : '' }}"
+                                        class="btn btn-success {{ $drink->available === 0 || $quantity > 10 || $drink->canBeCommended === 0 ? 'disabled' : '' }}"
                                         style="min-width: 190px"
                                         wire:click.prevent="storeDrink({{ $drink->id }},'{{ $drink->name }}',{{ $drink->price }})"
                                         wire:model="$quantity"><i class="fas fa-shopping-cart mx-2"></i>Ajouter
@@ -50,32 +45,11 @@
 
                                     </a>
                                 </div>
-                                <div class="btn_add_to_cart">
-                                    {{-- Si l'id de la boisson est dans la wishdrinks, cela veut dire qu'elle y a été ajoutée. On colore le bouton en rouge avec la classe bootstrap danger --}}
-                                    @if ($wishdrinks->contains($drink->id))
-                                        <button title="Enlèver ce menu à la liste de souhaits"
-                                            class="btn btn-danger mx-2" style="min-width: 200px;"
-                                            wire:click.prevent="removeDrinkToWishList({{ $drink->id }})">
-                                            <span>
-                                                <i class="far fa-heart mx-2"></i>Wishlist
-                                            </span>
-                                        </button>
-                                    @else
-                                        {{-- sinon on affiche un bouton outline (vide) --}}
-                                        <button title="Ajouter ce menu à la liste de souhaits"
-                                            class="btn btn-outline-danger mx-2" style="min-width: 200px;"
-                                            wire:click.prevent="addDrinkToWishList({{ $drink->id }},'{{ $drink->name }}',{{ $drink->price }})">
-                                            <span>
-                                                <i class="far fa-heart mx-2"></i>Wishlist
-                                            </span>
-                                        </button>
-                                    @endif
-                                </div>
                             </div>
                             <div class="mt-3">
-                                @if ($quantity >= 15)
+                                @if ($quantity > 10)
                                     <span class="text-danger text-center">Veuillez nous contacter si vous voulez
-                                        commander plus de 15 produits</span>
+                                        commander plus de 10 boissons</span>
                                 @endif
                             </div>
                         </div>

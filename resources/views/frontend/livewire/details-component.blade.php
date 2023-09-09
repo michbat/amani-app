@@ -15,7 +15,7 @@
                 </div>
             @endif
             <div class="row">
-                <p class="text-center text-danger">Nous n'acceptons des commandes qu'entre 10 heures et 22 heures!</p>
+                <p class="text-center text-danger">Nous n'acceptons des commandes qu'entre 10 heures et 23 heures!</p>
                 <div class="col-lg-6 magnific-gallery">
                     <p class="shop_setails_img">
                         <a href="{{ asset($menu->image) }}" title="{{ $menu->name }}" data-effect="mfp-zoom-in"><img
@@ -57,7 +57,7 @@
                             <div class="col-lg-4 col-md-6 d-flex justify-content-center">
                                 <div class="btn_add_to_cart">
                                     <a href="#"
-                                        class="btn btn-success {{ $menu->available === 0 || $quantity >= 15 || $menu->canBeCommended === 0 ? 'disabled' : '' }}"
+                                        class="btn btn-success {{ $menu->available === 0 || $quantity > 10 || $menu->canBeCommended === 0 ? 'disabled' : '' }}"
                                         style="min-width: 190px"
                                         wire:click.prevent="storeMenu({{ $menu->id }},'{{ $menu->name }}',{{ $menu->price }})"
                                         wire:model="$quantity"><i class="fas fa-shopping-cart mx-2"></i>Ajouter
@@ -89,9 +89,9 @@
                                 </div>
                             </div>
                             <div class="mt-3">
-                                @if ($quantity >= 15)
+                                @if ($quantity > 10)
                                     <span class="text-danger text-center">Veuillez nous contacter si vous voulez
-                                        commander plus de 15 produits</span>
+                                        commander plus de 10 menus</span>
                                 @endif
                             </div>
                         </div>

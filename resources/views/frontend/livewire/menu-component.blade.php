@@ -174,7 +174,7 @@
                             <h2 class="mb-3" style="display: inline-block">{{ $cat }},</h2>
                         @endforeach
                     @endempty
-                    <p style="color: red; font-size: 16px;">Nous n'acceptons des commandes qu'entre 10 heures et 22
+                    <p style="color: red; font-size: 16px;">Nous n'acceptons des commandes qu'entre 10 heures et 23
                         heures!</p>
 
                 </div>

@@ -22,7 +22,7 @@ class DetailsComponent extends Component
 
         /**
          * On récupère un objet cart de type Cart (panier) car nous voudrions offrir la possibilité au client de rajouter
-         * Un menu à partir de la page d'informations détaillées. Toutefois, la quantité d'un menu à ajouter dans un menu étant limitée à 15
+         * Un menu à partir de la page d'informations détaillées. Toutefois, la quantité d'un menu à ajouter dans un menu étant limitée à 10
          * Nous devons empêcher son ajout dans le panier si cette quantité est atteinte. Nous allons desactiver le bouton "ajouter"
          */
         $cartInstance = Cart::instance('cart');

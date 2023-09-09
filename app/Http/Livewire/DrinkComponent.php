@@ -55,35 +55,9 @@ class DrinkComponent extends Component
     {
         Cart::instance('cart')->add($drink_id, $drink_name, 1, $drink_price)->associate('App\Models\Drink');
         $this->emitTo('cart-icon-component', 'refreshComponent');
-        $this->removeDrinkToWishList($drink_id);
         session()->flash('success_message', 'Boisson ajoutée dans votre panier');
         return redirect()->route('cart');
     }
-
-    // Méthode pour ajouter une boisson dans une wishlist
-
-    public function addDrinkToWishList($drink_id, $drink_name, $drink_price)
-    {
-        Cart::instance('wishlist')->add($drink_id, $drink_name, 1, $drink_price)->associate('App\Models\Drink');
-        $this->emitTo('wishlist-icon-component', 'refreshComponent');
-        session()->flash('success_message', 'Boisson ajoutée à votre liste de souhaits');
-        return back();
-    }
-
-    // Méthode pour enlèver une boisson de la wishlist
-
-    public function removeDrinkToWishList($drink_id)
-    {
-        foreach (Cart::instance('wishlist')->content() as $content) {
-            if ($content->id == $drink_id) {
-                Cart::instance('wishlist')->remove($content->rowId);
-                $this->emitTo('wishlist-icon-component', 'refreshComponent');
-                session()->flash('success_message', 'Boisson enlevée de votre liste de souhaits');
-                return back();
-            }
-        }
-    }
-
 
     public function render()
     {
@@ -139,9 +113,10 @@ class DrinkComponent extends Component
         // Affichage du nombre de produits par page (4,8,12,16,20)
 
         $drinks = $query->paginate($this->pageItems);
+    
         $categories = Category::where('designation', 'Vins')->orWhere('designation', 'Softs')->orWhere('designation', 'Eaux')->orWhere('designation', 'Bières')->orderBy('designation', 'ASC')->get();
 
-        // Si le client est authentifié, on sauvegarde son panier et sa wishlist
+        // Si le client est authentifié, il peut sauvegarde son panier et sa wishlist
 
         if (Auth::check()) {
             Cart::instance('cart')->store(Auth::user()->id);

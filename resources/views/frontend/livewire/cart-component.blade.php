@@ -65,10 +65,10 @@
                                                     {{ $element->qty }}x {{ $element->model->name }}
                                                 </a>
                                             @endif
-                                            @if ($element->qty == 15)
+                                            @if ($element->qty > 10)
                                                 <span class="text-danger" style="font-size: 10px">(Veuillez nous
                                                     contacter si vous voulez
-                                                    commander plus de 15 produits!!)</span>
+                                                    commander plus de 10 produits!!)</span>
                                             @endif
                                         </span>
                                     </td>
@@ -82,7 +82,7 @@
                                             <span class="border border-1 p-1 text-center"
                                                 style="min-width: 100px;">{{ $element->qty }}</span>
                                             <button
-                                                class="btn btn-success btn-sm mx-2 {{ $element->qty >= 15 ? 'disabled' : '' }}"
+                                                class="btn btn-success btn-sm mx-2 {{ $element->qty > 10 ? 'disabled' : '' }}"
                                                 wire:click.prevent="increaseQuantity('{{ $element->rowId }}')">+</button>
                                         </div>
                                     </td>

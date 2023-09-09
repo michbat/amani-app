@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
 
         $schedule->command('orders:process')->everyFiveSeconds()->runInBackground();
-        $schedule->command('menus:order')->everyFiveSeconds()->runInBackground();
+        $schedule->command('menusDrinks:order')->everyFiveSeconds()->runInBackground();
         $schedule->command('ingredients:monitoring')->everySecond()->runInBackground();
 
     }

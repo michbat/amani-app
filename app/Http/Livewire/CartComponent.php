@@ -50,7 +50,7 @@ class CartComponent extends Component
     {
         Cart::instance('cart')->destroy();
         $this->emitTo('cart-icon-component', 'refreshComponent');
-        return redirect()->route('menu')->with('info', 'Désolé, vous ne pouvez plus commander après minuit. Merci de votre compréhension.');
+        return redirect()->route('menu')->with('info', 'Désolé, vous ne pouvez commander qu\'entre 10h00 et 23h00. Merci de votre compréhension.');
     }
 
     public function checkout()
@@ -72,10 +72,10 @@ class CartComponent extends Component
         }
 
         $currentTime = Carbon::now('Europe/Brussels')->format('H:i');
-        $openKitchenTime = '06:00';
-        $closeKitchenTime = '23:59';
+        $openTime = '10:00';
+        $closeTime = '23:00';
 
-        if ($currentTime >= $openKitchenTime && $currentTime <= $closeKitchenTime) {
+        if ($currentTime >= $openTime && $currentTime <= $closeTime) {
             return view('frontend.livewire.cart-component');
         } else {
             $this->closedDoors();

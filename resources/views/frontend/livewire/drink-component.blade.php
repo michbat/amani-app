@@ -4,29 +4,7 @@
         <p>Cuisine délicieuse et démocratique</p>
     </div>
 @endsection
-@push('styles')
-    <style>
-        .container.margin_60_40 {
-            position: relative;
-            /* Assurez-vous que le container a une position relative */
-        }
 
-        .fixed-alert {
-            position: absolute;
-            /* Position absolue à l'intérieur du container */
-            top: 0;
-            /* Position en haut du container */
-            left: 0;
-            /* Position à gauche du container */
-            right: 0;
-            /* Position à droite du container */
-            z-index: 9999;
-            /* Pour être au-dessus du contenu du container */
-            width: 100%;
-            /* Ajustez la largeur selon les besoins */
-        }
-    </style>
-@endpush
 <div>
     <main>
         <div class="filters_full clearfix">
@@ -48,7 +26,6 @@
                 <div class="sort_select">
                     <select wire:model="orderBy">
                         <option value="default">Par défaut</option>
-                        {{-- <option value="rating">Mieux noté</option> --}}
                         <option value="new">Nouveauté</option>
                         <option value="ascendant">Prix croissant</option>
                         <option value="descendant">Prix décroissant</option>
@@ -174,30 +151,26 @@
                             <h2 class="mb-3" style="display: inline-block">{{ $cat }},</h2>
                         @endforeach
                     @endempty
-                    <p style="color: red; font-size: 16px;">Les boissons peuvent être commandées jusqu'à la fermeture du restaurant c'est à dire de 10h à minuit</p>
+                    <p style="color: red; font-size: 16px;">Nous n'acceptons des commandes qu'entre 10 heures et 23
+                        heures!</p>
 
                 </div>
 
                 <div class="row justify-content-center  mb-5 gy-3">
-                    {{-- On récupère les id des drinks qui ont été ajouté à la wishlist --}}
-                    @php
-                        $wishdrinks = Cart::instance('wishlist')
-                            ->content()
-                            ->pluck('id');
-                    @endphp
                     @if (count($drinks) > 0)
                         @foreach ($drinks as $drink)
                             <div class="col-md-4 col-xl-3" wire:key="menu-{{ $drink->id }}">
                                 <div
                                     class="d-flex flex-column justify-content-center align-items-center item menu_item_grid h-100">
                                     <div class="item-img magnific-gallery">
-                                        <img src="{{ asset($drink->image) }}" alt="{{ $drink->name }}" loading="lazy">
+                                        <img src="{{ asset($drink->image) }}" alt="{{ $drink->name }}"
+                                            loading="lazy">
                                         <div class="content">
-                                            <a href="{{ asset($drink->image) }}" title="{{ $drink->name }}"
-                                                data-effect="mfp-zoom-in"><i class="fas fa-plus"></i></a>
+                                            <a href="{{ asset($drink->image) }}" title="{{ $drink->name }}"><i
+                                                    class="fas fa-plus"></i></a>
                                         </div>
                                     </div>
-                                    <a href="{{ route('details', ['slug' => $drink->slug]) }}">
+                                    <a href="{{ route('details.drink', ['slug' => $drink->slug]) }}">
                                         <h3 class="p-2">{{ $drink->name }}</h3>
                                     </a>
 
@@ -217,25 +190,6 @@
                                                     <i class="fas fa-shopping-cart mx-2"></i>Ajouter
                                                 </span>
                                             </button>
-                                            {{-- Si l'id du menu est dans la wishdrinks, cela veut dire qu'il y a été ajouté. On colore le bouton en rouge avec la classe bootstrap danger --}}
-                                            @if ($wishdrinks->contains($drink->id))
-                                                <button title="Enlèver ce menu à la liste de souhaits"
-                                                    class="btn btn-danger mx-2" type="button"
-                                                    wire:click.prevent="removeDrinkToWishList({{ $drink->id }})">
-                                                    <span>
-                                                        <i class="far fa-heart mx-2"></i>Wishlist
-                                                    </span>
-                                                </button>
-                                            @else
-                                                {{-- sinon on affiche un bouton outline (vide) --}}
-                                                <button title="Ajouter ce menu à la liste de souhaits"
-                                                    class="btn btn-outline-danger mx-2" type="button"
-                                                    wire:click.prevent="addDrinkToWishList({{ $drink->id }},'{{ $drink->name }}',{{ $drink->price }})">
-                                                    <span>
-                                                        <i class="far fa-heart mx-2"></i>Wishlist
-                                                    </span>
-                                                </button>
-                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -244,7 +198,7 @@
                     @endif
                 </div>
 
-                <p class="text-center my-5"><a href="#0" class="btn btn-outline-success">Download Menu (PDF)</a>
+                <p class="text-center my-5"><a href="#0" class="btn btn-outline-success">Download Drink(PDF)</a>
                 </p>
                 @if ($drinks->hasPages())
                     <div class="d-flex justify-content-center">
@@ -255,4 +209,3 @@
         </div>
     </main>
 </div>
-

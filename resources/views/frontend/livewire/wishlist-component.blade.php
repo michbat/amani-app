@@ -57,8 +57,8 @@
                                         </span>
                                         <div class="d-flex justify-content-center align-items-center">
                                             <button title="Ajouter ce menu au panier" type="button"
-                                                class="btn btn-success {{ $item->model->available === 0 ? 'disabled' : '' }}"
-                                                wire:click.prevent="storeItem({{ $item->model->id }},'{{ $item->model->name }}',{{ $item->model->price }})">
+                                                class="btn btn-success {{ $item->model->available === 0 || $item->model->canBeCommended === 0 ? 'disabled' : '' }}"
+                                                wire:click.prevent="storeMenu({{ $item->model->id }},'{{ $item->model->name }}',{{ $item->model->price }})">
                                                 <span style="color: white;">
                                                     <i class="fas fa-shopping-cart mx-2"></i>Ajouter
                                                 </span>
@@ -67,20 +67,20 @@
                                             @if ($wishitems->contains($item->model->id))
                                                 <button title="Enlèver ce menu à la liste de souhaits"
                                                     class="btn btn-danger mx-2" type="button"
-                                                    wire:click.prevent="removeItemToWishList({{ $item->model->id }})">
+                                                    wire:click.prevent="removeMenuToWishList({{ $item->model->id }})">
                                                     <span>
                                                         <i class="far fa-heart mx-2"></i>Wishlist
                                                     </span>
                                                 </button>
-                                            @else
+                                            {{-- @else
                                                 {{-- sinon on affiche un bouton outline (vide) --}}
-                                                <button title="Ajouter ce menu à la liste de souhaits"
+                                                {{-- <button title="Ajouter ce menu à la liste de souhaits"
                                                     class="btn btn-outline-danger mx-2" type="button"
                                                     wire:click.prevent="addItemToWishList({{ $item->model->id }},'{{ $item->model->name }}',{{ $item->model->price }})">
                                                     <span>
                                                         <i class="far fa-heart mx-2"></i>Wishlist
                                                     </span>
-                                                </button>
+                                                </button>  --}}
                                             @endif
                                         </div>
                                     </div>
@@ -88,9 +88,9 @@
                             </div>
                         @endforeach
                     @else
-                    <div class="col-md-12 col-xl-12 mt-5">
-                        <h3 class="text-center"> Aucun produit dans votre wishlist</h3>
-                    </div>
+                        <div class="col-md-12 col-xl-12 mt-5">
+                            <h3 class="text-center"> Aucun menu dans votre wishlist</h3>
+                        </div>
 
                     @endif
                 </div>
