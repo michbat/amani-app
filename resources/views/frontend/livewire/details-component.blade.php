@@ -42,12 +42,14 @@
                         @endif
                         <span class=" d-block rating mt-4">
 
-                            <em>4 Avis</em>
-                            <i class="icon_star voted"></i>
-                            <i class="icon_star voted"></i>
-                            <i class="icon_star voted"></i>
-                            <i class="icon_star voted"></i>
-                            <i class="icon_star"></i>
+                            <em>{{ count($menu->reviews) }} Avis</em>
+                            @for ($i = 0; $i < $avg; $i++)
+                                <i class="icon_star voted"></i>
+                            @endfor
+                            @for ($i = 0; $i < 5 - $avg; $i++)
+                                <i class="icon_star"></i>
+                            @endfor
+
                         </span>
                         <p>{!! $menu->description !!}</p>
                         <div class="row">
@@ -183,10 +185,15 @@
                                             <div class="col-lg-6">
                                                 <div class="review_content">
                                                     <div class="clearfix add_bottom_10">
-                                                        <span class="rating"><i class="icon_star"></i><i
-                                                                class="icon_star"></i><i class="icon_star"></i><i
-                                                                class="icon_star"></i><i
-                                                                class="icon_star empty"></i><em>4.5/5.0</em></span>
+                                                        <span class="rating">
+                                                            @for ($i = 0; $i < $review->rating; $i++)
+                                                                <i class="icon_star"></i>
+                                                            @endfor
+                                                            @for ($i = 0; $i < 5 - $review->rating; $i++)
+                                                                <i class="icon_star" style="color:gray;"></i>
+                                                            @endfor
+                                                            <em>{{ $review->rating }}.0/5.0</em>
+                                                        </span>
                                                         <em>Publié le
                                                             {{ $review->created_at->format('d/m/Y à H:i:s') }}</em>
                                                     </div>

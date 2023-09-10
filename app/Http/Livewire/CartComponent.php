@@ -62,6 +62,18 @@ class CartComponent extends Component
             return redirect()->route('login')->with('info', 'Vous devez être connecté pour effectuer le paiement');
         }
     }
+
+    public static function getCartItemModel($cartItem)
+    {
+        if ($cartItem->product_type === 'menu') {
+            return $cartItem->model; // This will return the associated Menu model
+        } elseif ($cartItem->product_type === 'drink') {
+            return $cartItem->model; // This will return the associated Drink model
+        }
+
+        return null; // Handle other cases or errors as needed
+    }
+
     public function render()
     {
         // Si le client est authentifié, on sauvegarde son panier et sa wishlist
@@ -73,7 +85,7 @@ class CartComponent extends Component
 
         $currentTime = Carbon::now('Europe/Brussels')->format('H:i');
         $openTime = '10:00';
-        $closeTime = '23:00';
+        $closeTime = '23:59';
 
         if ($currentTime >= $openTime && $currentTime <= $closeTime) {
             return view('frontend.livewire.cart-component');

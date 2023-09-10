@@ -12,7 +12,8 @@ use Illuminate\Queue\SerializesModels;
 class RegisterVerifyEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $user;
+
+    public User $user;
 
     /**
      * Create a new event instance.

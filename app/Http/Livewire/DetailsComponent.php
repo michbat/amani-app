@@ -81,6 +81,9 @@ class DetailsComponent extends Component
         $reviews = Review::where('published', 1)->where('censored', 0)->where('menu_id', $this->menu->id)->orderBy('created_at', 'DESC')->get();
         $user = Auth::user();
 
+
+        $avg = floor($reviews->avg('rating'));
+
         // Si le client est authentifié, on sauvegarde son panier et sa wishlist
 
         if (Auth::check()) {
@@ -88,6 +91,6 @@ class DetailsComponent extends Component
             Cart::instance('wishlist')->store(Auth::user()->id);
         }
 
-        return view('frontend.livewire.details-component', compact('menu', 'reviews', 'user'));
+        return view('frontend.livewire.details-component', compact('menu', 'reviews', 'user', 'avg'));
     }
 }

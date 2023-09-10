@@ -88,11 +88,12 @@ class RegistrationController extends Controller
     {
 
         /**
-         *  On vérifie si le token et l'adresse e-mail dans le lien appartiennent bel et bien à un utilisateur enregistré dans la BDD.
+         *  On vérifie si le token et l'adresse e-mail dans le lien envoyé appartiennent bel et bien à un utilisateur enregistré dans la BDD.
          *  On récupère un objet éloquent $user si la requête trouve l'utilisateur ou null si elle ne trouve rien.
          */
 
         $user = User::where('token', $token)->where('email', $email)->first();
+
 
         /**
          *  Si aucun utilisateur n'est trouvé (parce qu'il aurait par exemple eu une tentative de modification du lien cliquable, on redirige
@@ -104,7 +105,7 @@ class RegistrationController extends Controller
              * Si on ne trouve pas d'utilisateur dans la BDD parce que le lien est problématique,
              * on redirige l'utilisateur vers la page d'accueil, tout en l'invitant à prendre contact avec nous.
              */
-            return redirect()->route('home')->with('error', 'Ce lien n\'est pas valable. Veuillez prendre contact avec nous.');
+            return redirect()->route('home')->with('error', 'Ce lien n\'est plus valable. Veuillez prendre contact avec nous.');
         }
 
         // Si la vérification s'est bien déroulée

@@ -23,7 +23,6 @@ function uploadImage($image, $path, $old_path = null): string
             // On supprimer l'ancien repertoire
 
             unlink($old_path);
-
         }
 
         $ext = $image->extension(); // On récupère l'extension de l'image chargée
@@ -46,4 +45,15 @@ function uploadImage($image, $path, $old_path = null): string
 
         return $url;
     }
+}
+
+function getCartItemModel($cartItem)
+{
+    if ($cartItem->product_type === 'menu') {
+        return $cartItem->associatedModel; // This will return the associated Menu model
+    } elseif ($cartItem->product_type === 'drink') {
+        return $cartItem->associatedModel; // This will return the associated Drink model
+    }
+
+    return null; // Handle other cases or errors as needed
 }

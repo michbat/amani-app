@@ -23,7 +23,7 @@ class GalleryCreateRequest extends FormRequest
     {
         return [
             'title' => 'required|unique:galleries,title',
-            'image' => 'required|image|mimes:png,jpg,jpeg,gif',
+            'image' => 'required|image|mimes:png,jpg,jpeg',
             'galleryType' => 'required',
             'videoId' => 'required_if:galleryType,video|unique:galleries,videoId',
         ];

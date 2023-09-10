@@ -164,7 +164,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($order->menuOrders as $menu)
+                    @foreach ($order->lineOrders as $menu)
                         <tr>
                             <td>
                                 <span>{{ $menu->menu->name }}</span>

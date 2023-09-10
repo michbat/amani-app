@@ -33,7 +33,7 @@ class WishlistComponent extends Component
 
         // Si le menu est ajouté de la carte, on l'efface de la wishlist, faisant appel à la méthode removeMenuToWishList()
 
-        $this->removeItemToWishList($menu_id);
+        $this->removeMenuToWishList($menu_id);
 
         // session()->flash('success_message', 'Menu ajouté dans votre panier et retiré de la wishlist');
         return redirect()->route('wishlist')->with('success', 'Menu ajouté dans votre panier et retiré de la wishlist');

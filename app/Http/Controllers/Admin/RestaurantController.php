@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Tag;
+use App\Models\Restaurant;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RestaurantEditRequest;
-use App\Models\Restaurant;
 
 class RestaurantController extends Controller
 {
@@ -22,7 +23,8 @@ class RestaurantController extends Controller
      */
     public function show(Restaurant $restaurant)
     {
-        return view('admin.restaurants.show', compact('restaurant'));
+        $tags = Tag::all();
+        return view('admin.restaurants.show', compact('restaurant','tags'));
     }
 
     /**

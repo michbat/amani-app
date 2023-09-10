@@ -4,29 +4,6 @@
         <p>Cuisine délicieuse et démocratique</p>
     </div>
 @endsection
-@push('styles')
-    <style>
-        .container.margin_60_40 {
-            position: relative;
-            /* Assurez-vous que le container a une position relative */
-        }
-
-        .fixed-alert {
-            position: absolute;
-            /* Position absolue à l'intérieur du container */
-            top: 0;
-            /* Position en haut du container */
-            left: 0;
-            /* Position à gauche du container */
-            right: 0;
-            /* Position à droite du container */
-            z-index: 9999;
-            /* Pour être au-dessus du contenu du container */
-            width: 100%;
-            /* Ajustez la largeur selon les besoins */
-        }
-    </style>
-@endpush
 <div>
     <main>
         <div class="filters_full clearfix">
@@ -81,7 +58,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="filter_type">
-                            <h6>Rating</h6>
+                            <h6>Avis</h6>
                             <ul>
                                 <li>
                                     <label class="container_check">Superb 9+ <small>06</small>
@@ -112,40 +89,55 @@
                     </div>
                     <div class="col-md-4">
                         <div class="filter_type">
-                            <h6>Price</h6>
+                            <h6>Prix</h6>
                             <ul>
                                 <li>
-                                    <label class="container_check">0&euro; — 5&euro;<small>11</small>
+                                    @php
+                                        $range1 = 0;
+                                        $range2 = 0;
+                                        $range3 = 0;
+                                        $range4 = 0;
+                                        foreach ($categories as $category) {
+                                            foreach ($category->menus as $menu) {
+                                                if ($menu->price > 0 && $menu->price <= 5) {
+                                                    $range1 += 1;
+                                                }
+                                                if ($menu->price > 5 && $menu->price <= 10) {
+                                                    $range2 += 1;
+                                                }
+                                                if ($menu->price > 10 && $menu->price <= 15) {
+                                                    $range3 += 1;
+                                                }
+                                                if ($menu->price > 15 && $menu->price <= 20) {
+                                                    $range4 += 1;
+                                                }
+                                            }
+                                        }
+                                    @endphp
+                                    <label class="container_check">0&euro; — 5&euro;<small>{{ $range1 }}</small>
                                         <input wire:model="priceIntervals" value="0-5" type="checkbox">
                                         <span class="checkmark"></span>
                                     </label>
                                 </li>
                                 <li>
-                                    <label class="container_check">5&euro; — 10&euro;<small>08</small>
+                                    <label class="container_check">5&euro; — 10&euro;<small>{{ $range2 }}</small>
                                         <input wire:model="priceIntervals" value="5-10" type="checkbox">
                                         <span class="checkmark"></span>
                                     </label>
                                 </li>
                                 <li>
-                                    <label class="container_check">10&euro; — 15&euro;<small>05</small>
+                                    <label class="container_check">10&euro; — 15&euro;<small>{{ $range3 }}</small>
                                         <input wire:model="priceIntervals" value="10-15" type="checkbox">
                                         <span class="checkmark"></span>
                                     </label>
                                 </li>
                                 <li>
-                                    <label class="container_check">15&euro; — 20&euro;<small>18</small>
+                                    <label class="container_check">15&euro; — 20&euro;<small>{{ $range4 }}</small>
                                         <input wire:model="priceIntervals" value="15-20" type="checkbox">
                                         <span class="checkmark"></span>
                                     </label>
                                 </li>
-                                <li>
-                                    <label class="container_check">20&euro; — 25&euro;<small>18</small>
-                                        <input wire:model="priceIntervals" value="20-25" type="checkbox">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </li>
                             </ul>
-                            priceIntervals:{{ print_r($priceIntervals) }}
                         </div>
                     </div>
                 </div>
@@ -256,4 +248,3 @@
         </div>
     </main>
 </div>
-

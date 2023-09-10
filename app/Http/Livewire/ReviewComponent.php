@@ -84,7 +84,7 @@ class ReviewComponent extends Component
             $review->menu_id = $this->menu->id;
             $review->save();
 
-            session()->flash('success_message','Votre avis a été ajouté avec succès! Il est en cours d\'examen par notre équipe de modérateurs avant publication.');
+            session()->flash('success_message','Nous avons reçu votre avis. Il est en cours d\'examen par notre équipe de modérateurs avant publication.');
             return redirect()->route('details',$this->slug);  // On revient à la vue 'details'
         }
     }

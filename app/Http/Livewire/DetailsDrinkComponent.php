@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Menu;
 use App\Models\Drink;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
@@ -73,6 +74,9 @@ class DetailsDrinkComponent extends Component
             }
         }
     }
+
+    
+
 
     public function render()
     {

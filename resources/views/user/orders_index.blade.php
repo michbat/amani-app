@@ -94,7 +94,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($order->menuOrders as $item)
+                                                @foreach ($order->lineOrders as $item)
                                                     <tr class="text-center">
                                                         <td>{{ $loop->index + 1 }}</td>
                                                         <td><img src="{{ asset($item->menu->image) }}"

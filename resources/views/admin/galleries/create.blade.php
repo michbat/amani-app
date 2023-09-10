@@ -83,7 +83,9 @@
 
             // Au changement, on vérifie si la valeur de la select box est 'Vidéo', auquel cas on fait apparaît l'input pour saisir l'ID de la vidéo.
 
-            const val = $('#type').val(); // On récupère la valeur
+            const val = $('#galleryType').val(); // On récupère la valeur
+
+            console.log(val);
 
             // On vérifié si cette valeur est égale à 'video'
 
@@ -95,7 +97,7 @@
 
             // Si on change de valeur dans la select box
 
-            $('#type').on('change', function() {
+            $('#galleryType').on('change', function() {
                 const val_bis = $(this).val(); // On récupère la valeur choisie
                 if (val_bis == 'video') {
                     // Si c'est 'video', on enlève la classe d-none à l'input qui apparaît

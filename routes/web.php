@@ -132,7 +132,7 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
 // Employee routes
 
 Route::middleware(['auth', 'role:personnel'])->name('personnel.')->prefix('/personnel')->group(function () {
-    Route::get('/', [BackEndController::class, 'index'])->name('index');
+    // Route::get('/', [BackEndController::class, 'index'])->name('index');
 });
 
 // Authenticated User routes
