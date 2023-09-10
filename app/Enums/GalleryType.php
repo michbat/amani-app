@@ -13,8 +13,7 @@ enum GalleryType: string {
             self::VIDEO => 'Vidéo',
         };
     }
-    a
-
+    
     public function color(): string
     {
         return match ($this) {
