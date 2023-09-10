@@ -123,6 +123,6 @@ class RegistrationController extends Controller
          */
         event(new RegisterConfirmationEvent($user));
 
-        return redirect()->route('login')->with('success', 'Votre compte a été vérifié et activé avec succès. Vous pouvez maintenant vous connecter avec vos identifiants.');
+        return redirect()->route('login')->with('success', 'Votre adresse e-mail a été vérifiée et le compte est activé avec succès.');
     }
 }

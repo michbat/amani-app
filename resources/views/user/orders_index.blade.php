@@ -1,7 +1,6 @@
 @extends('user.layouts.app')
 @section('title', 'Index Commandes')
 @section('content')
-
     <div class="mx-auto" style="width: 1600px">
         <div class="d-flex justify-content-end align-items-center my-4">
             <a href="{{ route('user.dashboard') }}" class="btn btn-primary"><i class="fas fa-caret-left mx-2"></i>Retour en
@@ -11,7 +10,7 @@
         <div class="card">
             <div class="card-header d-flex flex-column justify-content-center align-items-center">
                 <h4 class="display-6">Vos commandes</h4>
-                <p class="text-success">(Appuyey sur le bouton détails pour voir le détail de votre commande)</p>
+                <p class="text-success">(Appuyez sur le bouton "Détails" pour voir les détails de votre commande)</p>
                 <p>{{ $orders->firstItem() }} à {{ $orders->lastItem() }} sur {{ $orders->total() }} commande(s)</p>
             </div>
             <div class="card-body">
@@ -95,17 +94,28 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($order->lineOrders as $item)
-                                                    <tr class="text-center">
+                                                    <tr>
                                                         <td>{{ $loop->index + 1 }}</td>
-                                                        <td><img src="{{ asset($item->menu->image) }}"
-                                                                alt="{{ $item->menu->name }}" style="width: 60px;">
-                                                        </td>
-                                                        <td>{{ $item->menu->name }}</td>
-                                                        <td>{{ $item->menu->price }}&euro;</td>
+                                                        {{-- Si $item est un menu --}}
+                                                        @if ($item->menu)
+                                                            <td><img src="{{ asset($item->menu->image) }}"
+                                                                    alt="{{ $item->menu->name }}" style="width: 60px;">
+                                                            </td>
+                                                            <td>{{ $item->menu->name }}</td>
+                                                            <td>{{ $item->menu->price }}&euro;</td>
+                                                        @else
+                                                            {{-- Si $item est un drink --}}
+                                                            <td><img src="{{ asset($item->drink->image) }}"
+                                                                    alt="{{ $item->drink->name }}" style="width: 60px;">
+                                                            </td>
+                                                            <td>{{ $item->drink->name }}</td>
+                                                            <td>{{ $item->drink->price }}&euro;</td>
+                                                        @endif
                                                         <td>{{ $item->quantity }}</td>
                                                         <td>{{ $item->sellPrice }}&euro;</td>
                                                     </tr>
                                                 @endforeach
+
                                             </tbody>
                                         </table>
                                     </td>
@@ -127,7 +137,4 @@
             {{ $orders->links() }}
         </div>
     </div>
-
-
-
 @endsection

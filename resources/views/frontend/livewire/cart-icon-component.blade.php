@@ -6,7 +6,7 @@
             @if (Cart::instance('cart')->count() > 0)
                 <ul>
                     @foreach (Cart::instance('cart')->content() as $content)
-                        {{ getCartItemModel($content) }}
+                        {{-- @dd($content) --}}
                         <li>
                             <figure>
                                 <img src="{{ asset($content->model->image) }}"

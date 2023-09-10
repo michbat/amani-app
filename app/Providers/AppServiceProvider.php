@@ -2,10 +2,11 @@
 
 namespace App\Providers;
 
+
 use App\Models\Restaurant;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+
     }
 
     /**
@@ -39,7 +40,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // Lors de l'édition d'un produit, nous devons vérifier si la quantité en stock est strictement supérieur au seuil de quantité minimale.
-        
+
         Validator::extend('greater_than_minimum', function ($attribute, $value, $parameters, $validator) {
             $minimumField = $parameters[0];
             $minimumValue = $validator->getData()[$minimumField];

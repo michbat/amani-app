@@ -109,10 +109,25 @@
                             panier</button>
                     </div>
                     <div class="col-sm-8 text-start">
+
+                        @foreach (Cart::instance('cart')->content() as $item)
+                            @if ($item->associatedModel == 'App\Models\Menu')
+                                @php
+                                    $menuIsAbsent = false;
+                                @endphp
+                            @endif
+                        @endforeach
+                        @if ($menuIsAbsent == true)
+                            <p class="text-danger text-center" style="font-size: 14px;">Sans au moins un menu dans votre
+                                panier
+                                d'achat, impossible de
+                                continuer la transaction ou d'acheter une boisson!</p>
+                        @endif
                         <a href="{{ route('menu') }}" class="btn btn-warning"><i
                                 class="fas fa-utensils mx-2"></i>Menus</a>
-                        <a href="{{ route('drink') }}" class="btn btn-info mx-2"><i
-                                class="fas fa-wine-bottle mx-2"></i>Boissons</a>
+                        <a href="{{ route('drink') }}"
+                            class="btn btn-info mx-2 {{ $menuIsAbsent == true ? 'disabled' : '' }}"><i
+                                class="fas fa-plus-circle mx-2"></i>Ajout d'une boisson</a>
                     </div>
                     <div class="col-sm-12 text-start mt-4">
                         <p style="color: red">Des produits commandés sont prêts au plus tard dans 30 minutes à partir de
@@ -145,7 +160,7 @@
                             la page login pour s'authentifier. Si le panier est vide, le bouton est désactivé --}}
 
                         <a href="#" wire:click.prevent="checkout"
-                            class="btn btn-success btn-lg cart {{ Cart::instance('cart')->count() === 0 ? 'disabled' : '' }}">Procéder
+                            class="btn btn-success btn-lg cart {{ Cart::instance('cart')->count() === 0 || $menuIsAbsent === true ? 'disabled' : '' }}">Procéder
                             au
                             paiement</a>
                     </div>

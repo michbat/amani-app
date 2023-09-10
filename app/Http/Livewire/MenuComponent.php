@@ -56,7 +56,6 @@ class MenuComponent extends Component
     {
         Cart::instance('cart')->add($menu_id, $menu_name, 1, $menu_price)->associate('App\Models\Menu');
         $this->emitTo('cart-icon-component', 'refreshComponent');
-        $this->removeMenuToWishList($menu_id);
         session()->flash('success_message', 'Menu ajouté dans votre panier');
         return redirect()->route('cart');
     }

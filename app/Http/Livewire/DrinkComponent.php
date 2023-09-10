@@ -113,7 +113,7 @@ class DrinkComponent extends Component
         // Affichage du nombre de produits par page (4,8,12,16,20)
 
         $drinks = $query->paginate($this->pageItems);
-        
+
         $categories = Category::where('designation', 'Vins')->orWhere('designation', 'Softs')->orWhere('designation', 'Eaux')->orWhere('designation', 'Bières')->orderBy('designation', 'ASC')->get();
 
         // Si le client est authentifié, il peut sauvegarde son panier et sa wishlist

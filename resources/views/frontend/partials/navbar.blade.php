@@ -33,9 +33,9 @@
         <li class="submenu">
             <a href="{{ route('menu') }}" class="show-submenu">Menus</a>
         </li>
-        <li class="submenu">
+        {{-- <li class="submenu">
             <a href="{{ route('drink') }}" class="show-submenu">Boissons</a>
-        </li>
+        </li> --}}
 
         <li class="submenu">
             <a href="#" class="show-submenu">Galerie</a>
