@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DrinkController;
 use App\Http\Controllers\Admin\IngredientController;
 use App\Http\Controllers\Admin\RestaurantController;
+use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Auth\RegistrationController;
 use App\Http\Livewire\DetailsDrinkComponent;
 
@@ -98,6 +99,7 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
     Route::resource('/units', UnitController::class);
     Route::resource('/galleries', GalleryController::class);
     Route::resource('/sliders', SliderController::class);
+    Route::resource('/staffs', StaffController::class);
 
 
 

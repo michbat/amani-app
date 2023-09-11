@@ -4,13 +4,13 @@ use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 
 /**
- * La fonction helper uploadImage va nous permettre de charger des images lors de nos opérations CRUD. L'intérêt est
- * d'éviter de repeter la logique de chargement d'une image dans chaque méthode où l'on a besoin de cette logique. Au lieu de cela
- * nous allons faire appel à la fonction uploadImage() lorsqu'on aura besoin de charger une image. Le but est d'alléger le code
- * et d'augmenter sa bonne maintenabilité.
+ * La fonction helper uploadImage va nous aider à charger des images lors de nos opérations CRUD. L'intérêt est
+ * d'éviter de repeter la logique de chargement d'une image dans chaque contrôleur où l'on en a besoin. Au lieu de travail répétitif,
+ * nous allons faire appel à la fonction uploadImage() lorsqu'on aura besoin de charger une image. Le but est d'alléger , de factoriser le code
+ * afin d'augmenter sa bonne maintenabilité.
  */
 
-//  $image = image chargée, path= le chemin où elle va être stocké, $old_path = l'ancien chemin en cas d'update.
+//  $image = image chargée, path= le répertoire où elle va être stocké, $old_path = l'ancien répertoire en cas d'update.
 
 function uploadImage($image, $path, $old_path = null): string
 {
@@ -29,7 +29,7 @@ function uploadImage($image, $path, $old_path = null): string
 
         $image_name = time() . '.' . $ext; // On définit un nouveau nom de l'image composé de la fonction time() + extension de l'image chargée
 
-        $url = $path . $image_name; // Le nouveau chemin vers l'image qu'on stockera dans la BDD
+        $url = $path . $image_name; // Le chemin absolue vers l'image
 
         // Si le repertoire $path  n'existe pas
 
@@ -43,17 +43,6 @@ function uploadImage($image, $path, $old_path = null): string
 
         Image::make($image)->save(public_path($path) . $image_name);
 
-        return $url;
+        return $url;  // On retourne le chemin vers l'image
     }
-}
-
-function getCartItemModel($cartItem)
-{
-    if ($cartItem->product_type === 'menu') {
-        return $cartItem->associatedModel; // This will return the associated Menu model
-    } elseif ($cartItem->product_type === 'drink') {
-        return $cartItem->associatedModel; // This will return the associated Drink model
-    }
-
-    return null; // Handle other cases or errors as needed
 }

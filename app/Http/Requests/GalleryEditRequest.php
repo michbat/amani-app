@@ -13,7 +13,7 @@ class GalleryEditRequest extends FormRequest
     {
         return [
             'title' => 'required|unique:galleries,title,' . $this->gallery->id,
-            'image' => 'image|mimes:png,jpg,jpeg,gif',
+            'image' => 'image|mimes:png,jpg,jpeg',
             'galleryType' => 'required',
             'videoId' => 'required_if:galleryType,video|unique:galleries,videoId,' . $this->gallery->id,
         ];
