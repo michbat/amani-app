@@ -52,7 +52,7 @@
     </div>
 
 
-    <section class="container margin_120_100">
+    {{-- <section class="container margin_120_100">
         <div class="row">
             <div class="col-xl-3">
                 <a href="#" class="img_container">
@@ -88,7 +88,7 @@
                 </a>
             </div>
         </div>
-    </section>
+    </section> --}}
 
 
     <div class="bg_gray">
@@ -136,15 +136,27 @@
                     </div>
                 </div>
             </div>
-            <!-- /row -->
-            <p class="text-center"><a href="#0" class="btn btn-outline-success px-3" data-cue="zoomIn">Download
-                    Menu (PDF)</a>
-            </p>
         </div>
         <!-- /container -->
     </div>
     <!-- /bg_gray -->
+    <div class="container margin_120_100">
+        <div class="main_title center mb-5">
+            <span><em></em></span>
+            <h2>Nos chefs et staff</h2>
+        </div>
+        <div id="staff" class="owl-carousel owl-theme">
+            @foreach ($staffs as $staff)
+                <div class="item">
+                    <div class="title">
+                        <h4>{{ $staff->name }}<em>{{ $staff->fonction }}</em></h4>
+                    </div><img src="{{ asset($staff->image) }}" alt="" width="350" height="500">
+                </div>
+            @endforeach
 
+        </div>
+        <!-- /carousel -->
+    </div>
     <div class="call_section lazy">
     </div>
 </div>

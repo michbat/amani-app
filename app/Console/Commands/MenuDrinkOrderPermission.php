@@ -31,7 +31,7 @@ class MenuDrinkOrderPermission extends Command
         $menus = Menu::all();
         $drinks = Drink::all();
         $currentTime = Carbon::now('Europe/Brussels')->format('H:i');
-        $openKitchenTime = '10:00';
+        $openKitchenTime = '00:00';
         $closeKitchenTime = '23:59';
 
 

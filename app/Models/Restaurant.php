@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use App\Models\Menu;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Staff;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Restaurant extends Model
 {
@@ -35,5 +36,12 @@ class Restaurant extends Model
     public function sliders(): HasMany
     {
         return $this->hasMany(Slider::class);
+    }
+
+    // Matérialisation de la relation un restaurant a plusieurs cuisiniers
+
+    public function staffs(): HasMany
+    {
+        return $this->hasMany(Staff::class);
     }
 }

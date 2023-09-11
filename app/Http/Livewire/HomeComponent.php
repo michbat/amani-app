@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Menu;
+use App\Models\Staff;
 use App\Models\Slider;
 use App\Models\Gallery;
 use Livewire\Component;
@@ -37,6 +38,10 @@ class HomeComponent extends Component
 
         $menus = Menu::orderBy('price', 'ASC')->limit(8)->get();
 
+        // On recupère les membres du staff
+
+        $staffs = Staff::orderBy('name', 'ASC')->get();
+
         // Si le client est authentifié, il est dirigé vers l'accueil. On restaure son panier et sa wishlist sauvegardés
         // avant le rendu de la vue "home-component"
 
@@ -47,14 +52,10 @@ class HomeComponent extends Component
 
             Cart::instance('cart')->store(Auth::user()->id);
             Cart::instance('wishlist')->store(Auth::user()->id);
-
-
-
-
         }
 
         // On injecte les objets récupérés dans la vue
 
-        return view('frontend.livewire.home-component', compact('sliders', 'restaurant', 'video', 'menus'));
+        return view('frontend.livewire.home-component', compact('sliders', 'restaurant', 'video', 'menus', 'staffs'));
     }
 }

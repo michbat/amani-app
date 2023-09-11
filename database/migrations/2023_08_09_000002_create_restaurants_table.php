@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('postalCode');
             $table->string('city');
             $table->text('aboutUs');
+            $table->text('reglement')->nullable();
             $table->string('facebookLink')->nullable();
             $table->string('twitterLink')->nullable();
             $table->string('instagramLink')->nullable();

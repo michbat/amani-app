@@ -11,6 +11,7 @@ use Database\Seeders\MenuTableSeeder;
 use Database\Seeders\TypeTableSeeder;
 use Database\Seeders\UnitTableSeeder;
 use Database\Seeders\DrinkTableSeeder;
+use Database\Seeders\StaffTableSeeder;
 use Database\Seeders\SliderTableSeeder;
 use Database\Seeders\GalleryTableSeeder;
 use Database\Seeders\CategoryTableSeeder;
@@ -37,6 +38,7 @@ class DatabaseSeeder extends Seeder
             IngredientTableSeeder::class,
             GalleryTableSeeder::class,
             SliderTableSeeder::class,
+            StaffTableSeeder::class,
         ]);
     }
 }
