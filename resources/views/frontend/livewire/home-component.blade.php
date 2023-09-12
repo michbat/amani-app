@@ -29,6 +29,9 @@
 
     <div class="pattern_2">
         <div class="container margin_120_100 home_intro">
+            @if ($global->opened == 0)
+                <p style="color: red; font-size: 23px; text-align: center;">Restaurant fermé! PAS DE COMMANDES!!!</p>
+            @endif
             <div class="row justify-content-center d-flex align-items-center">
                 <div class="col-lg-5 text-lg-center d-none d-lg-block" data-cue="slideInUp">
                     <figure>
@@ -50,45 +53,6 @@
             </div>
         </div>
     </div>
-
-
-    {{-- <section class="container margin_120_100">
-        <div class="row">
-            <div class="col-xl-3">
-                <a href="#" class="img_container">
-                    <img src="{{ asset('frontend/assets/img/banner_1.jpg') }}" class="lazy">
-                    <div class="short_info opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.5)">
-                        <h3>Menu à la carte</h3>
-                    </div>
-                </a>
-            </div>
-            <div class="col-xl-3">
-                <a href="#" class="img_container">
-                    <img src="{{ asset('frontend/assets/img/banner_3.jpg') }}" class="lazy">
-                    <div class="short_info opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.5)">
-                        <h3>Nos vidéos</h3>
-                    </div>
-                </a>
-            </div>
-            <div class="col-xl-3">
-                <a href="#" class="img_container">
-                    <img src="{{ asset('frontend/assets/img/banner_3.jpg') }}" class="lazy">
-                    <div class="short_info opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.5)">
-                        <h3>Nos photos</h3>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-xl-3">
-                <a href="#" class="img_container">
-                    <img src="{{ asset('frontend/assets/img/banner_1.jpg') }}" class="lazy">
-                    <div class="short_info opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.5)">
-                        <h3>Spectacles</h3>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section> --}}
 
 
     <div class="bg_gray">
@@ -124,7 +88,7 @@
                                             </em>
                                         </div>
                                         <p>{!! str()->limit($menu->description, 100) !!}</p>
-                                        <a class="btn btn-success {{ $menu->available === 0 || $menu->canBeCommended === 0 ? 'disabled' : '' }}"
+                                        <a class="btn btn-success {{ $menu->available === 0 || $menu->canBeCommended === 0 || $global->opened === 0 ? 'disabled' : '' }}"
                                             href="#"
                                             wire:click.prevent="storeMenu({{ $menu->id }},'{{ $menu->name }}',{{ $menu->price }})"><i
                                                 class="fas fa-shopping-cart mx-2"></i>Ajouter</a>

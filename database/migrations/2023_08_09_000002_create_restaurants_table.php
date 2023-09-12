@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('facebookLink')->nullable();
             $table->string('twitterLink')->nullable();
             $table->string('instagramLink')->nullable();
+            $table->boolean('opened')->default(true);
         });
     }
 

@@ -24,7 +24,7 @@ class CartComponent extends Component
         $this->emitTo('cart-icon-component', 'refreshComponent');
     }
 
-    
+
     public function decreaseQuantity($rowId)
     {
         $verify = false; // Variable locale booléenne qui va nous servire à vérfier si il y a au moins un menu dans le panier
@@ -44,7 +44,7 @@ class CartComponent extends Component
 
             // Lorsque la variable $verify reste à false, cela veut dire qu'il n'y a plus de menu dans le panier
 
-            if ($verify == false) {
+            if ($verify == false  && Auth::user()->firstname != 'Generic') {
                 // Dans ce cas, on vide complètement en detruisant l'instance 'cart' en appelant la méthode clearCart()
 
                 $this->clearCart();
@@ -70,7 +70,7 @@ class CartComponent extends Component
 
         // Lorsque la variable $verify reste à false, cela veut dire qu'il n'y a plus de menu dans le panier
 
-        if ($verify == false) {
+        if ($verify == false && Auth::user()->firstname != 'Generic') {
             // Dans ce cas, on vide complètement en detruisant l'instance 'cart' en appelant la méthode clearCart()
             $this->clearCart();
         }
@@ -92,7 +92,7 @@ class CartComponent extends Component
 
     public function closedDoors()
     {
-        $this->clearCart();
+        Cart::instance('cart')->destroy();
         $this->emitTo('cart-icon-component', 'refreshComponent');
         return redirect()->route('menu')->with('info', 'Désolé, vous ne pouvez commander qu\'entre 10h00 et 23h00. Merci de votre compréhension.');
     }
@@ -122,7 +122,7 @@ class CartComponent extends Component
          */
 
         $currentTime = Carbon::now('Europe/Brussels')->format('H:i');  // Récupération de l'heure courante de la Belgique
-        $openTime = '10:00';  // Heure d'ouverture
+        $openTime = '00:00';  // Heure d'ouverture
         $closeTime = '23:59';  // Heure de fermeture
 
         if ($currentTime >= $openTime && $currentTime <= $closeTime) {
@@ -134,6 +134,6 @@ class CartComponent extends Component
             $this->closedDoors();
         }
 
-        // return view('frontend.livewire.cart-component');
+        return view('frontend.livewire.cart-component');
     }
 }

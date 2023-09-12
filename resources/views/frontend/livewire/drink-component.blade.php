@@ -89,40 +89,55 @@
                     </div>
                     <div class="col-md-4">
                         <div class="filter_type">
-                            <h6>Price</h6>
+                            <h6>Prix</h6>
+                            @php
+                                $range1 = 0;
+                                $range2 = 0;
+                                $range3 = 0;
+                                $range4 = 0;
+                                foreach ($categories as $category) {
+                                    foreach ($category->drinks as $drink) {
+                                        if ($drink->price > 0 && $drink->price <= 5) {
+                                            $range1 += 1;
+                                        }
+                                        if ($drink->price > 5 && $drink->price <= 10) {
+                                            $range2 += 1;
+                                        }
+                                        if ($drink->price > 10 && $drink->price <= 15) {
+                                            $range3 += 1;
+                                        }
+                                        if ($drink->price > 15 && $drink->price <= 20) {
+                                            $range4 += 1;
+                                        }
+                                    }
+                                }
+                            @endphp
                             <ul>
                                 <li>
-                                    <label class="container_check">0&euro; — 5&euro;<small>11</small>
+                                    <label class="container_check">0&euro; — 5&euro;<small>{{ $range1 }}</small>
                                         <input wire:model="priceIntervals" value="0-5" type="checkbox">
                                         <span class="checkmark"></span>
                                     </label>
                                 </li>
                                 <li>
-                                    <label class="container_check">5&euro; — 10&euro;<small>08</small>
+                                    <label class="container_check">5&euro; — 10&euro;<small>{{ $range2 }}</small>
                                         <input wire:model="priceIntervals" value="5-10" type="checkbox">
                                         <span class="checkmark"></span>
                                     </label>
                                 </li>
                                 <li>
-                                    <label class="container_check">10&euro; — 15&euro;<small>05</small>
+                                    <label class="container_check">10&euro; — 15&euro;<small>{{ $range3 }}</small>
                                         <input wire:model="priceIntervals" value="10-15" type="checkbox">
                                         <span class="checkmark"></span>
                                     </label>
                                 </li>
                                 <li>
-                                    <label class="container_check">15&euro; — 20&euro;<small>18</small>
+                                    <label class="container_check">15&euro; — 20&euro;<small>{{ $range4 }}</small>
                                         <input wire:model="priceIntervals" value="15-20" type="checkbox">
                                         <span class="checkmark"></span>
                                     </label>
                                 </li>
-                                <li>
-                                    <label class="container_check">20&euro; — 25&euro;<small>18</small>
-                                        <input wire:model="priceIntervals" value="20-25" type="checkbox">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </li>
                             </ul>
-                            priceIntervals:{{ print_r($priceIntervals) }}
                         </div>
                     </div>
                 </div>
@@ -151,8 +166,12 @@
                             <h2 class="mb-3" style="display: inline-block">{{ $cat }},</h2>
                         @endforeach
                     @endempty
-                    <p style="color: red; font-size: 16px;">Nous n'acceptons des commandes qu'entre 10 heures et 23
-                        heures!</p>
+                    @if ($global->opened == 0)
+                        <p style="color: red; font-size: 20px;">Restaurant fermé! PAS DE COMMANDES!!!</p>
+                    @else
+                        <p style="color: red; font-size: 20px;">Nous n'acceptons des commandes qu'entre 10 heures et 23
+                            heures!</p>
+                    @endif
 
                 </div>
 
@@ -184,7 +203,7 @@
                                         </span>
                                         <div class="d-flex justify-content-center align-items-center">
                                             <button title="Ajouter ce menu au panier" type="button"
-                                                class="btn btn-success {{ $drink->available === 0 || $drink->canBeCommended === 0 ? 'disabled' : '' }}"
+                                                class="btn btn-success {{ $drink->available === 0 || $drink->canBeCommended === 0 || $global->opened === 0 ? 'disabled' : '' }}"
                                                 wire:click.prevent="storeDrink({{ $drink->id }},'{{ $drink->name }}',{{ $drink->price }})">
                                                 <span style="color: white;">
                                                     <i class="fas fa-shopping-cart mx-2"></i>Ajouter

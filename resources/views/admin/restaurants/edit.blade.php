@@ -16,10 +16,22 @@
             </div>
             <div class="card-body">
                 <div class="form-group row mb-4">
-                    <div class="col-sm-12">
+                    <div class="col-sm-6">
                         <label for="name" class="form-label">Nom</label>
                         <input type="text" class="form-control" name="name" id="name" placeholder="Nom du tag"
                             value="{{ $restaurant->name }}">
+
+                        @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="opened" class="form-label">Ouvert</label>
+                        <select name="opened" id="opened" class="selectric" >
+                            <option value="1" @selected($restaurant->opened == 1)>Oui</option>
+                            <option value="0" @selected($restaurant->opened == 0)>Non</option>
+                        </select>
+
 
                         @error('name')
                             <span class="text-danger">{{ $message }}</span>
@@ -98,7 +110,7 @@
                             placeholder="Lien facebook" value="{{ $restaurant->facebookLink }}">
                     </div>
                     <div class="col-sm-4">
-                        <label for="twitterLink" class="form-label">Facebook</label>
+                        <label for="twitterLink" class="form-label">Twitter</label>
                         <input type="text" class="form-control" name="twitterLink" id="twitterLink"
                             placeholder="Lien Twitter" value="{{ $restaurant->twitterLink }}">
                     </div>

@@ -55,6 +55,7 @@ class RestaurantController extends Controller
         $restaurant->twitterLink = $request->twitterLink;
         $restaurant->instagramLink = $request->instagramLink;
         $restaurant->aboutUs = $request->aboutUs;
+        $restaurant->opened = $request->opened;
 
         $restaurant->update();
 

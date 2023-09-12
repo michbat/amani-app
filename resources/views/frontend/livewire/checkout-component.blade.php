@@ -152,7 +152,7 @@
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
-                            <div class="payment_select">
+                            <div class="payment_select {{ auth()->user()->firstname !== 'Generic' ? 'd-none' : '' }}">
                                 <label class="container_radio">Payer en Cash
                                     <input type="radio" value="cash" wire:model="paymentMode">
                                     <span class="checkmark"></span>
@@ -160,11 +160,12 @@
                                 <i class="icon_wallet"></i>
                             </div>
                             <div>
-                                <input type="checkbox" id="acceptance" wire:model="acceptance">
-                                <label for="acceptance">J'accepte les termes et conditions de vente</label>
+                                <input type="checkbox"  wire:model="acceptance">
+                                <a href="#">
+                                    <span class="text-dark">J'accepte les termes et conditions de vente</span>
+                                </a>
                             </div>
                         </div>
-
 
                         <div class="button-wrapper d-flex flex-column justify-content-center align-items-center mb-5">
                             <button type="submit" id="commander"

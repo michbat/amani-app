@@ -15,7 +15,14 @@
                 </div>
             @endif
             <div class="row">
-                <p class="text-center text-danger">Nous n'acceptons des commandes qu'entre 10 heures et 23 heures!</p>
+                @if ($global->opened == 0)
+                    <p class="text-center text-danger" style="font-size: 20px;">Restaurant fermé! PAS DE COMMANDES!!!
+                    </p>
+                @else
+                    <p class="text-center text-danger" style="font-size: 20px;">Nous n'acceptons des commandes qu'entre
+                        10 heures et 23 heures!
+                    </p>
+                @endif
                 <div class="col-lg-6 magnific-gallery">
                     <p class="shop_setails_img">
                         <a href="{{ asset($menu->image) }}" title="{{ $menu->name }}" data-effect="mfp-zoom-in"><img
@@ -59,7 +66,7 @@
                             <div class="col-lg-4 col-md-6 d-flex justify-content-center">
                                 <div class="btn_add_to_cart">
                                     <a href="#"
-                                        class="btn btn-success {{ $menu->available === 0 || $quantity > 10 || $menu->canBeCommended === 0 ? 'disabled' : '' }}"
+                                        class="btn btn-success {{ $menu->available === 0 || $quantity >= 10 || $menu->canBeCommended === 0 || $global->opened === 0 ? 'disabled' : '' }}"
                                         style="min-width: 190px"
                                         wire:click.prevent="storeMenu({{ $menu->id }},'{{ $menu->name }}',{{ $menu->price }})"
                                         wire:model="$quantity"><i class="fas fa-shopping-cart mx-2"></i>Ajouter

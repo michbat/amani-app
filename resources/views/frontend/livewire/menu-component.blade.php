@@ -90,30 +90,30 @@
                     <div class="col-md-4">
                         <div class="filter_type">
                             <h6>Prix</h6>
+                            @php
+                                $range1 = 0;
+                                $range2 = 0;
+                                $range3 = 0;
+                                $range4 = 0;
+                                foreach ($categories as $category) {
+                                    foreach ($category->menus as $menu) {
+                                        if ($menu->price > 0 && $menu->price <= 5) {
+                                            $range1 += 1;
+                                        }
+                                        if ($menu->price > 5 && $menu->price <= 10) {
+                                            $range2 += 1;
+                                        }
+                                        if ($menu->price > 10 && $menu->price <= 15) {
+                                            $range3 += 1;
+                                        }
+                                        if ($menu->price > 15 && $menu->price <= 20) {
+                                            $range4 += 1;
+                                        }
+                                    }
+                                }
+                            @endphp
                             <ul>
                                 <li>
-                                    @php
-                                        $range1 = 0;
-                                        $range2 = 0;
-                                        $range3 = 0;
-                                        $range4 = 0;
-                                        foreach ($categories as $category) {
-                                            foreach ($category->menus as $menu) {
-                                                if ($menu->price > 0 && $menu->price <= 5) {
-                                                    $range1 += 1;
-                                                }
-                                                if ($menu->price > 5 && $menu->price <= 10) {
-                                                    $range2 += 1;
-                                                }
-                                                if ($menu->price > 10 && $menu->price <= 15) {
-                                                    $range3 += 1;
-                                                }
-                                                if ($menu->price > 15 && $menu->price <= 20) {
-                                                    $range4 += 1;
-                                                }
-                                            }
-                                        }
-                                    @endphp
                                     <label class="container_check">0&euro; — 5&euro;<small>{{ $range1 }}</small>
                                         <input wire:model="priceIntervals" value="0-5" type="checkbox">
                                         <span class="checkmark"></span>
@@ -166,8 +166,12 @@
                             <h2 class="mb-3" style="display: inline-block">{{ $cat }},</h2>
                         @endforeach
                     @endempty
-                    <p style="color: red; font-size: 16px;">Nous n'acceptons des commandes qu'entre 10 heures et 23
-                        heures!</p>
+                    @if ($global->opened == 0)
+                        <p style="color: red; font-size: 20px;">Restaurant fermé! PAS DE COMMANDES!!!</p>
+                    @else
+                        <p style="color: red; font-size: 20px;">Nous n'acceptons des commandes qu'entre 10 heures et 23
+                            heures!</p>
+                    @endif
 
                 </div>
 
@@ -204,7 +208,7 @@
                                         </span>
                                         <div class="d-flex justify-content-center align-items-center">
                                             <button title="Ajouter ce menu au panier" type="button"
-                                                class="btn btn-success {{ $menu->available === 0 || $menu->canBeCommended === 0 ? 'disabled' : '' }}"
+                                                class="btn btn-success {{ $menu->available === 0 || $menu->canBeCommended === 0 || $global->opened === 0 ? 'disabled' : '' }}"
                                                 wire:click.prevent="storeMenu({{ $menu->id }},'{{ $menu->name }}',{{ $menu->price }})">
                                                 <span style="color: white;">
                                                     <i class="fas fa-shopping-cart mx-2"></i>Ajouter

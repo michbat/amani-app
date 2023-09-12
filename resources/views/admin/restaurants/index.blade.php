@@ -15,10 +15,7 @@
                         <th>Fixe</th>
                         <th>GSM</th>
                         <th>Email</th>
-                        <th>Rue</th>
-                        <th>Numéro</th>
-                        <th>Adresse Postale</th>
-                        <th>Ville</th>
+                        <th>Ouvert</th>
                         <th>Facebook</th>
                         <th>Twitter</th>
                         <th>Instagram</th>
@@ -41,16 +38,8 @@
                             <span style="font-weight: 900">{{ $restaurant->email }}</span>
                         </td>
                         <td>
-                            <span style="font-weight: 900">{{ str()->limit($restaurant->roadName, 4) }}</span>
-                        </td>
-                        <td>
-                            <span style="font-weight: 900">{{ $restaurant->number }}</span>
-                        </td>
-                        <td>
-                            <span style="font-weight: 900">{{ $restaurant->postalCode }}</span>
-                        </td>
-                        <td>
-                            <span style="font-weight: 900">{{ $restaurant->city }}</span>
+                            <span
+                                class="btn {{ $restaurant->opened === 1 ? 'btn-success' : 'btn-danger' }} text-dark" style="border-radius: 50px;">{{ $restaurant->opened == 1 ? 'Oui' : 'Non' }}</span>
                         </td>
                         <td>
                             <span style="font-weight: 900">{{ str()->limit($restaurant->facebookLink, 5) }}</span>

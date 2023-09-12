@@ -36,7 +36,7 @@ class IngredientStockMonitoring extends Command
         // devient indisponible.
 
         foreach ($ingredients as $ingredient) {
-            if ($ingredient->quantityInStock <= $ingredient->quantityMinimum) {
+            if (($ingredient->quantityInStock / 3) <= $ingredient->quantityMinimum) {
                 $ingredient->stockStatus = StockStatus::NOTAVAILABLE->value;
                 $ingredient->update();
 

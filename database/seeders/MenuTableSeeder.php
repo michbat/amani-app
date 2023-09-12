@@ -72,8 +72,8 @@ class MenuTableSeeder extends Seeder
             [
                 'category_id' => $cat_en_id,
                 'restaurant_id' => $resto_id,
-                'name' => "Méli-mélo de poivrons, tomates, courgettes à l'ail",
-                'slug' => Str::slug('Méli-mélo de poivrons, tomates, courgettes à l\'ail', '-'),
+                'name' => "Méli mélo de légumes",
+                'slug' => Str::slug('Méli mélo de légumes', '-'),
                 'description' => "Découvrez notre Méli-mélo de poivrons, tomates et courgettes à l'ail, une explosion de couleurs et de saveurs. Les poivrons, tomates et courgettes se mêlent harmonieusement, créant une symphonie visuelle et gustative. L'ail ajoute une note aromatique qui rehausse l'ensemble. Chaque bouchée est une dégustation de fraîcheur et de légèreté, mettant en avant la beauté de la nature dans ce mélange vibrant. Plongez dans cette création culinaire qui évoque la simplicité et la fraîcheur des ingrédients de saison.",
                 'image' => '/uploads/seeders/recipe/5-meli_melo_poivrons_tomates_courgette_ail.jpg',
                 'price' => 6.75,

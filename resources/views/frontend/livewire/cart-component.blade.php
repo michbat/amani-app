@@ -111,13 +111,19 @@
                     <div class="col-sm-8 text-start">
 
                         @foreach (Cart::instance('cart')->content() as $item)
-                            @if ($item->associatedModel == 'App\Models\Menu')
+                            @if ($item->associatedModel == 'App\Models\Menu' || auth()->user()->firstname == 'Generic')
                                 @php
                                     $menuIsAbsent = false;
                                 @endphp
                             @endif
                         @endforeach
+                        @if (auth()->user()->firstname === 'Generic')
+                            @php
+                                $menuIsAbsent = false;
+                            @endphp
+                        @endif
                         @if ($menuIsAbsent == true)
+
                             <p class="text-danger text-center" style="font-size: 14px;">Sans au moins un menu dans votre
                                 panier
                                 d'achat, impossible de
@@ -131,7 +137,7 @@
                     </div>
                     <div class="col-sm-12 text-start mt-4">
                         <p style="color: red">Des produits commandés sont prêts au plus tard dans 30 minutes à partir de
-                            la confirmation de la commande. Vous avez 2 heures pour retirer votre commande dès qu'elle
+                            la confirmation de la commande. Vous avez 1h30 pour retirer votre commande dès qu'elle
                             est prête. Vous pouvez suivre l'état de votre commande sur votre compte et un e-mail vous
                             sera envoyé dès qu'elle prête.</p>
                     </div>

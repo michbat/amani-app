@@ -3,9 +3,9 @@
     <div class="container-fluid">
         <div id="logo">
             <a href="{{ route('home') }}">
-                <img src="{{ asset('frontend/assets/img/logo_1.png') }}" width="140" height="35" alt=""
+                <img src="{{ asset('frontend/assets/img/twitter_header_photo_2.png') }}" width="140" height="35" alt=""
                     class="logo_normal">
-                <img src="{{ asset('frontend/assets/img/logo_2.png') }}" width="140" height="35" alt=""
+                <img src="{{ asset('frontend/assets/img/twitter_header_photo_2.png') }}" width="140" height="35" alt=""
                     class="logo_sticky">
             </a>
         </div>

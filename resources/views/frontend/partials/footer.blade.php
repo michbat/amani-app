@@ -6,7 +6,7 @@
                     <i class="icon_pin_alt"></i>
                     <h3>Adresse</h3>
                     <p>
-                        {{ $global->roadName }}, {{ $global->number }} <br>
+                        {{ $global->number }}, {{ $global->roadName }}<br>
                         {{ $global->postalCode }} {{ $global->city }}
                     </p>
                 </div>
@@ -27,8 +27,7 @@
                     <i class="icon_clock_alt"></i>
                     <h3>Heures d'ouverture</h3>
                     <ul>
-                        <li>Mardi-Dimanche (10h à Minuit)</li>
-                        <li>Lundi (fermé)</li>
+                        <li>Tous les jours de 10h à 23h00</li>
                     </ul>
                 </div>
             </div>

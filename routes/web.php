@@ -115,7 +115,7 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
     Route::get('/restaurants', [RestaurantController::class, 'index'])->name('restaurants.index');
     Route::get('/restaurants/{restaurant}/show', [RestaurantController::class, 'show'])->name('restaurants.show');
     Route::get('/restaurants/{restaurant}/edit', [RestaurantController::class, 'edit'])->name('restaurants.edit');
-    Route::put('/restaurants/{restaurant}/update ', [RestaurantController::class, 'update'])->name('restaurants.update');
+    Route::put('/restaurants/{restaurant}/update', [RestaurantController::class, 'update'])->name('restaurants.update');
 
     // Routes pour gérer les commentaires sur nos menus
 

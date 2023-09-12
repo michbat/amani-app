@@ -3,8 +3,8 @@
         <a href="#0" class="open_close">
             <i class="icon_close"></i><span>Menu</span>
         </a>
-        <a href="index.html"><img src="{{ asset('frontend/assets/img/logo.svg') }}" width="140" height="35"
-                alt=""></a>
+        <a href="{{ route('home') }}"><img src="{{ asset('frontend/assets/img/twitter_header_photo_2.png') }}"
+                width="140" height="35" alt=""></a>
     </div>
     <ul>
 
