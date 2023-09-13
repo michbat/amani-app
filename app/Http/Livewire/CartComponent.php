@@ -27,58 +27,93 @@ class CartComponent extends Component
 
     public function decreaseQuantity($rowId)
     {
-        $verify = false; // Variable locale booléenne qui va nous servire à vérfier si il y a au moins un menu dans le panier
-        $item = Cart::instance('cart')->get($rowId);
-        $qty = $item->qty - 1;
-        Cart::instance('cart')->update($rowId, $qty);
-        $this->emitTo('cart-icon-component', 'refreshComponent');
+        $verify = false; // Variable "drapeau" booléenne qui va nous servir à vérfier si il y a au moins un menu dans le panier
+        $item = Cart::instance('cart')->get($rowId); // On récupère le produit pour lequel on décremente la quantité
+        $qty = $item->qty - 1;  // On réduit la quantité du produit
+        Cart::instance('cart')->update($rowId, $qty);  // On met à jour la quantité du produit objet d'une décrémenation
+        $this->emitTo('cart-icon-component', 'refreshComponent');  // On rafrachît l'icône panier pour qu'elle tienne compte de la mise à jour du panier
 
-        //Losque la quantité d'un produit se trouvant dans la panier est décrémentée jusqu'à 0, ce produit est enlevé du panier
-        // On doit vérifier s'il y a encore de menu dans le panier.
-        if ($qty == 0) {
+        // S'il n'y a aucun produit dans le panier
+        if (count(Cart::instance('cart')->content()) == 0) {
+            return redirect()->back(); // On affiche toujours le panier mais sans message flash de session
+        } else {
+            // Sinon on parcourt le panier pour voir s'il y a au moins un plat
             foreach (Cart::instance('cart')->content() as $content) {
                 if ($content->associatedModel == "App\Models\Menu") {
                     $verify = true;
                 }
             }
-
-            // Lorsque la variable $verify reste à false, cela veut dire qu'il n'y a plus de menu dans le panier
-
-            if ($verify == false  && Auth::user()->firstname != 'Generic') {
-                // Dans ce cas, on vide complètement en detruisant l'instance 'cart' en appelant la méthode clearCart()
-
-                $this->clearCart();
-            }
-            session()->flash('success_message', 'Le produit enlevé de votre panier');
-            return redirect()->back();
         }
-    }
 
-    public function destroy($rowId)
-    {
-        $verify =  false;  // Variable locale booléenne qui va nous servire à vérfier si il y a au moins un menu dans le panier
-        Cart::instance('cart')->remove($rowId);
-        $this->emitTo('cart-icon-component', 'refreshComponent');
-
-        // Lorsqu'on enlève un produit du panier, on vérifier si dans le panier il y a encore des menus
-
-        foreach (Cart::instance('cart')->content() as $content) {
-            if ($content->associatedModel == "App\Models\Menu") {
-                $verify = true;
-            }
+        if (!Auth::user() && $verify == false) {
+            // Dans ce cas, on vide complètement en detruisant l'instance 'cart' en appelant la méthode clearCart()
+            Cart::instance('cart')->destroy();
+            $this->emitTo('cart-icon-component', 'refreshComponent');
+            session()->flash('warning_message', 'Votre panier doit impérativement contenir un plat pour commander des boissons');
+            return redirect()->back();
         }
 
         // Lorsque la variable $verify reste à false, cela veut dire qu'il n'y a plus de menu dans le panier
 
-        if ($verify == false && Auth::user() != null && Auth::user()->firstname != 'Generic') {
-            // Dans ce cas, on vide complètement en detruisant l'instance 'cart' en appelant la méthode clearCart()
-            $this->clearCart();
+        if (Auth::user() && Auth::user()->firstname != 'Generic' && $verify == false) {
+            // Dans ce cas, on vide complètement le panier en detruisant l'instance 'cart'
+            Cart::instance('cart')->destroy();
+            $this->emitTo('cart-icon-component', 'refreshComponent');
+            session()->flash('warning_message', 'Votre panier doit impérativement contenir un plat pour commander des boissons');
+            return redirect()->back();
         }
+
         session()->flash('success_message', 'Le produit enlevé de votre panier');
         return redirect()->back();
     }
 
-    // Méthode pour vider le panier
+    public function destroy($rowId)
+    {
+        $verify =  false;  // Une variable "drapeau" locale booléenne qui va nous servir à vérfier si il y a au moins un plat dans le panier
+        Cart::instance('cart')->remove($rowId);  // On enlève le produit dont l'identifiant dans le panier est $rowId
+        $this->emitTo('cart-icon-component', 'refreshComponent');   // On rafraîchit la petite icône panier (en haut à droite) contenant des produits (boissons & plats) ajoutés
+
+        if (count(Cart::instance('cart')->content()) == 0) {
+            return redirect()->back();
+        } else {
+
+            // Lorsqu'on enlève un produit du panier, on vérifie si dans ce panier il y a encore des plats, condition sinequanone pour poursuivre sa commande en ligne
+
+            // On parcourt donc l'objet 'cart' c'est à dire notre panier
+
+            foreach (Cart::instance('cart')->content() as $content) {
+                if ($content->associatedModel == "App\Models\Menu") {
+                    $verify = true;  // S'il y a au moins un plat dans le panier, $verify devient true
+                }
+            }
+        }
+
+
+        //  Si personne n'est connectée et qu'il n'y a pas de plat dans le panier
+
+        if (!Auth::user() && $verify == false) {
+            // Dans ce cas, on vide complètement le panier en detruisant l'instance 'cart'
+            Cart::instance('cart')->destroy();
+            $this->emitTo('cart-icon-component', 'refreshComponent');
+            session()->flash('warning_message', 'Votre panier doit impérativement contenir un plat pour commander des boissons.');
+            return redirect()->back();
+        }
+
+        // Si la personne est connectée sans être le "generic consummer" en plus d'un panier vide de plat
+
+        if (Auth::user() && Auth::user()->firstname != 'Generic' && $verify == false) {
+            // Dans ce cas, on vide complètement le panier en detruisant l'instance 'cart'
+            Cart::instance('cart')->destroy();
+            $this->emitTo('cart-icon-component', 'refreshComponent');
+            session()->flash('warning_message', 'Votre panier doit impérativement contenir un plat pour commander des boissons.');
+            return redirect()->back();
+        }
+
+        session()->flash('success_message', 'Le produit enlevé de votre panier');
+        return redirect()->back();
+    }
+
+    // Méthode pour vider le panier en cliquant sur le panier ("vider votre panier")
 
     public function clearCart()
     {
@@ -88,7 +123,7 @@ class CartComponent extends Component
         return redirect()->back();
     }
 
-    // Méthode appelée lorque le restautant est fermé.
+    // Méthode appelée lorque le restautant est fermé pour empêcher d'accèder au panier tout ne le vidant (au cas où le client y aurait ajouté un produit avant la fermeture)
 
     public function closedDoors()
     {
@@ -128,12 +163,9 @@ class CartComponent extends Component
         if ($currentTime >= $openTime && $currentTime <= $closeTime) {
             return view('frontend.livewire.cart-component');
         } else {
-            // La méthode closeDoors() vide le panier au cas on y aurait ajouté un produit avant la fermeture
-            // et redirige le client vers le menu
-
+            // On n'appele la méthode closedDoors() en dehors des heures d'ouverture
             $this->closedDoors();
+            return view('frontend.livewire.menu-component');
         }
-
-        return view('frontend.livewire.cart-component');
     }
 }

@@ -45,6 +45,11 @@ class MenuComponent extends Component
      * Ici on reset l'ancienne pagination générée d'une ancienne recherche pour laisser la place à une nouvelle pagination
      *
      */
+
+    public function mount()
+    {
+        session()->put('menu','menu_page_visited');
+    }
     public function updated()
     {
         $this->resetPage();

@@ -35,6 +35,13 @@
                                     aria-label="Close"></button>
                             </div>
                         @endif
+                        @if ($message = Session::get('warning_message'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>{{ $message }}</strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+                        @endif
                         @if (Cart::instance('cart')->count() > 0)
                             @foreach (Cart::instance('cart')->content() as $element)
                                 <tr>
@@ -123,7 +130,6 @@
                             @endphp
                         @endif
                         @if ($menuIsAbsent == true)
-
                             <p class="text-danger text-center" style="font-size: 14px;">Sans au moins un menu dans votre
                                 panier
                                 d'achat, impossible de

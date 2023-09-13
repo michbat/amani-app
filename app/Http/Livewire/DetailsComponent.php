@@ -41,6 +41,8 @@ class DetailsComponent extends Component
          */
 
         $item->first() != null ? $this->quantity = $item->first()->qty :  $this->quantity = 0;
+
+        session()->put('menu','menu_page_visited');
     }
 
     // Méthode pour ajouter un menu dans le panier

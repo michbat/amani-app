@@ -47,7 +47,7 @@ use App\Http\Livewire\DetailsDrinkComponent;
 
 Route::get('/', HomeComponent::class)->name('home');
 Route::get('/menu', MenuComponent::class)->name('menu');
-Route::get('/drink', DrinkComponent::class)->name('drink');
+Route::get('/drink', DrinkComponent::class)->name('drink')->middleware('check.visited.menu');
 Route::get('/cart', CartComponent::class)->name('cart');
 Route::get('/menu/{slug}', DetailsComponent::class)->name('details');
 Route::get('/drink/{slug}', DetailsDrinkComponent::class)->name('details.drink');
