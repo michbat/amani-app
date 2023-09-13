@@ -13,14 +13,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-
         $schedule->command('orders:process')->everyFiveSeconds()->runInBackground();
         $schedule->command('menusDrinks:order')->everySecond()->runInBackground();
         $schedule->command('ingredients:monitoring')->everySecond()->runInBackground();
-
     }
-
-
     /**
      * Get the timezone that should be used by default for scheduled events.
      */
@@ -28,7 +24,6 @@ class Kernel extends ConsoleKernel
     {
         return 'Europe/Brussels';
     }
-
     /**
      * Register the commands for the application.
      */

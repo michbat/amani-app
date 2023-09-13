@@ -20,6 +20,7 @@ enum OrderStatus: string
             self::PICKEDUP => 'Récupérée'
         };
     }
+    
     public function color(): string
     {
         return match ($this) {

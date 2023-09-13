@@ -1,14 +1,15 @@
 <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="#">Data Management</a>
+            <a href="{{ route('admin.index') }}">Data Management</a>
         </div>
-        <div class="sidebar-brand sidebar-brand-sm">
-            {{-- <a href="#">AD</a> --}}
+        <div class="sidebar-brand sidebar-brand-lg">
+            <a href="{{ route('admin.openClose') }}"
+                class="text-dark btn {{ $global->opened === 1 ? 'btn-success' : 'btn-danger' }}">{{ $global->opened === 1 ? 'Ouvert' : 'Fermé' }}</a>
         </div>
         <ul class="sidebar-menu">
             <li class="active">
-                <a href="{{ route('home') }}" class="nav-link"><i class="fas fa-home"></i><span>Frontend</span></a>
+                <a href="{{ route('admin.index') }}" class="nav-link"><i class="fas fa-home"></i><span>Index</span></a>
             </li>
 
             {{-- Section Rôles et Utilisateurs --}}
@@ -134,7 +135,8 @@
                 </ul>
             </li>
             <li class="dropdown {{ request()->routeIs('admin.staffs.*') ? 'active' : '' }}">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-user-friends"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                        class="fas fa-user-friends"></i>
                     <span>Staff</span></a>
                 <ul class="dropdown-menu">
                     <li class="{{ request()->routeIs('admin.staffs.index') ? 'active' : '' }}"><a class="nav-link"

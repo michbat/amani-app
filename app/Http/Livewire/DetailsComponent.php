@@ -36,7 +36,7 @@ class DetailsComponent extends Component
 
 
         /**
-         * Si le produit que l'on veut voir en détail se trouve dans le panier alors on affecte sa quantité à la propriété $quantity bindée (liée)
+         * Si le produit que l'on veut voir en détails se trouve dans le panier alors on affecte sa quantité à la propriété $quantity bindée (liée)
          * dans la vue "details-component.blade.php" (wire:model="$quantity"). Sinon on lui affecte la valeur zéro.
          */
 

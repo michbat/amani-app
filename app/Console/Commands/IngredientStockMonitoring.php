@@ -40,7 +40,7 @@ class IngredientStockMonitoring extends Command
                 $ingredient->stockStatus = StockStatus::NOTAVAILABLE->value;
                 $ingredient->update();
 
-                // On parcout les menus lié à cet ingrédients pour les rendre indisponibles.
+                // On parcourt les menus lié à cet ingrédient pour les rendre indisponibles.
 
                 foreach ($ingredient->menus as $menu) {
                     $menu->available = 0; // on met la propriété available à false (0)

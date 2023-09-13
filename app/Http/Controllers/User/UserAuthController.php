@@ -80,7 +80,7 @@ class UserAuthController extends Controller
         } else {
             /**
              * Si l'utilisateur change son adresse e-mail, il faut donc relancer le processus de vérification de cette nouvelle adresse
-             * Cela est d'autant plus important que l'adresse e-mail est utilisée pour se connecter.
+             * Cela est d'autant plus important que l'adresse e-mail est un élément utilisé pour se connecter.
              */
             // On génère un nouveau token
 
@@ -96,10 +96,7 @@ class UserAuthController extends Controller
 
             event(new EditProfileSubmitEvent($user));
 
-            Auth::guard('web')->logout(); // On déconnecte l'utilisateur
-            $request->session()->invalidate(); // On detruit la session de connexion
-
-            // On rediriger l'utilisateur déconnecté vers la page d'accueil en l'invitant à cliquer sur le lien qui lui a été envoyé à sa nouvelle adresse e-mail
+            Auth::logout();  // On déconnecte l'utilisateur
 
             return $request->wantsJson()
                 ? new JsonResponse([], 204)

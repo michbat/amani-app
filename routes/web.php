@@ -101,6 +101,10 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
     Route::resource('/sliders', SliderController::class);
     Route::resource('/staffs', StaffController::class);
 
+    // Ouvrir ou fermer le restaurant
+
+    Route::get('/open-close', [AdminController::class, 'openCloseRestaurant'])->name('openClose');
+
 
 
     // Routes pour gérer les commandes

@@ -70,7 +70,7 @@ class CartComponent extends Component
 
         // Lorsque la variable $verify reste à false, cela veut dire qu'il n'y a plus de menu dans le panier
 
-        if ($verify == false && Auth::user()->firstname != 'Generic') {
+        if ($verify == false && Auth::user() != null && Auth::user()->firstname != 'Generic') {
             // Dans ce cas, on vide complètement en detruisant l'instance 'cart' en appelant la méthode clearCart()
             $this->clearCart();
         }

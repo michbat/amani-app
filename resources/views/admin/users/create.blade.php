@@ -47,24 +47,6 @@
                         @error('phone')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
-
-                    </div>
-
-                    <div class="form-group">
-                        <input type="password" class="form-control py-2  @error('password') is-invalid @enderror"
-                            placeholder="Mot de passe" name="password">
-                        @error('password')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <div class="form-group mb-4">
-                        <input type="password"
-                            class="form-control py-2 @error('password_confirmation') is-invalid @enderror"
-                            placeholder="Confirmer le mot de passe" name="password_confirmation">
-                        @error('password_confirmation')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
                     </div>
                     <div class="text-center my-5">
                         <button type="submit" class="btn btn-primary btn-block py-2 fs-5 text-dark"

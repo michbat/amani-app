@@ -29,7 +29,7 @@ class EditProfileSubmitRequest extends FormRequest
             'lastname' => 'required|string|min:2|max:60',
             // L'adresse e-mail doit être unique dans la table 'users' mais cette règle ne s'applique pas à l'utilisateur connecté lorqu'il veut éditer son adresse e-mail puisqu'il peut faire le choix de garder son adresse e-mail courante.
             'email' => ['required','email',Rule::unique('users')->ignore($this->user()->id,'id')],
-            // Le numéro de téléphone doit être unique dans la table 'users' mais cette règle ne s'applique pas à l'utilisateur connecté lorsqu'il veut éditer son numéro de téléphone puisqu'il peut faire le choix de garder son numéro de téléphone courant. 
+            // Le numéro de téléphone doit être unique dans la table 'users' mais cette règle ne s'applique pas à l'utilisateur connecté lorsqu'il veut éditer son numéro de téléphone puisqu'il peut faire le choix de garder son numéro de téléphone courant.
             'phone' => ['required','regex:/^([0-9\s\-\+\(\)\/]*)$/','min:9',Rule::unique('users')->ignore($this->user()->id,'id')],
         ];
     }
@@ -51,12 +51,12 @@ class EditProfileSubmitRequest extends FormRequest
 
             'email.required' => 'L\'adresse e-mail est requise',
             'email.email' => 'Fournissez une adresse e-mail valide. par exemple: dupond@gmail.com',
-            'email.unique' => 'Cette adresse e-mail est déjà prise',
+            'email.unique' => 'Cette adresse e-mail est déjà enregistrée dans notre système',
 
             'phone.required' => 'Le numéro de téléphone est requis',
             'phone.min' => 'Le numéro de téléphone doit composetr au moins 9 chiffres',
             'phone.regex' => 'Fournissez un numéro de téléphone valide',
-            'phone.unique' => 'Ce numéro de téléphone est déjà pris',
+            'phone.unique' => 'Ce numéro de téléphone est déjà enregistré dans notre système',
         ];
     }
 }

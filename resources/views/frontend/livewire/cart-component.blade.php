@@ -111,13 +111,13 @@
                     <div class="col-sm-8 text-start">
 
                         @foreach (Cart::instance('cart')->content() as $item)
-                            @if ($item->associatedModel == 'App\Models\Menu' || auth()->user()->firstname == 'Generic')
+                            @if ((auth()->user() != null && auth()->user()->firstname == 'Generic') || $item->associatedModel == 'App\Models\Menu')
                                 @php
                                     $menuIsAbsent = false;
                                 @endphp
                             @endif
                         @endforeach
-                        @if (auth()->user()->firstname === 'Generic')
+                        @if (auth()->user() != null && auth()->user()->firstname === 'Generic')
                             @php
                                 $menuIsAbsent = false;
                             @endphp

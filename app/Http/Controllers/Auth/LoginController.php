@@ -77,18 +77,12 @@ class LoginController extends Controller
                 $user->update(); // On met à jour les informations de l'utilisateur.
             }
 
-            if (Auth::attempt($credentials))
-            {
+            if (Auth::attempt($credentials)) {
                 return redirect()->route('home')->with('success', 'Bonjour ' . $user->firstname . ', Vous êtes connecté!');
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', 'Une erreur s\'est produite. Veuillez retenter une connexion.');
             }
-
-        }
-        elseif (!$credentialsIsOk)
-        {
+        } elseif (!$credentialsIsOk) {
             /**
              * Si la vériable $credentialsOk est 'false', seule la variable $pwd_check est en cause puisque l'adresse e-mail de l'utilisateur
              * est vérifiée comme existante dans la BDD grâce aux règles de validation que nous avons définies dans la classe LoginSubmitRequest
@@ -96,9 +90,7 @@ class LoginController extends Controller
              */
 
             return redirect()->back()->with('error', 'Mot de passe incorrect');
-        }
-        else
-        {
+        } else {
 
             /**
              * Si les crédentials sont bons mais que la connexion est réfusée, cela est dûe au fait que l'utilisateur n'a pas valide son compte
@@ -116,24 +108,17 @@ class LoginController extends Controller
             // L'utilisateur reste sur la page login et reçoit un message flash l'informant de la nécessité d'activer son compte pour se connecter.
 
             return redirect()
-            ->back()
-            ->with('error', 'Votre compte n\'est pas activé. Activez-le en cliquant sur le lien envoyé à votre boîte e-mail ou prenez contact avec nous.');
+                ->back()
+                ->with('error', 'Votre compte n\'est pas activé. Activez-le en cliquant sur le lien envoyé à votre boîte e-mail ou prenez contact avec nous.');
         }
-
     }
 
     public function logout(Request $request)
     {
-        Auth::guard('web')->logout(); // On se déconnecte
-        $request->session()->invalidate(); // On supprime toutes les données de la session
-        $request->session()->regenerateToken();  // Pour permettre à laravel de régéner le jeton de session.
-
-        // On rediriger l'utilisateur déconnecté vers la page d'accueil
+        Auth::logout();  // Instruction pour déconnecter un utilisateur connecté. 
 
         return $request->wantsJson()
-        ? new JsonResponse([], 204)
-        : redirect()->route('home');
-
+            ? new JsonResponse([], 204)
+            : redirect()->route('home')->with('success', 'Vous vous êtes déconnecté avec succès');
     }
-
 }
