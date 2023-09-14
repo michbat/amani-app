@@ -86,7 +86,7 @@
                                                 <tr class="text-center">
                                                     <th>N°</th>
                                                     <th>Image</th>
-                                                    <th>Menu</th>
+                                                    <th>Produit</th>
                                                     <th>Prix unitaire</th>
                                                     <th>Quantité</th>
                                                     <th>Sous-total</th>
@@ -96,13 +96,13 @@
                                                 @foreach ($order->lineOrders as $item)
                                                     <tr>
                                                         <td>{{ $loop->index + 1 }}</td>
-                                                        {{-- Si $item est un menu --}}
-                                                        @if ($item->menu)
-                                                            <td><img src="{{ asset($item->menu->image) }}"
-                                                                    alt="{{ $item->menu->name }}" style="width: 60px;">
+                                                        {{-- Si $item est un plat --}}
+                                                        @if ($item->plat)
+                                                            <td class="text-center"><img src="{{ asset($item->plat->image) }}"
+                                                                    alt="{{ $item->plat->name }}" style="width: 60px;">
                                                             </td>
-                                                            <td>{{ $item->menu->name }}</td>
-                                                            <td>{{ $item->menu->price }}&euro;</td>
+                                                            <td>{{ $item->plat->name }}</td>
+                                                            <td>{{ $item->plat->price }}&euro;</td>
                                                         @else
                                                             {{-- Si $item est un drink --}}
                                                             <td><img src="{{ asset($item->drink->image) }}"
@@ -111,8 +111,8 @@
                                                             <td>{{ $item->drink->name }}</td>
                                                             <td>{{ $item->drink->price }}&euro;</td>
                                                         @endif
-                                                        <td>{{ $item->quantity }}</td>
-                                                        <td>{{ $item->sellPrice }}&euro;</td>
+                                                        <td class="text-center">{{ $item->quantity }}</td>
+                                                        <td class="text-center">{{ $item->sellPrice }}&euro;</td>
                                                     </tr>
                                                 @endforeach
 

@@ -161,13 +161,15 @@
                             </div>
                             <div>
                                 <input type="checkbox"  wire:model="acceptance">
-                                <a href="#">
+                                {{-- @dd($acceptance) --}}
+                                <a href="{{ route('reglement') }}" alt="Lire les termes et conditions">
                                     <span class="text-dark">J'accepte les termes et conditions de vente</span>
                                 </a>
                             </div>
                         </div>
 
                         <div class="button-wrapper d-flex flex-column justify-content-center align-items-center mb-5">
+                            {{-- @dd($isAccepted) --}}
                             <button type="submit" id="commander"
                                 class="btn btn-success btn-lg {{ $acceptance == false ? 'disabled' : '' }}"
                                 wire:click.prevent="placeOrder">
@@ -186,7 +188,7 @@
                         </div>
                         <div class="main">
                             <ul class="clearfix">
-                                @foreach (Cart::content() as $content)
+                                @foreach (Cart::instance('cart')->content() as $content)
                                     <li>
                                         {{ $content->qty }}x {{ $content->model->name }}</>
                                         <span>{{ $content->model->price }}&euro;</span>

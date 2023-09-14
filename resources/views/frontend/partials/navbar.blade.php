@@ -31,7 +31,7 @@
             <a href="{{ route('home') }}" class="show-submenu">Accueil</a>
         </li>
         <li class="submenu">
-            <a href="{{ route('menu') }}" class="show-submenu">Menus</a>
+            <a href="{{ route('plat') }}" class="show-submenu">Plats</a>
         </li>
         {{-- <li class="submenu">
             <a href="{{ route('drink') }}" class="show-submenu">Boissons</a>

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckAddedMenu
+class CheckAddedPlat
 {
     /**
      * Handle an incoming request.
@@ -20,7 +20,7 @@ class CheckAddedMenu
         $verify = false;
 
         foreach (Cart::instance('cart')->content() as $content) {
-            if ($content->associatedModel == "App\Models\Menu") {
+            if ($content->associatedModel == "App\Models\Plat") {
                 $verify = true;
             }
         }
@@ -33,7 +33,7 @@ class CheckAddedMenu
             if ($verify == false) {
                 Cart::instance('cart')->destroy();
             }
-            return redirect()->route('menu');
+            return redirect()->route('plat');
         }
         return $next($request);
     }

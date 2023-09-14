@@ -35,10 +35,13 @@
                         @enderror
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row mb-4">
+                    <label class="form-label text-left col-12" for="image-upload">Image</label>
                     <div class="col-sm-12">
-                        <label for="image" class="form-label">Image</label>
-                        <input type="file" name="image" class="form-control" id="image">
+                        <div id="image-preview" class="image-preview mb-2">
+                            <label for="image-upload" id="image-label">Choisir un fichier</label>
+                            <input type="file" name="image" id="image-upload" />
+                        </div>
                         @error('image')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -51,4 +54,8 @@
             </div>
         </form>
     </div>
+@endsection
+
+@section('scripts')
+    <script src="{{ asset('assets/js/page/features-post-create.js') }}"></script>
 @endsection

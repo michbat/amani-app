@@ -60,7 +60,7 @@
 
             {{-- Section Menus & Drinks --}}
 
-            <li class="menu-header">Menus & Boissons</li>
+            <li class="menu-header">Plats & Boissons</li>
 
 
             <li class="dropdown {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
@@ -71,12 +71,12 @@
                             href="{{ route('admin.categories.index') }}">Catégories de produits</a></li>
                 </ul>
             </li>
-            <li class="dropdown {{ request()->routeIs('admin.menus.*') ? 'active' : '' }}">
+            <li class="dropdown {{ request()->routeIs('admin.plats.*') ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-utensils"></i>
-                    <span>Menus</span></a>
+                    <span>Plats</span></a>
                 <ul class="dropdown-menu">
-                    <li class="{{ request()->routeIs('admin.menus.index') ? 'active' : '' }}"><a class="nav-link"
-                            href="{{ route('admin.menus.index') }}">Menus</a></li>
+                    <li class="{{ request()->routeIs('admin.plats.index') ? 'active' : '' }}"><a class="nav-link"
+                            href="{{ route('admin.plats.index') }}">Plats</a></li>
                 </ul>
             </li>
             <li class="dropdown {{ request()->routeIs('admin.drinks.*') ? 'active' : '' }}">

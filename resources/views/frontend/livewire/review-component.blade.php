@@ -21,11 +21,11 @@
                         <p style="color: red; font-size: 12px;">(Tout commentaire
                             hors-sujet ou contenant des propos inconvenants ne sera pas publié! Avec 5 messages
                             censurés, vous ne pouvez plus commenter!)</p>
-                        <h6><a href="{{ route('details', $menu->slug) }}" title="Revenir en arrière">Produit concerné:
-                                {{ $menu->name }}</a></h6>
+                        <h6><a href="{{ route('details', $plat->slug) }}" title="Revenir en arrière">Plat concerné:
+                                {{ $plat->name }}</a></h6>
                         <p>
-                            <a href="{{ route('details', $menu->slug) }}" title="Revenir en arrière">
-                                <img src="{{ asset($menu->image) }}" alt="{{ $menu->name }}" width="150">
+                            <a href="{{ route('details', $plat->slug) }}" title="Revenir en arrière">
+                                <img src="{{ asset($plat->image) }}" alt="{{ $plat->name }}" width="150">
                             </a>
                         </p>
                         <form wire:submit.prevent="postReview">

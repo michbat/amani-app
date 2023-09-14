@@ -14,7 +14,7 @@
                                                 {!! $slider->content !!}
                                             </p>
                                             <div class="owl-slide-animated owl-slide-cta"><a class="btn btn-success"
-                                                    href="{{ route('menu') }}" role="button">Notre menu</a></div>
+                                                    href="{{ route('plat') }}" role="button">Notre Carte</a></div>
                                         </div>
                                     </div>
                                 </div>
@@ -65,32 +65,32 @@
             <div class="row homepage add_bottom_25">
                 <div class="col-xl-12">
                     <div class="row">
-                        @if (count($menus) > 0)
-                            @foreach ($menus as $menu)
+                        @if (count($plats) > 0)
+                            @foreach ($plats as $plat)
                                 <div class="col-lg-6">
                                     <div class="menu_item">
                                         <figure class="magnific-gallery" data-cue="slideInUp">
-                                            <a href="{{ $menu->image }}" title="{{ $menu->name }}"
+                                            <a href="{{ $plat->image }}" title="{{ $plat->name }}"
                                                 data-effect="mfp-zoom-in">
-                                                <img src="{{ asset($menu->image) }}"
-                                                    data-src="{{ asset($menu->image) }}" class="lazy"
-                                                    alt="{{ $menu->name }}">
+                                                <img src="{{ asset($plat->image) }}"
+                                                    data-src="{{ asset($plat->image) }}" class="lazy"
+                                                    alt="{{ $plat->name }}">
                                             </a>
                                         </figure>
                                         <div class="menu_title">
-                                            <a href="{{ route('details', $menu->slug) }}">
-                                                <h3>{{ $menu->name }} <span class="text-danger"
-                                                        style="font-size: 12px">{{ $menu->available === 0 ? 'indisponible' : '' }}</span>
+                                            <a href="{{ route('details', $plat->slug) }}">
+                                                <h3>{{ $plat->name }} <span class="text-danger"
+                                                        style="font-size: 12px">{{ $plat->available === 0 ? 'indisponible' : '' }}</span>
                                                 </h3>
                                             </a>
                                             <em style="background-color: rgb(67, 139, 67)!important">
-                                                {{ $menu->price }} &euro;
+                                                {{ $plat->price }} &euro;
                                             </em>
                                         </div>
-                                        <p>{!! str()->limit($menu->description, 100) !!}</p>
-                                        <a class="btn btn-success {{ $menu->available === 0 || $menu->canBeCommended === 0 || $global->opened === 0 ? 'disabled' : '' }}"
+                                        <p>{!! str()->limit($plat->description, 100) !!}</p>
+                                        <a class="btn btn-success {{ $plat->available === 0 || $plat->canBeCommended === 0 || $global->opened === 0 ? 'disabled' : '' }}"
                                             href="#"
-                                            wire:click.prevent="storeMenu({{ $menu->id }},'{{ $menu->name }}',{{ $menu->price }})"><i
+                                            wire:click.prevent="storePlat({{ $plat->id }},'{{ $plat->name }}',{{ $plat->price }})"><i
                                                 class="fas fa-shopping-cart mx-2"></i>Ajouter</a>
                                     </div>
                                 </div>
@@ -114,7 +114,7 @@
                 <div class="item">
                     <div class="title">
                         <h4>{{ $staff->name }}<em>{{ $staff->fonction }}</em></h4>
-                    </div><img src="{{ asset($staff->image) }}" alt="" width="350" height="500">
+                    </div><img src="{{ asset($staff->image) }}" alt="{{ $staff->name }}" width="350" height="500">
                 </div>
             @endforeach
 

@@ -52,9 +52,6 @@
                         </td>
                         <td>
                             <div class="d-flex justify-content-center">
-                                <a class="btn btn-warning mx-2 text-dark"
-                                    href="{{ route('admin.restaurants.show', $restaurant->id) }}"><i
-                                        class="fas fa-eye mx-2"></i>Voir</a>
                                 <a class="btn btn-primary mx-2 text-dark"
                                     href="{{ route('admin.restaurants.edit', $restaurant->id) }}"><i
                                         class="fas fa-edit mx-2"></i>Editer</a>

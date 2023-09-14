@@ -27,7 +27,7 @@
                     <a class="nav-link active mx-2" aria-current="page" href="{{ route('home') }}">Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active mx-2" aria-current="page" href="{{ route('menu') }}">Menu</a>
+                    <a class="nav-link active mx-2" aria-current="page" href="{{ route('plat') }}">Plats</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle mx-2" href="#" role="button" data-bs-toggle="dropdown"

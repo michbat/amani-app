@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MenuCreateRequest extends FormRequest
+class PlatEditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,9 @@ class MenuCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:menus,name',
+            'name' => 'required|unique:plats,name,' . $this->plat->id,
             'description' => 'required',
-            'image' => 'required|image|mimes:png,jpg,jpeg',
+            'image' => 'image|mimes:png,jpg,jpeg',
             'price' => 'required|numeric',
             'category_id' => 'required',
             'ingredients.*' => 'numeric',
@@ -35,18 +35,15 @@ class MenuCreateRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'Vous devez donner un nom à votre menu',
-            'name.unique' => 'Ce menu existe déjà dans la liste',
-            'description.required' => 'Vous devez faire une description de votre menu',
-            'image.required' => 'Une image de votre menu est nécessaire',
+            'name.required' => 'Vous devez donner un nom à votre plat',
+            'name.unique' => 'Ce palt existe déjà dans notre système',
+            'description.required' => 'Vous devez faire une description de votre plat',
             'image.image' => 'Veuillez charger une image svp',
             'image.mimes' => 'L\'image doit être au format png,jpg,jpeg',
-            'price.required' => 'Vous devez indiquer un prix pour votre menu',
+            'price.required' => 'Vous devez indiquer un prix pour votre plat',
             'price.numeric' => 'Le prix doit être au format numérique',
-            'ingredient.*' => 'Vous devez choisir des ingrédients (et leurs quantités) pour chaque menu crée',
-            'ingredients.required' => 'Vous devez ajouter des ingrédients (et leurs quantités) pour chaque menu crée',
-            // 'ingredients.array' => 'Les ingrédients doivent se trouver dans un tableau pour être traîtés',
-
+            'ingredients.*' => 'Vous devez choisir des ingrédients (et leurs quantités) pour ce plat',
+            'ingredients.required' => 'Vous devez ajouter des ingrédients (et leurs quantités) pour ce plat',
         ];
     }
 }

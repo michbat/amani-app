@@ -1,25 +1,25 @@
 @extends('admin.layouts.app')
-@section('title', 'Editer un menu')
+@section('title', 'Editer un plat')
 
 @section('content')
     <div class="d-flex mt-5 justify-content-end">
-        <a class="btn btn-info btn-lg text-dark" href="{{ route('admin.menus.index') }}"><i
+        <a class="btn btn-info btn-lg text-dark" href="{{ route('admin.plats.index') }}"><i
                 class="fas fa-clipboard-list mx-2"></i>Revenir à l'index</a>
     </div>
 
     <div class="card mt-3">
-        <form action="{{ route('admin.menus.update', $menu->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.plats.update', $plat->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="card-header">
-                <h4>Editer un menu</h4>
+                <h4>Editer un plat</h4>
             </div>
             <div class="card-body">
                 <div class="form-group row mb-4">
                     <div class="col-sm-12">
-                        <label for="name" class="form-label">Nom</label>
-                        <input type="text" class="form-control" name="name" id="name" placeholder="Nom du menu"
-                            value="{{ $menu->name }}">
+                        <label for="name" class="form-label">Nom du plat</label>
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Nom du plat"
+                            value="{{ $plat->name }}">
 
                         @error('name')
                             <span class="text-danger">{{ $message }}</span>
@@ -31,7 +31,7 @@
                     <div class="col-sm-12">
                         <label class="form-label">Description</label>
                         <textarea name="description" id="tiny" cols="30" rows="30" class="form-control"
-                            placeholder="Description du menu">{{ $menu->description }}</textarea>
+                            placeholder="Description du plat">{{ $plat->description }}</textarea>
                         @error('description')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -39,11 +39,11 @@
                 </div>
                 <div class="form-group row mb-4">
                     <div class="col-sm-12">
-                        <label for="price" class="form-label">Catégorie</label>
+                        <label for="price" class="form-label">Catégorie du plat</label>
                         <select class="form-control selectric" name="category_id">
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}"
-                                    {{ $category->id === $menu->category_id ? 'selected' : '' }}>
+                                    {{ $category->id === $plat->category_id ? 'selected' : '' }}>
                                     {{ $category->designation }}
                                 </option>
                             @endforeach
@@ -56,9 +56,9 @@
                 </div>
                 <div class="form-group row mb-4">
                     <div class="col-sm-12">
-                        <label for="price" class="form-label">Prix du menu</label>
+                        <label for="price" class="form-label">Prix du plat</label>
                         <input type="number" min="0.00" max="1000.00" step="0.25" name="price"
-                            class="form-control" value="{{ $menu->price }}">
+                            class="form-control" value="{{ $plat->price }}">
                         @error('price')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -67,9 +67,9 @@
                 <div class="form-group row mb-4">
                     <label class="form-label text-left col-12" for="image-upload">Image</label>
                     <div class="col-sm-12">
-                        <div style="background-image: url({{ asset($menu->image) }}); background-size:cover; background-position:center;"
+                        <div style="background-image: url({{ asset($plat->image) }}); background-size:cover; background-position:center;"
                             id="image-preview" class="image-preview mb-2">
-                            <label for="image-upload" id="image-label">Choose File</label>
+                            <label for="image-upload" id="image-label">Choisir un fichier</label>
                             <input type="file" name="image" id="image-upload" />
                         </div>
                         @error('image')
@@ -81,8 +81,8 @@
                     <label class="form-label text-left col-12" for="available">Disponibilité</label>
                     <div class="col-sm-12">
                         <select class="form-control selectric" name="available" id="available">
-                            <option {{ $menu->available == 1 ? 'selected' : '' }} value="1">Disponible</option>
-                            <option {{ $menu->available == 0 ? 'selected' : '' }} value="0">Non Disponible</option>
+                            <option {{ $plat->available == 1 ? 'selected' : '' }} value="1">Disponible</option>
+                            <option {{ $plat->available == 0 ? 'selected' : '' }} value="0">Non Disponible</option>
                         </select>
                         @error('available')
                             <span class="text-danger">{{ $message }}</span>
@@ -96,10 +96,10 @@
             <div class="card mt-5">
                 <div class="card-header">
                     {{-- On affiche dans l'entête de la carte des ingredients qui composent le menu --}}
-                    <h4>Editer des ingredients du menu: </h4>
-                    @foreach ($menu->ingredients as $ingredient)
-                        <span class="btn btn-warning text-dark mx-2">{{ $ingredient->name }}
-                            ({{ $ingredient->pivot->amount }} {{ $ingredient->unit->name }})
+                    <h4>Editer des ingredients du plat: </h4>
+                    @foreach ($plat->ingredients as $ingredient)
+                        <span class="btn btn-warning text-dark mx-2">{{ $plat->name }}
+                            ({{ $plat->pivot->amount }} {{ $plat->unit->name }})
                         </span>
                     @endforeach
                 </div>

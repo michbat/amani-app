@@ -1,6 +1,6 @@
 @section('breadcrumb')
     <div class="col-xl-9 col-lg-10 col-md-8">
-        <h1>Menu Détails</h1>
+        <h1>Plat en détails</h1>
         <p>Cuisine délicieuse au prix démocratique</p>
     </div>
 @endsection
@@ -25,24 +25,24 @@
                 @endif
                 <div class="col-lg-6 magnific-gallery">
                     <p class="shop_setails_img">
-                        <a href="{{ asset($menu->image) }}" title="{{ $menu->name }}" data-effect="mfp-zoom-in"><img
-                                src="{{ asset($menu->image) }}" alt="{{ $menu->name }}" class="img-fluid"></a>
+                        <a href="{{ asset($plat->image) }}" title="{{ $plat->name }}" data-effect="mfp-zoom-in"><img
+                                src="{{ asset($plat->image) }}" alt="{{ $plat->name }}" class="img-fluid"></a>
                     </p>
                 </div>
                 <div class="col-lg-6" id="sidebar_fixed">
-                    {{-- On récupère les id des menus qui ont été ajouté à la wishlist --}}
+                    {{-- On récupère les id des plats qui ont été ajouté à la wishlist --}}
                     @php
-                        $wishmenus = Cart::instance('wishlist')
+                        $wishplats = Cart::instance('wishlist')
                             ->content()
                             ->pluck('id');
                     @endphp
                     <div class="prod_info">
-                        <h2>{{ $menu->name }} <span class="text-danger"
-                                style="font-size: 20px">{{ $menu->available === 0 ? 'indisponible' : '' }}</span>
+                        <h2>{{ $plat->name }} <span class="text-danger"
+                                style="font-size: 20px">{{ $plat->available === 0 ? 'indisponible' : '' }}</span>
                         </h2>
-                        @if (count($menu->tags) > 0)
+                        @if (count($plat->tags) > 0)
                             <span>Tags:</span>
-                            @foreach ($menu->tags as $tag)
+                            @foreach ($plat->tags as $tag)
                                 <span class="btn btn-info btn-sm mx-1"
                                     style="border-radius: 50px">{{ $tag->name }}</span>
                             @endforeach
@@ -50,7 +50,7 @@
                         <span class=" d-block rating mt-4">
                             @php
                                 $cpt = 0;
-                                foreach ($menu->reviews as $review) {
+                                foreach ($plat->reviews as $review) {
                                     if ($review->published) {
                                         $cpt += 1;
                                     }
@@ -65,17 +65,17 @@
                             @endfor
 
                         </span>
-                        <p>{!! $menu->description !!}</p>
+                        <p>{!! $plat->description !!}</p>
                         <div class="row">
                             <div class="col-lg-5 col-md-6">
-                                <div class="price_main"><span class="new_price">{{ $menu->price }} &euro;</span></div>
+                                <div class="price_main"><span class="new_price">{{ $plat->price }} &euro;</span></div>
                             </div>
                             <div class="col-lg-4 col-md-6 d-flex justify-content-center">
                                 <div class="btn_add_to_cart">
                                     <a href="#"
-                                        class="btn btn-success {{ $menu->available === 0 || $quantity >= 10 || $menu->canBeCommended === 0 || $global->opened === 0 ? 'disabled' : '' }}"
+                                        class="btn btn-success {{ $plat->available === 0 || $quantity >= 10 || $plat->canBeCommended === 0 || $global->opened === 0 ? 'disabled' : '' }}"
                                         style="min-width: 190px"
-                                        wire:click.prevent="storeMenu({{ $menu->id }},'{{ $menu->name }}',{{ $menu->price }})"
+                                        wire:click.prevent="storePlat({{ $plat->id }},'{{ $plat->name }}',{{ $plat->price }})"
                                         wire:model="$quantity"><i class="fas fa-shopping-cart mx-2"></i>Ajouter
 
                                         <span class="badge badge-light">{{ $quantity }}</span>
@@ -83,20 +83,20 @@
                                     </a>
                                 </div>
                                 <div class="btn_add_to_cart">
-                                    {{-- Si l'id du menu est dans la wishmenus, cela veut dire qu'il y a été ajouté. On colore le bouton en rouge avec la classe bootstrap danger --}}
-                                    @if ($wishmenus->contains($menu->id))
-                                        <button title="Enlèver ce menu à la liste de souhaits"
+                                    {{-- Si l'id du plat est dans la wishplats, cela veut dire qu'il y a été ajouté. On colore le bouton en rouge avec la classe bootstrap danger --}}
+                                    @if ($wishplats->contains($plat->id))
+                                        <button title="Enlèver ce plat à la liste de souhaits"
                                             class="btn btn-danger mx-2" style="min-width: 200px;"
-                                            wire:click.prevent="removeMenuToWishList({{ $menu->id }})">
+                                            wire:click.prevent="removePlatToWishList({{ $plat->id }})">
                                             <span>
                                                 <i class="far fa-heart mx-2"></i>Wishlist
                                             </span>
                                         </button>
                                     @else
                                         {{-- sinon on affiche un bouton outline (vide) --}}
-                                        <button title="Ajouter ce menu à la liste de souhaits"
+                                        <button title="Ajouter ce plat à la liste de souhaits"
                                             class="btn btn-outline-danger mx-2" style="min-width: 200px;"
-                                            wire:click.prevent="addMenuToWishList({{ $menu->id }},'{{ $menu->name }}',{{ $menu->price }})">
+                                            wire:click.prevent="addPlatToWishList({{ $plat->id }},'{{ $plat->name }}',{{ $plat->price }})">
                                             <span>
                                                 <i class="far fa-heart mx-2"></i>Wishlist
                                             </span>
@@ -107,7 +107,7 @@
                             <div class="mt-3">
                                 @if ($quantity > 10)
                                     <span class="text-danger text-center">Veuillez nous contacter si vous voulez
-                                        commander plus de 10 menus</span>
+                                        commander plus de 10 plats</span>
                                 @endif
                             </div>
                         </div>
@@ -149,8 +149,8 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <h3>{{ $menu->category->designation }}</h3>
-                                        <p>{!! $menu->category->description !!}</p>
+                                        <h3>{{ $plat->category->designation }}</h3>
+                                        <p>{!! $plat->category->description !!}</p>
                                     </div>
                                     <div class="col-md-6">
                                         <h3>Ingredients</h3>
@@ -163,7 +163,7 @@
                                                             <th>Quantité</th>
                                                         </tr>
                                                     </thead>
-                                                    @foreach ($menu->ingredients as $ingredient)
+                                                    @foreach ($plat->ingredients as $ingredient)
                                                         <tr>
                                                             <td><strong>{{ $ingredient->name }}</strong></td>
                                                             <td>
@@ -226,7 +226,7 @@
                                 <!-- /row -->
                                 <p class="text-end">
                                     @auth
-                                        <a href="{{ route('review', ['slug' => $menu->slug, 'user' => Auth::user()->id]) }}"
+                                        <a href="{{ route('review', ['slug' => $plat->slug, 'user' => Auth::user()->id]) }}"
                                             class="btn btn-success {{ auth()->user()->censoredComments >= 5 ? 'disabled' : '' }}"><i
                                                 class="fas fa-comment mx-2"></i>Commentez</a>
                                     @else

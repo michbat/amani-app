@@ -11,16 +11,17 @@
             <div class="container d-flex justify-content-between">
                 <div class="count_results">
                     @if ($drinks->count() > 0)
-                        <p>{{ $drinks->firstItem() }} à {{ $drinks->lastItem() }} sur {{ $drinks->total() }} item(s)</p>
+                        <p>{{ $drinks->firstItem() }} à {{ $drinks->lastItem() }} sur {{ $drinks->total() }} boisson(s)
+                        </p>
                     @endif
                 </div>
                 <div>
                     <select name="page" class="form-control" style="min-width: 150px" wire:model="pageItems">
-                        <option value="4">4 items</option>
-                        <option value="8">8 items</option>
-                        <option value="12">12 items</option>
-                        <option value="16">16 items</option>
-                        <option value="20">20 items</option>
+                        <option value="4">4 boissons</option>
+                        <option value="8">8 boissons</option>
+                        <option value="12">12 boissons</option>
+                        <option value="16">16 boissons</option>
+                        <option value="20">20 boissons</option>
                     </select>
                 </div>
                 <div class="sort_select">
@@ -39,7 +40,7 @@
         <div class="collapse filters_2" id="collapseFilters">
             <div class="container margin_detail">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <div class="filter_type">
                             <h6>Categories</h6>
                             <ul>
@@ -56,38 +57,10 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="filter_type">
-                            <h6>Rating</h6>
-                            <ul>
-                                <li>
-                                    <label class="container_check">Superb 9+ <small>06</small>
-                                        <input type="checkbox">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="container_check">Very Good 8+ <small>12</small>
-                                        <input type="checkbox">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="container_check">Good 7+ <small>17</small>
-                                        <input type="checkbox">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="container_check">Pleasant 6+ <small>43</small>
-                                        <input type="checkbox">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </li>
-                            </ul>
-                        </div>
+                    <div class="col-md-2">
+
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <div class="filter_type">
                             <h6>Prix</h6>
                             @php
@@ -216,8 +189,6 @@
                         @endforeach
                     @endif
                 </div>
-
-                <p class="text-center my-5"><a href="#0" class="btn btn-outline-success">Download Drink(PDF)</a>
                 </p>
                 @if ($drinks->hasPages())
                     <div class="d-flex justify-content-center">

@@ -1,21 +1,21 @@
 @extends('admin.layouts.app')
-@section('title', 'Ajouter un menu')
+@section('title', 'Ajouter un plat')
 
 @section('content')
     <div class="d-flex mt-5 justify-content-end">
-        <a class="btn btn-info btn-lg text-dark" href="{{ route('admin.menus.index') }}"><i
+        <a class="btn btn-info btn-lg text-dark" href="{{ route('admin.plats.index') }}"><i
                 class="fas fa-clipboard-list mx-2"></i>Revenir à l'index</a>
     </div>
     <div class="card mt-3">
-        <form action="{{ route('admin.menus.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.plats.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="card-header">
-                <h4>Ajout d'un menu</h4>
+                <h4>Ajout d'un plat</h4>
             </div>
             <div class="card-body">
                 <div class="form-group row mb-4">
                     <div class="col-sm-12">
-                        <label for="name" class="form-label">Nom</label>
+                        <label for="name" class="form-label">Nom du plat</label>
                         <input type="text" class="form-control" name="name" id="name" placeholder="Nom du menu"
                             value="{{ old('name') }}">
 
@@ -37,7 +37,7 @@
                 </div>
                 <div class="form-group row mb-4">
                     <div class="col-sm-12">
-                        <label for="price" class="form-label">Catégorie</label>
+                        <label for="price" class="form-label">Catégorie du plat</label>
                         <select class="form-control selectric" name="category_id">
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}">
@@ -52,7 +52,7 @@
                 </div>
                 <div class="form-group row mb-4">
                     <div class="col-sm-12">
-                        <label for="price" class="form-label">Prix du menu</label>
+                        <label for="price" class="form-label">Prix du plat</label>
                         <input type="number" min="0.00" max="1000.00" step="0.25" name="price"
                             class="form-control" value="{{ old('price') }}">
                         @error('price')
@@ -90,7 +90,7 @@
 
             <div class="card mt-5">
                 <div class="card-header">
-                    <h4>Choisir des ingredients du menu: </h4>
+                    <h4>Choisir des ingredients du plat: </h4>
                 </div>
                 <div class="card-body m-3">
 
@@ -141,11 +141,6 @@
                         </tbody>
                     </table>
                 </div>
-                {{-- <div class="card-footer mb-3 d-flex justify-content-left">
-                        <button type="submit" class="btn btn-primary btn-lg px-5 text-dark" style="min-width: 300px;"><i
-                                class="fas fa-tags mx-2"></i>Ajouter les ingrédients</button>
-                    </div> --}}
-                {{-- </form> --}}
             </div>
             <div class="card-footer mb-4">
                 <button type="submit" class="btn btn-primary btn-lg px-5 text-dark" style="min-width: 200px;"><i

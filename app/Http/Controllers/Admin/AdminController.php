@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Menu;
+use App\Models\Plat;
 use App\Models\User;
 use App\Models\Drink;
 use App\Models\Order;
-use App\Http\Controllers\Controller;
 use App\Models\Ingredient;
 use App\Models\Restaurant;
+use App\Http\Controllers\Controller;
 
 class AdminController extends Controller
 {
     public function index()
     {
-        $menus = Menu::all()->count();  // On récupère le nombre de plats
+        $plats = Plat::all()->count();  // On récupère le nombre de plats
         $drinks = Drink::all()->count(); // On récupère le nombre de boissons
         $users = User::all()->count(); // On récupère le nombre de compte d'utilisateurs
         $ingredients = Ingredient::all()->count(); // On récupère le nombre d'ingrédients en stock
@@ -35,7 +35,7 @@ class AdminController extends Controller
 
 
 
-        return view('admin.index', compact('menus', 'drinks', 'users', 'opened', 'turnover', 'tax', 'ingredients', 'nbrOrders'));
+        return view('admin.index', compact('plats', 'drinks', 'users', 'opened', 'turnover', 'tax', 'ingredients', 'nbrOrders'));
     }
 
     /**
@@ -49,6 +49,6 @@ class AdminController extends Controller
 
         $restaurant->update();  // On confirmé le changement de valeur du champ opened dans la BDD
 
-        return redirect()->back();  // On reste sur la page où l'on a appuyé le bouton. 
+        return redirect()->back();  // On reste sur la page où l'on a appuyé le bouton.
     }
 }

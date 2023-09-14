@@ -12,7 +12,7 @@
                     <tr>
                         <th>N°</th>
                         <th>Commentateur</th>
-                        <th>Menu</th>
+                        <th>Plat</th>
                         <th>Rating</th>
                         <th>Title</th>
                         <th>Comment</th>
@@ -35,7 +35,7 @@
                                 <td>
                                     <span class="btn btn-sm btn-info text-dark"
                                         style="border-radius: 50px; min-width: 100px;">
-                                        {{ $review->menu->name }}
+                                        {{ $review->plat->name }}
                                     </span>
                                 </td>
                                 <td>

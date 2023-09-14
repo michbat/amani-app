@@ -3,11 +3,10 @@
 namespace App\Http\Livewire;
 
 use Exception;
-use App\Models\Menu;
+use App\Models\Plat;
 use App\Models\User;
 use App\Models\Order;
 use Livewire\Component;
-use App\Models\MenuOrder;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentMode;
 use App\Models\LineOrders;
@@ -23,7 +22,7 @@ class CheckoutComponent extends Component
 {
     public $paymentMode = "card"; // Méthode de paiement en ligne par défaut
     public $nameOnCard, $number, $exp_month, $exp_year, $cvc, $user;
-    public $acceptance =  false;
+    public $acceptance;
 
     //  Règles de validation
 
@@ -35,13 +34,22 @@ class CheckoutComponent extends Component
         'cvc' => 'required|numeric|digits:3',
     ];
 
+    // Conserver la valeur de la propriété $acceptance dans une variable de session à chaque fois qu'elle change
+
+    public function updatedAcceptance()
+    {
+        session()->put('acc', $this->acceptance);
+    }
+
 
     public function mount()
     {
         $this->user = Auth::user(); // On récupère l'utilisateur authentifié.
+        $this->acceptance = false;
+
 
         if (!Session()->has('cart') || Cart::instance('cart')->count() === 0) {
-            return redirect()->route('menu')->with('info', 'Vous n\'avez aucun produit dans le panier!');
+            return redirect()->route('plat')->with('info', 'Vous n\'avez aucun produit dans le panier!');
         }
         if ($this->user === null) {
             return redirect()->route('login')->with('info', 'Vous devez être connecté pour effectuer le paiement');
@@ -102,7 +110,7 @@ class CheckoutComponent extends Component
 
                 if ($charge['status'] == 'succeeded') {
                     $order->save();
-                    $this->fillMenuOrder($order->id);
+                    $this->fillPlatOrder($order->id);
 
                     // Mise à jour du stock des produits après le checkout
 
@@ -135,7 +143,7 @@ class CheckoutComponent extends Component
 
             $order->save();
 
-            $this->fillMenuOrder($order->id);
+            $this->fillPlatOrder($order->id);
 
             // Mise à jour du stock des produits après le checkout
 
@@ -213,7 +221,7 @@ class CheckoutComponent extends Component
             $order->orderStatus = OrderStatus::CONFIRMED->value;
             $order->save();
 
-            $this->fillMenuOrder($order->id);
+            $this->fillPlatOrder($order->id);
 
             // Mise à jour du stock des produits après le checkout
 
@@ -239,15 +247,15 @@ class CheckoutComponent extends Component
     }
 
 
-    private function fillMenuOrder($orderId)
+    private function fillPlatOrder($orderId)
     {
         foreach (Cart::instance('cart')->content() as $content) {
             $lineOrder = new LineOrders();
 
-            $menu = Menu::where('name', $content->model->name)->first();
+            $plat = Plat::where('name', $content->model->name)->first();
 
-            if ($menu) {
-                $lineOrder->menu_id = $content->model->id;
+            if ($plat) {
+                $lineOrder->plat_id = $content->model->id;
             } else {
 
                 $lineOrder->drink_id = $content->model->id;
@@ -301,14 +309,14 @@ class CheckoutComponent extends Component
         foreach ($order->lineOrders as $lineOrder) {
 
             /**
-             *  On récupère pour chaque ligne de commande la propriété 'quantity' autrement dit on récupère la quantité de chaque menu ou boisson
+             *  On récupère pour chaque ligne de commande la propriété 'quantity' autrement dit on récupère la quantité de chaque plat ou boisson
              *  composant les lignes de commandes (table line_order) de la commande.
              */
 
             $quantity = $lineOrder->quantity;
 
-            if (!empty($lineOrder->menu->ingredients)) {
-                foreach ($lineOrder->menu->ingredients as $lomi) {
+            if (!empty($lineOrder->plat->ingredients)) {
+                foreach ($lineOrder->plat->ingredients as $lomi) {
                     $lomi->quantityInStock = $lomi->quantityInStock - $lomi->pivot->amount * $quantity;
                     $lomi->update();
                 }
@@ -326,6 +334,7 @@ class CheckoutComponent extends Component
         //On injecte dans la vue le client authentifié le seul à même d'accéder à la page de paiement et procéder à la commande
         $client = $this->user;
 
+        $this->acceptance = session()->get('acc');
         return view('frontend.livewire.checkout-component', compact('client'));
     }
 

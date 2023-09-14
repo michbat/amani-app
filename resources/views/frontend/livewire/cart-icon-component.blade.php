@@ -31,7 +31,7 @@
                 {{-- Pour accéder à la page checkout, il faut être connecté. Si la personne est un guest, il est automatiquement dirigé vers
                 la page login pour s'authentifier. Si le panier est vide, le bouton est désactivé --}}
 
-                <a href="{{ route('menu') }}" class="btn btn-success mt-2" style="min-width: 100%">Menus</a>
+                <a href="{{ route('plat') }}" class="btn btn-success mt-2" style="min-width: 100%">Plats</a>
                 @if (auth()->user()!= null && auth()->user()->firstname === 'Generic')
                     <a href="{{ route('drink') }}" class="btn btn-success mt-2" style="min-width: 100%">Boissons</a>
                 @endif

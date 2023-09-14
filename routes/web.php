@@ -3,21 +3,26 @@
 use App\Http\Livewire\CartComponent;
 use App\Http\Livewire\HomeComponent;
 use App\Http\Livewire\MenuComponent;
+use App\Http\Livewire\PlatComponent;
 use App\Http\Livewire\DrinkComponent;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\ReviewComponent;
 use App\Http\Livewire\DetailsComponent;
 use App\Http\Livewire\CheckoutComponent;
 use App\Http\Livewire\WishlistComponent;
+use App\Http\Livewire\DetailsDrinkComponent;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\PlatController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TypeController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\DrinkController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\StaffController;
 use App\Http\Livewire\CheckoutSuccessComponent;
 use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\SliderController;
@@ -25,12 +30,10 @@ use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\User\UserAuthController;
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\DrinkController;
 use App\Http\Controllers\Admin\IngredientController;
 use App\Http\Controllers\Admin\RestaurantController;
-use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Auth\RegistrationController;
-use App\Http\Livewire\DetailsDrinkComponent;
+use App\Http\Livewire\ReglementComponent;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,22 +49,23 @@ use App\Http\Livewire\DetailsDrinkComponent;
 // Frontend routes
 
 Route::get('/', HomeComponent::class)->name('home');
-Route::get('/menu', MenuComponent::class)->name('menu');
+Route::get('/plat', PlatComponent::class)->name('plat');
 
 
 /**
  * On affecte le middleware 'check.added.menu' qui vérifie si un visiteur ou un utilisateur qui n'est pas "generic user" tenter d'ajouter
  * une boisson dans le panier sans avoir au préalable ajouté un menu (voir nos règles de gestion!)
  */
-Route::get('/drink', DrinkComponent::class)->name('drink')->middleware('check.added.menu');
+Route::get('/drink', DrinkComponent::class)->name('drink')->middleware('check.added.plat');
 
 Route::get('/cart', CartComponent::class)->name('cart');
-Route::get('/menu/{slug}', DetailsComponent::class)->name('details');
+Route::get('/plat/{slug}', DetailsComponent::class)->name('details');
 Route::get('/drink/{slug}', DetailsDrinkComponent::class)->name('details.drink');
 Route::get('/checkout', CheckoutComponent::class)->name('checkout');
 Route::get('/checkout-success', CheckoutSuccessComponent::class)->name('checkout.success');
 Route::get('/wishlist', WishlistComponent::class)->name('wishlist');
 Route::get('/review/{slug}/{user}', ReviewComponent::class)->name('review');
+Route::get('/reglement', ReglementComponent::class)->name('reglement');
 
 // Paypal routes
 
@@ -98,7 +102,7 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
     Route::resource('/roles', RoleController::class);
     Route::resource('/users', UserController::class);
     Route::resource('/categories', CategoryController::class);
-    Route::resource('/menus', MenuController::class);
+    Route::resource('/plats', PlatController::class);
     Route::resource('/drinks', DrinkController::class);
     Route::resource('/tags', TagController::class);
     Route::resource('/types', TypeController::class);
@@ -124,7 +128,6 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
     // Routes pour gérer les informations sur le restaurant
 
     Route::get('/restaurants', [RestaurantController::class, 'index'])->name('restaurants.index');
-    Route::get('/restaurants/{restaurant}/show', [RestaurantController::class, 'show'])->name('restaurants.show');
     Route::get('/restaurants/{restaurant}/edit', [RestaurantController::class, 'edit'])->name('restaurants.edit');
     Route::put('/restaurants/{restaurant}/update', [RestaurantController::class, 'update'])->name('restaurants.update');
 
@@ -138,8 +141,8 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
 
     // Routes pour assigner des tags et enlèver un tag à un menu
 
-    Route::post('/menus/{menu}/tags', [MenuController::class, 'assignTags'])->name('menus.tags');
-    Route::delete('/menus/{menu}/tags/{tag}', [MenuController::class, 'removeTag'])->name('menus.tags.remove');
+    Route::post('/plats/{plat}/tags', [PlatController::class, 'assignTags'])->name('plats.tags');
+    Route::delete('/plats/{plat}/tags/{tag}', [PlatController::class, 'removeTag'])->name('plats.tags.remove');
 });
 
 // Employee routes

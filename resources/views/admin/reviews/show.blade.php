@@ -41,8 +41,8 @@
             </div>
             <div class="form-group row">
                 <div class="col-sm-6">
-                    <label class="form-label">Menu</label>
-                    <input type="text" class="form-control" value="{{ $review->menu->name }}" disabled>
+                    <label class="form-label">Plat</label>
+                    <input type="text" class="form-control" value="{{ $review->plat->name }}" disabled>
                 </div>
                 <div class="col-sm-6">
                     <label class="form-label">Rating</label>

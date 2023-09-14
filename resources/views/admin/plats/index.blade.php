@@ -1,15 +1,15 @@
 @extends('admin.layouts.app')
-@section('title', 'Menus Index')
+@section('title', 'Plats Index')
 
 @section('content')
     <div class="d-flex mt-5 justify-content-end">
-        <a class="btn btn-info btn-lg text-dark" href="{{ route('admin.menus.create') }}"><i
-                class="fas fa-plus mx-2"></i>Ajouter un menu</a>
+        <a class="btn btn-info btn-lg text-dark" href="{{ route('admin.plats.create') }}"><i
+                class="fas fa-plus mx-2"></i>Ajouter un plat</a>
     </div>
     <div class="card mt-3">
         <div class="card-header d-flex flex-column justify-content-center align-items-start">
-            <h4>Liste de menus</h4>
-            <p>{{ $menus->firstItem() }} à {{ $menus->lastItem() }} sur {{ $menus->total() }} menu(s)</p>
+            <h4>Liste de plats</h4>
+            <p>{{ $plats->firstItem() }} à {{ $plats->lastItem() }} sur {{ $plats->total() }} plat(s)</p>
         </div>
         <div class="card-body">
             <table class="table table-striped ">
@@ -27,65 +27,49 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (count($menus) > 0)
-                        @foreach ($menus as $menu)
+                    @if (count($plats) > 0)
+                        @foreach ($plats as $plat)
                             <tr>
                                 <td>{{ $loop->index + 1 }}</td>
                                 <td>
-                                    <img src="{{ asset($menu->image) }}" alt="{{ $menu->name }}"
+                                    <img src="{{ asset($plat->image) }}" alt="{{ $plat->name }}"
                                         style="width: 60px; height: 40px;">
                                 </td>
                                 <td>
                                     <span class="btn btn-sm btn-success text-dark"
                                         style="border-radius: 50px; min-width: 100px;">
-                                        {{ $menu->name }}
+                                        {{ $plat->name }}
                                     </span>
                                 </td>
                                 <td style="font-weight: bolder">
-                                    {{ $menu->category_id === null ? 'Pas de catégorie' : $menu->category->designation }}
+                                    {{ $plat->category_id === null ? 'Pas de catégorie' : $plat->category->designation }}
                                 </td>
-                                {{-- <td>
-                                    @if ($recipe->ingredients->count() > 0)
-                                        @foreach ($recipe->ingredients as $ingredient)
-                                            <span class="btn btn-sm btn-warning text-dark"
-                                                style="border-radius: 50px; min-width: 100px;">
-                                                {{ $ingredient->name }}
-                                            </span>
-                                        @endforeach
-                                    @else
-                                        <span>
-                                            pas d'ingrédients
-                                        </span>
-                                    @endif
-                                </td> --}}
                                 <td class="text-center">
                                     <span style="font-weight: 900">
-
-                                        {{-- {{ $menu->ingredients->count() > 0 ? $menu->ingredients->count() . ' ingrédient(s)' : 'Non' }} --}}
-                                        {{ $menu->ingredients->count() ?? 0 }}
+                                        {{ $plat->ingredients->count() ?? 0 }}
                                     </span>
                                 </td>
-                                <td>{{ str()->limit($menu->description, 10) }}</td>
-                                <td style="font-weight: bolder">{{ $menu->price }}</td>
+                                <td>{{ str()->limit($plat->description, 10) }}</td>
+                                <td style="font-weight: bolder">{{ $plat->price }}</td>
                                 <td>
                                     <span
-                                        class="btn btn-sm text-dark {{ $menu->available == 1 ? 'btn-info' : 'btn-danger' }}"
+                                        class="btn btn-sm text-dark {{ $plat->available == 1 ? 'btn-info' : 'btn-danger' }}"
                                         style="border-radius: 50px; min-width: 100px;">
-                                        {{ $menu->available == 1 ? 'Disponible' : 'Non disponible' }}
+                                        {{ $plat->available == 1 ? 'Disponible' : 'Non disponible' }}
                                     </span>
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-center">
 
                                         <a class="btn btn-warning text-dark mx-2"
-                                            href="{{ route('admin.menus.show', $menu->id) }}"><i
-                                                class="fas fa-tags mx-2"></i>({{ $menu->tags->count() }}) Tags</a>
+                                            href="{{ route('admin.plats.show', $plat->id) }}"><i
+                                                class="fas fa-tags mx-2"></i>({{ $plat->tags->count() }}) Tags</a>
 
                                         <a class="btn btn-primary text-dark mx-2"
-                                            href="{{ route('admin.menus.edit', $menu->id) }}"><i
+                                            href="{{ route('admin.plats.edit', $plat->id) }}"><i
                                                 class="fas fa-edit mx-2"></i>Editer</a>
 
-                                        <form action="{{ route('admin.menus.destroy', $menu->id) }}" method="POST">
+                                        <form action="{{ route('admin.plats.destroy', $plat->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger text-dark confirm"><i
@@ -108,7 +92,7 @@
         </div>
     </div>
     <div class="d-flex justify-content-center mt-5">
-        {{ $menus->links() }}
+        {{ $plats->links() }}
     </div>
 @endsection
 
@@ -127,8 +111,8 @@
             //Configuration de la boîte Alert
 
             Swal.fire({
-                title: 'Suppression de menu',
-                text: "Voulez-vous supprimer ce menu?",
+                title: 'Suppression de plat',
+                text: "Voulez-vous supprimer ce plat?",
                 cancelButtonText: "Non",
                 icon: 'warning',
                 showCancelButton: true,

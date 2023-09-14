@@ -2,17 +2,16 @@
 
 namespace App\Http\Livewire;
 
-
-use App\Models\Menu;
+use App\Models\Plat;
 use App\Models\Review;
 use Livewire\Component;
-use Illuminate\Support\Facades\Validator;
+
 
 class ReviewComponent extends Component
 {
     public $slug;
     public $user_id;
-    public $menu;
+    public $plat;
     public $title, $comment, $rating;
     public $alreadyCommented;
 
@@ -29,15 +28,15 @@ class ReviewComponent extends Component
     {
         $this->slug = $slug;
         $this->user_id = $user;
-        $this->menu = Menu::where('slug', $this->slug)->first();
+        $this->plat = Plat::where('slug', $this->slug)->first();
 
-        // Je vérifie que si le client a déjà commenté ce menu auquel cas, il n'a plus droit de le commenter.
+        // Je vérifie que si le client a déjà commenté ce plat auquel cas, il n'a plus droit de le commenter.
 
-        $this->alreadyCommented =  Review::where('user_id', $this->user_id)->where('menu_id', $this->menu->id)->first();
+        $this->alreadyCommented =  Review::where('user_id', $this->user_id)->where('plat_id', $this->plat->id)->first();
 
         // Si c'est le cas (si l'objet éloquent renvoyé lors de la requête n'est pas nul, on crée un message flash à destination du client)
         if ($this->alreadyCommented != null) {
-            session()->flash('warning_message', 'Vous avez déjà commenté ce menu. Vous ne pouvez pas commenter un produit plus d\'une fois.');
+            session()->flash('warning_message', 'Vous avez déjà commenté ce plat. Vous ne pouvez pas commenter un produit plus d\'une fois.');
         }
     }
 
@@ -72,7 +71,7 @@ class ReviewComponent extends Component
         ]);
 
 
-        // Si ce n'est que lorsque le client n'a pas commenté une seule un menu que l'on va sauvegarder son message.
+        // Si ce n'est que lorsque le client n'a pas commenté une seule un plat que l'on va sauvegarder son message.
 
         if ($this->alreadyCommented == null) {
             $review = new Review();
@@ -81,16 +80,16 @@ class ReviewComponent extends Component
             $review->title = $this->title;
             $review->comment = $this->comment;
             $review->user_id = $this->user_id;
-            $review->menu_id = $this->menu->id;
+            $review->plat_id = $this->plat->id;
             $review->save();
 
-            session()->flash('success_message','Nous avons reçu votre avis. Il est en cours d\'examen par notre équipe de modérateurs avant publication.');
-            return redirect()->route('details',$this->slug);  // On revient à la vue 'details'
+            session()->flash('success_message', 'Nous avons reçu votre avis. Il est en cours d\'examen par notre équipe de modérateurs avant publication.');
+            return redirect()->route('details', $this->slug);  // On revient à la vue 'details'
         }
     }
     public function render()
     {
-        $menu = $this->menu;
-        return view('frontend.livewire.review-component', compact('menu'));
+        $plat = $this->plat;
+        return view('frontend.livewire.review-component', compact('plat'));
     }
 }

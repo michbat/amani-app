@@ -12,7 +12,7 @@
                     <thead>
                         <tr>
                             <th>
-                                MENU
+                                PRODUIT
                             </th>
                             <th>
                                 PRIX
@@ -54,14 +54,14 @@
 
                                         <span class="item_cart">
                                             @php
-                                                $menu = App\Models\Menu::where('name', $element->model->name)->first();
-                                                $isMenu = false;
-                                                if ($menu) {
-                                                    $isMenu = true;
+                                                $plat = App\Models\Plat::where('name', $element->model->name)->first();
+                                                $isplat = false;
+                                                if ($plat) {
+                                                    $isPlat = true;
                                                 }
                                             @endphp
 
-                                            @if ($isMenu)
+                                            @if ($isPlat)
                                                 <a href="{{ route('details', $element->model->slug) }}"
                                                     class="text-dark">
                                                     {{ $element->qty }}x {{ $element->model->name }}
@@ -118,27 +118,27 @@
                     <div class="col-sm-8 text-start">
 
                         @foreach (Cart::instance('cart')->content() as $item)
-                            @if ((auth()->user() != null && auth()->user()->firstname == 'Generic') || $item->associatedModel == 'App\Models\Menu')
+                            @if ((auth()->user() != null && auth()->user()->firstname == 'Generic') || $item->associatedModel == 'App\Models\Plat')
                                 @php
-                                    $menuIsAbsent = false;
+                                    $platIsAbsent = false;
                                 @endphp
                             @endif
                         @endforeach
                         @if (auth()->user() != null && auth()->user()->firstname === 'Generic')
                             @php
-                                $menuIsAbsent = false;
+                                $platIsAbsent = false;
                             @endphp
                         @endif
-                        @if ($menuIsAbsent == true)
-                            <p class="text-danger text-center" style="font-size: 14px;">Sans au moins un menu dans votre
+                        @if ($platIsAbsent == true)
+                            <p class="text-danger text-center" style="font-size: 14px;">Sans au moins un plat dans votre
                                 panier
                                 d'achat, impossible de
                                 continuer la transaction ou d'acheter une boisson!</p>
                         @endif
-                        <a href="{{ route('menu') }}" class="btn btn-warning"><i
-                                class="fas fa-utensils mx-2"></i>Menus</a>
+                        <a href="{{ route('plat') }}" class="btn btn-warning"><i
+                                class="fas fa-utensils mx-2"></i>plats</a>
                         <a href="{{ route('drink') }}"
-                            class="btn btn-info mx-2 {{ $menuIsAbsent == true ? 'disabled' : '' }}"><i
+                            class="btn btn-info mx-2 {{ $platIsAbsent == true ? 'disabled' : '' }}"><i
                                 class="fas fa-plus-circle mx-2"></i>Ajout d'une boisson</a>
                     </div>
                     <div class="col-sm-12 text-start mt-4">
@@ -172,7 +172,7 @@
                             la page login pour s'authentifier. Si le panier est vide, le bouton est désactivé --}}
 
                         <a href="#" wire:click.prevent="checkout"
-                            class="btn btn-success btn-lg cart {{ Cart::instance('cart')->count() === 0 || $menuIsAbsent === true ? 'disabled' : '' }}">Procéder
+                            class="btn btn-success btn-lg cart {{ Cart::instance('cart')->count() === 0 || $platIsAbsent === true ? 'disabled' : '' }}">Procéder
                             au
                             paiement</a>
                     </div>

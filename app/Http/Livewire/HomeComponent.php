@@ -2,7 +2,8 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Menu;
+
+use App\Models\Plat;
 use App\Models\Staff;
 use App\Models\Slider;
 use App\Models\Gallery;
@@ -15,10 +16,10 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 class HomeComponent extends Component
 {
 
-    public function storeMenu($menu_id, $menu_name, $menu_price)
+    public function storePlat($plat_id, $plat_name, $plat_price)
     {
-        Cart::instance('cart')->add($menu_id, $menu_name, 1, $menu_price)->associate('App\Models\Menu');
-        session()->flash('success_message', 'Menu ajouté dans votre panier');
+        Cart::instance('cart')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
+        session()->flash('success_message', 'Plat ajouté dans votre panier');
         return redirect()->route('cart');
     }
     public function render()
@@ -34,9 +35,9 @@ class HomeComponent extends Component
 
         $video = Gallery::where('galleryType', GalleryType::VIDEO->value)->where('title', 'Amani')->first();
 
-        // On affiche à la page d'accueil les menus les moins chers
+        // On affiche à la page d'accueil les plats les moins chers
 
-        $menus = Menu::orderBy('price', 'ASC')->limit(8)->get();
+        $plats = Plat::orderBy('price', 'ASC')->limit(8)->get();
 
         // On recupère les membres du staff
 
@@ -56,6 +57,6 @@ class HomeComponent extends Component
 
         // On injecte les objets récupérés dans la vue
 
-        return view('frontend.livewire.home-component', compact('sliders', 'restaurant', 'video', 'menus', 'staffs'));
+        return view('frontend.livewire.home-component', compact('sliders', 'restaurant', 'video', 'plats', 'staffs'));
     }
 }

@@ -36,7 +36,7 @@
                         @enderror
                     </div>
                 </div>
-                <div class="form-group row">
+                {{-- <div class="form-group row">
                     <div class="col-sm-12">
                         <label for="image" class="form-label">Image</label>
                         <input type="file" name="image" class="form-control" id="image">
@@ -48,6 +48,19 @@
                             <img src="{{ asset($category->image) }}" alt="{{ $category->designation }}" width="200">
                         </div>
                     </div>
+                </div> --}}
+                <div class="form-group row mb-4">
+                    <label class="form-label text-left col-12" for="image-upload">Image</label>
+                    <div class="col-sm-12">
+                        <div style="background-image: url({{ asset($category->image) }}); background-size:cover; background-position:center;"
+                            id="image-preview" class="image-preview mb-2">
+                            <label for="image-upload" id="image-label">Choisir un fichier</label>
+                            <input type="file" name="image" id="image-upload" />
+                        </div>
+                        @error('image')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
             </div>
             <div class="card-footer mb-3">
@@ -56,4 +69,7 @@
             </div>
         </form>
     </div>
+@endsection
+@section('scripts')
+    <script src="{{ asset('assets/js/page/features-post-create.js') }}"></script>
 @endsection

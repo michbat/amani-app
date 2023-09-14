@@ -17,7 +17,7 @@
                             <div class="card body p-4" style="font-size: 23px;">
                                 <ul class="list" style="list-style-type: none;">
                                     <li>
-                                        <span>Numéro de commande</span> : {{ $order->id }}
+                                        <span>Numéro de commande</span> : COM-00{{ $order->id }}
                                     </li>
                                     <li>
                                         <span>Date de la commande</span> :
@@ -45,7 +45,7 @@
                                     </li>
                                 </ul>
                                 <div class="mt-3">
-                                    <p style="font-weight: 900; color: red">Si vous avez commandé un plat, il sera prêt au plus tard dans 30 minutes. Après, vous avez 1h30 pour le retirer dans notre restaurant. Passées ces deux heures, votre commande est considérée comme annulée et ce,à votre détriment (pas de remboursement).Vous pouvez suivrez l'état de votre commande sur votre compte.</p>
+                                    <p style="font-weight: 900; color: red">Si vous avez commandé un plat, il sera prêt au plus tard dans 30 minutes. Après, vous avez 1h30 pour le retirer dans notre restaurant. Passé ce délai, votre commande est considérée comme annulée et ce,à votre détriment (pas de remboursement).Vous pouvez suivrez l'état de votre commande sur votre compte.</p>
                                 </div>
                                 <div class="my-4">
                                     <hr>
@@ -64,8 +64,8 @@
                                         <tbody>
                                             @foreach ($order->lineOrders as $item)
                                                 <tr>
-                                                    <td>{{ $item->menu->name ?? $item->drink->name }}</td>
-                                                    <td class="text-center">{{ $item->menu->price ?? $item->drink->price }}&euro;</td>
+                                                    <td>{{ $item->plat->name ?? $item->drink->name }}</td>
+                                                    <td class="text-center">{{ $item->plat->price ?? $item->drink->price }}&euro;</td>
                                                     <td class="text-center">{{ $item->quantity }}</td>
                                                     <td>{{ $item->sellPrice }}&euro;</td>
                                                 </tr>

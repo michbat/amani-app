@@ -28,6 +28,8 @@ class CheckoutSuccessComponent extends Component
             Cart::instance('wishlist')->store(Auth::user()->id);
         }
 
+        session()->forget('acc'); // On détruit la session 'acc' crée dans le composant CheckoutComponent
+
         // On récupére la toute dernière commande qui vient d'être effectuée
 
         $order = Order::latest()->first();

@@ -19,15 +19,6 @@ class RestaurantController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Restaurant $restaurant)
-    {
-        $tags = Tag::all();
-        return view('admin.restaurants.show', compact('restaurant','tags'));
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Restaurant $restaurant)
@@ -55,12 +46,11 @@ class RestaurantController extends Controller
         $restaurant->twitterLink = $request->twitterLink;
         $restaurant->instagramLink = $request->instagramLink;
         $restaurant->aboutUs = $request->aboutUs;
+        $restaurant->reglement = $request->reglement;
         $restaurant->opened = $request->opened;
 
         $restaurant->update();
 
         return redirect()->route('admin.restaurants.index')->with('toast_success', 'Les informations du restaurant ont été mises à jour');
-
     }
-
 }

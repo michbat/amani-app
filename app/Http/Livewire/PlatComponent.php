@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Menu;
+use App\Models\Plat;
 use Livewire\Component;
 use App\Models\Category;
 use Livewire\WithPagination;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
 
-class MenuComponent extends Component
+class PlatComponent extends Component
 {
     use WithPagination;
 
@@ -19,14 +19,14 @@ class MenuComponent extends Component
     protected $paginationTheme = 'bootstrap';
 
 
-    // Propriété pour afficher le nombre de menus par page
+    // Propriété pour afficher le nombre de plats par page
 
     public $pageItems = 12;
 
-    // Propriétés pour ordonner les menus par prix croissant ou décroissant, nouveauté, défaut
+    // Propriétés pour ordonner les plats par prix croissant ou décroissant, nouveauté, défaut
     public $orderBy = "default";
 
-    // Propriétés pour filtrer les menus par intervalles de prix
+    // Propriétés pour filtrer les plats par intervalles de prix
 
     public $priceIntervals = [];
 
@@ -41,7 +41,7 @@ class MenuComponent extends Component
     /**
      *
      * La méthode updated() est appelée lorsqu'une propriété de notre composant est mise à jour
-     * via les interactions de l'utilisateur dans la vue associé à MenuComponent.
+     * via les interactions de l'utilisateur dans la vue associé à platComponent.
      * Ici on reset l'ancienne pagination générée d'une ancienne recherche pour laisser la place à une nouvelle pagination
      *
      */
@@ -56,7 +56,7 @@ class MenuComponent extends Component
     }
 
     // Lorsque la propriété $orderBy change, on crée une session pour sauvegarder le dernier critère de tri choisi dans le select
-    // Ainsi lorsqu'on change de page en ayant déjà fait un filtrage et qu'on revient ensuite à la page affichant les menus,
+    // Ainsi lorsqu'on change de page en ayant déjà fait un filtrage et qu'on revient ensuite à la page affichant les plats,
     // On retrouve les résultats correspondant au critère de filtrage.
 
     public function updatedOrderBy()
@@ -64,35 +64,35 @@ class MenuComponent extends Component
         session()->put('sorting', $this->orderBy);
     }
 
-    // Méthode pour ajouter un menu dans le panier
+    // Méthode pour ajouter un plat dans le panier
 
-    public function storeMenu($menu_id, $menu_name, $menu_price)
+    public function storePlat($plat_id, $plat_name, $plat_price)
     {
-        Cart::instance('cart')->add($menu_id, $menu_name, 1, $menu_price)->associate('App\Models\Menu');
+        Cart::instance('cart')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
         $this->emitTo('cart-icon-component', 'refreshComponent');
-        session()->flash('success_message', 'Menu ajouté dans votre panier');
+        session()->flash('success_message', 'Plat ajouté dans votre panier');
         return redirect()->route('cart');
     }
 
-    // Méthode pour ajouter un menu dans une wishlist
+    // Méthode pour ajouter un plat dans une wishlist
 
-    public function addMenuToWishList($menu_id, $menu_name, $menu_price)
+    public function addPlatToWishList($plat_id, $plat_name, $plat_price)
     {
-        Cart::instance('wishlist')->add($menu_id, $menu_name, 1, $menu_price)->associate('App\Models\Menu');
+        Cart::instance('wishlist')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
         $this->emitTo('wishlist-icon-component', 'refreshComponent');
-        session()->flash('success_message', 'Menu ajouté à votre liste de souhaits');
+        session()->flash('success_message', 'Plat ajouté à votre liste de souhaits');
         return back();
     }
 
-    // Méthode pour enlèver un menu de la wishlist
+    // Méthode pour enlèver un plat de la wishlist
 
-    public function removeMenuToWishList($menu_id)
+    public function removePlatToWishList($plat_id)
     {
         foreach (Cart::instance('wishlist')->content() as $content) {
-            if ($content->id == $menu_id) {
+            if ($content->id == $plat_id) {
                 Cart::instance('wishlist')->remove($content->rowId);
                 $this->emitTo('wishlist-icon-component', 'refreshComponent');
-                session()->flash('success_message', 'Menu enlevé de votre liste de souhaits');
+                session()->flash('success_message', 'Plat enlevé de votre liste de souhaits');
                 return back();
             }
         }
@@ -103,12 +103,12 @@ class MenuComponent extends Component
     {
         // La méthode statique query() permet de préparer notre objet $query aux prochaines requêtes eloquent en vue de filtrages
 
-        $query = Menu::query();
+        $query = Plat::query();
 
 
-        $query->leftJoin('reviews', 'menus.id', '=', 'reviews.menu_id')
-            ->selectRaw('menus.*, floor(AVG(CASE WHEN reviews.published = 1 THEN reviews.rating ELSE NULL END)) as avg_rating')
-            ->groupBy('menus.id', 'menus.name', 'menus.price', 'menus.slug', 'menus.category_id', 'menus.restaurant_id', 'menus.description', 'menus.image', 'menus.price', 'menus.available', 'menus.canBeCommended', 'menus.created_at', 'menus.updated_at');
+        $query->leftJoin('reviews', 'plats.id', '=', 'reviews.plat_id')
+            ->selectRaw('plats.*, floor(AVG(CASE WHEN reviews.published = 1 THEN reviews.rating ELSE NULL END)) as avg_rating')
+            ->groupBy('plats.id', 'plats.name', 'plats.price', 'plats.slug', 'plats.category_id', 'plats.restaurant_id', 'plats.description', 'plats.image', 'plats.price', 'plats.available', 'plats.canBeCommended', 'plats.created_at', 'plats.updated_at');
 
 
 
@@ -151,7 +151,7 @@ class MenuComponent extends Component
 
         $this->orderBy = session()->get('sorting');
 
-        // Ordonner nos menus par prix ascendant et descendant, nouveauté (ordre d'enregistrement dans la BDD), rating (mieux noté au mal noté)
+        // Ordonner nos plats par prix ascendant et descendant, nouveauté (ordre d'enregistrement dans la BDD), rating (mieux noté au mal noté)
 
         switch ($this->orderBy) {
             case 'ascendant':
@@ -171,7 +171,7 @@ class MenuComponent extends Component
 
         // Affichage du nombre de produits par page (4,8,12,16,20)
 
-        $menus = $query->paginate($this->pageItems);
+        $plats = $query->paginate($this->pageItems);
 
         $categories = Category::orderBy('designation', 'ASC')->get();
         $categories = Category::where('designation', 'Entrées')->orWhere('designation', 'Plats principaux')->orWhere('designation', 'Desserts')->orderBy('designation', 'ASC')->get();
@@ -183,6 +183,6 @@ class MenuComponent extends Component
             Cart::instance('wishlist')->store(Auth::user()->id);
         }
 
-        return view('frontend.livewire.menu-component', compact('menus', 'categories'));
+        return view('frontend.livewire.plat-component', compact('plats', 'categories'));
     }
 }

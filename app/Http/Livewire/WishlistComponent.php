@@ -8,9 +8,9 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 
 class WishlistComponent extends Component
 {
-    // Méthode pour enlèver un menu de la wishlist
+    // Méthode pour enlèver un plat de la wishlist
 
-    public function removeMenuToWishList($item_id)
+    public function removePlatToWishList($item_id)
     {
         foreach (Cart::instance('wishlist')->content() as $content) {
             if ($content->id == $item_id) {
@@ -22,21 +22,22 @@ class WishlistComponent extends Component
         }
     }
 
-    // Méthode pour ajouter un menu dans le panier
+    // Méthode pour ajouter un plat dans le panier
 
-    public function storeMenu($menu_id, $menu_name, $menu_price)
+    public function storePlat($plat_id, $plat_name, $plat_price)
     {
 
-        Cart::instance('cart')->add($menu_id, $menu_name, 1, $menu_price)->associate('App\Models\Menu');
+        Cart::instance('cart')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
 
         $this->emitTo('cart-icon-component', 'refreshComponent');
 
-        // Si le menu est ajouté de la carte, on l'efface de la wishlist, faisant appel à la méthode removeMenuToWishList()
+        // Si le plat est ajouté de la carte, on l'efface de la wishlist, faisant appel à la méthode removePlatToWishList()
 
-        $this->removeMenuToWishList($menu_id);
+        $this->removePlatToWishList($plat_id);
 
-        // session()->flash('success_message', 'Menu ajouté dans votre panier et retiré de la wishlist');
-        return redirect()->route('wishlist')->with('success', 'Menu ajouté dans votre panier et retiré de la wishlist');
+        session()->flash('success_message', 'Plat ajouté dans votre panier et retiré de la wishlist');
+        return redirect()->back();
+        // return redirect()->route('wishlist')->with('success', 'Plat ajouté dans votre panier et retiré de la wishlist');
     }
 
     public function render()

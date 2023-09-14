@@ -122,12 +122,18 @@
                 </div>
                 <div class="form-group row mb-4">
                     <div class="col-sm-12">
-                        <label class="form-label">À propos</label>
+                        <label class="form-label mb-3">À propos</label>
                         <textarea name="aboutUs" id="tiny" cols="30" rows="30" class="form-control">{{ $restaurant->aboutUs }}</textarea>
 
                         @error('aboutUs')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
+                    </div>
+                </div>
+                <div class="form-group row mb-4">
+                    <div class="col-sm-12">
+                        <label class="form-label mb-3">Termes & conditions de vente</label>
+                        <textarea name="reglement" id="tiny" cols="30" rows="30" class="form-control">{{ $restaurant->reglement }}</textarea>
                     </div>
                 </div>
             </div>

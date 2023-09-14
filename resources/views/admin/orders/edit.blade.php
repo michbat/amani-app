@@ -57,6 +57,7 @@
                     <div class="col-sm-4">
                         <label for="nameOnCard" class="form-label">Nom et prénom sur la carte</label>
                         <input type="text" name="nameOnCard" id="nameOnCard" class="form-control"
+                            {{ $order->paymentMode->value != App\Enums\PaymentMode::CARD->value ? 'disabled' : '' }}
                             value="{{ $order->nameOnCard }}">
                         @error('nameOnCard')
                             <span class="text-danger">{{ $message }}</span>

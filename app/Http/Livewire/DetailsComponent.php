@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Menu;
+use App\Models\Plat;
 use App\Models\Review;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
@@ -10,28 +10,28 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 
 class DetailsComponent extends Component
 {
-    public $menu;
+    public $plat;
     public $slug;
     public $quantity;
 
     public function mount($slug)
     {
-        // On affiche les informations détaillés d'un menu en récupérant son slug et en faisant une requête eloquent pour le récupèrer
+        // On affiche les informations détaillés d'un plat en récupérant son slug et en faisant une requête eloquent pour le récupèrer
         $this->slug = $slug;
-        $this->menu = Menu::where('slug', $this->slug)->first();
+        $this->plat = Plat::where('slug', $this->slug)->first();
 
         /**
          * On récupère un objet cart de type Cart (panier) car nous voudrions offrir la possibilité au client de rajouter
-         * Un menu à partir de la page d'informations détaillées. Toutefois, la quantité d'un menu à ajouter dans un menu étant limitée à 10
+         * Un plat à partir de la page d'informations détaillées. Toutefois, la quantité d'un plat à ajouter dans un plat étant limitée à 10
          * Nous devons empêcher son ajout dans le panier si cette quantité est atteinte. Nous allons desactiver le bouton "ajouter"
          */
         $cartInstance = Cart::instance('cart');
-        $menuId = $this->menu->id;
+        $platId = $this->plat->id;
 
-        // On récupère un menu ($item) présent dans le panier en comparant des id.
+        // On récupère un plat ($item) présent dans le panier en comparant des id.
 
-        $item = $cartInstance->search(function ($cartItem) use ($menuId) {
-            return $cartItem->id === $menuId;
+        $item = $cartInstance->search(function ($cartItem) use ($platId) {
+            return $cartItem->id === $platId;
         });
 
 
@@ -42,36 +42,36 @@ class DetailsComponent extends Component
 
         $item->first() != null ? $this->quantity = $item->first()->qty :  $this->quantity = 0;
 
-        session()->put('menu','menu_page_visited');
+        session()->put('plat','plat_page_visited');
     }
 
-    // Méthode pour ajouter un menu dans le panier
-    public function storeMenu($menu_id, $menu_name, $menu_price)
+    // Méthode pour ajouter un plat dans le panier
+    public function storePlat($plat_id, $plat_name, $plat_price)
     {
-        Cart::instance('cart')->add($menu_id, $menu_name, 1, $menu_price)->associate('App\Models\Menu');
-        session()->flash('success_message', 'Menu ajouté dans votre panier');
+        Cart::instance('cart')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
+        session()->flash('success_message', 'Plat ajouté dans votre panier');
         return redirect()->route('cart');
     }
 
-    // Méthode pour ajouter un menu dans une wishlist
+    // Méthode pour ajouter un plat dans une wishlist
 
-    public function addMenuToWishList($menu_id, $menu_name, $menu_price)
+    public function addPlatToWishList($plat_id, $plat_name, $plat_price)
     {
-        Cart::instance('wishlist')->add($menu_id, $menu_name, 1, $menu_price)->associate('App\Models\Menu');
+        Cart::instance('wishlist')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
         $this->emitTo('wishlist-icon-component', 'refreshComponent');
-        session()->flash('success_message', 'Menu ajouté à votre liste de souhaits');
+        session()->flash('success_message', 'Plat ajouté à votre liste de souhaits');
         return redirect()->back();
     }
 
-    // Méthode pour enlèver un menu de la wishlist
+    // Méthode pour enlèver un plat de la wishlist
 
-    public function removeMenuToWishList($menu_id)
+    public function removePlatToWishList($plat_id)
     {
         foreach (Cart::instance('wishlist')->content() as $content) {
-            if ($content->id == $menu_id) {
+            if ($content->id == $plat_id) {
                 Cart::instance('wishlist')->remove($content->rowId);
                 $this->emitTo('wishlist-icon-component', 'refreshComponent');
-                session()->flash('success_message', 'Menu enlevé de votre liste de souhaits');
+                session()->flash('success_message', 'Plat enlevé de votre liste de souhaits');
                 return redirect()->back();
             }
         }
@@ -79,12 +79,12 @@ class DetailsComponent extends Component
 
     public function render()
     {
-        $menu = $this->menu;
-        $reviews = Review::where('published', 1)->where('censored', 0)->where('menu_id', $this->menu->id)->orderBy('created_at', 'DESC')->get();
+        $plat = $this->plat;
+        $reviews = Review::where('published', 1)->where('censored', 0)->where('plat_id', $this->plat->id)->orderBy('created_at', 'DESC')->get();
         $user = Auth::user();
 
 
-        $avg = floor($reviews->avg('rating'));
+        $avg = floor($reviews->avg('rating'));  // Moyenne des reviews publiés!
 
         // Si le client est authentifié, on sauvegarde son panier et sa wishlist
 
@@ -93,6 +93,6 @@ class DetailsComponent extends Component
             Cart::instance('wishlist')->store(Auth::user()->id);
         }
 
-        return view('frontend.livewire.details-component', compact('menu', 'reviews', 'user', 'avg'));
+        return view('frontend.livewire.details-component', compact('plat', 'reviews', 'user', 'avg'));
     }
 }

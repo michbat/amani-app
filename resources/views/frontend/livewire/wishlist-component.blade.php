@@ -1,6 +1,6 @@
 @section('breadcrumb')
     <div class="col-xl-9 col-lg-10 col-md-8">
-        <h1>Wishlist</h1>
+        <h1>Liste d'envies</h1>
         <p>Cuisine délicieuse et démocratique</p>
     </div>
 @endsection
@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="row justify-content-center  mb-5 gy-3">
-                    {{-- On récupère les id des menus qui ont été ajouté à la wishlist --}}
+                    {{-- On récupère les id des plats qui ont été ajouté à la wishlist --}}
                     @php
                         $wishitems = Cart::instance('wishlist')
                             ->content()
@@ -56,31 +56,22 @@
                                             {{ $item->model->price }} &euro;
                                         </span>
                                         <div class="d-flex justify-content-center align-items-center">
-                                            <button title="Ajouter ce menu au panier" type="button"
+                                            <button title="Ajouter ce plat au panier" type="button"
                                                 class="btn btn-success {{ $item->model->available === 0 || $item->model->canBeCommended === 0 ? 'disabled' : '' }}"
-                                                wire:click.prevent="storeMenu({{ $item->model->id }},'{{ $item->model->name }}',{{ $item->model->price }})">
+                                                wire:click.prevent="storePlat({{ $item->model->id }},'{{ $item->model->name }}',{{ $item->model->price }})">
                                                 <span style="color: white;">
                                                     <i class="fas fa-shopping-cart mx-2"></i>Ajouter
                                                 </span>
                                             </button>
-                                            {{-- Si l'id du menu est dans la wishmenus, cela veut dire qu'il y a été ajouté. On colore le bouton en rouge avec la classe bootstrap danger --}}
+                                            {{-- Si l'id du plat est dans la wishplats, cela veut dire qu'il y a été ajouté. On colore le bouton en rouge avec la classe bootstrap danger --}}
                                             @if ($wishitems->contains($item->model->id))
-                                                <button title="Enlèver ce menu à la liste de souhaits"
+                                                <button title="Enlèver ce plat à la liste de souhaits"
                                                     class="btn btn-danger mx-2" type="button"
-                                                    wire:click.prevent="removeMenuToWishList({{ $item->model->id }})">
+                                                    wire:click.prevent="removePlatToWishList({{ $item->model->id }})">
                                                     <span>
                                                         <i class="far fa-heart mx-2"></i>Wishlist
                                                     </span>
                                                 </button>
-                                            {{-- @else
-                                                {{-- sinon on affiche un bouton outline (vide) --}}
-                                                {{-- <button title="Ajouter ce menu à la liste de souhaits"
-                                                    class="btn btn-outline-danger mx-2" type="button"
-                                                    wire:click.prevent="addItemToWishList({{ $item->model->id }},'{{ $item->model->name }}',{{ $item->model->price }})">
-                                                    <span>
-                                                        <i class="far fa-heart mx-2"></i>Wishlist
-                                                    </span>
-                                                </button>  --}}
                                             @endif
                                         </div>
                                     </div>
@@ -89,7 +80,7 @@
                         @endforeach
                     @else
                         <div class="col-md-12 col-xl-12 mt-5">
-                            <h3 class="text-center"> Aucun menu dans votre wishlist</h3>
+                            <h3 class="text-center"> Aucun plat dans votre wishlist</h3>
                         </div>
 
                     @endif

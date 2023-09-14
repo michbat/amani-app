@@ -10,9 +10,9 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 class CartComponent extends Component
 {
 
-    // Propriété qui va nous permettre de savoir si dans un panier il y a un menu
+    // Propriété qui va nous permettre de savoir si dans un panier il y a un plat
 
-    public $menuIsAbsent =  true;
+    public $platIsAbsent =  true;
 
     protected $listeners = ['refreshComponent' => '$refresh'];
 
@@ -27,7 +27,7 @@ class CartComponent extends Component
 
     public function decreaseQuantity($rowId)
     {
-        $verify = false; // Variable "drapeau" booléenne qui va nous servir à vérfier si il y a au moins un menu dans le panier
+        $verify = false; // Variable "drapeau" booléenne qui va nous servir à vérfier si il y a au moins un plat dans le panier
         $item = Cart::instance('cart')->get($rowId); // On récupère le produit pour lequel on décremente la quantité
         $qty = $item->qty - 1;  // On réduit la quantité du produit
         Cart::instance('cart')->update($rowId, $qty);  // On met à jour la quantité du produit objet d'une décrémenation
@@ -39,7 +39,7 @@ class CartComponent extends Component
         } else {
             // Sinon on parcourt le panier pour voir s'il y a au moins un plat
             foreach (Cart::instance('cart')->content() as $content) {
-                if ($content->associatedModel == "App\Models\Menu") {
+                if ($content->associatedModel == "App\Models\Plat") {
                     $verify = true;
                 }
             }
@@ -53,7 +53,7 @@ class CartComponent extends Component
             return redirect()->back();
         }
 
-        // Lorsque la variable $verify reste à false, cela veut dire qu'il n'y a plus de menu dans le panier
+        // Lorsque la variable $verify reste à false, cela veut dire qu'il n'y a plus de plat dans le panier
 
         if (Auth::user() && Auth::user()->firstname != 'Generic' && $verify == false) {
             // Dans ce cas, on vide complètement le panier en detruisant l'instance 'cart'
@@ -82,7 +82,7 @@ class CartComponent extends Component
             // On parcourt donc l'objet 'cart' c'est à dire notre panier
 
             foreach (Cart::instance('cart')->content() as $content) {
-                if ($content->associatedModel == "App\Models\Menu") {
+                if ($content->associatedModel == "App\Models\Plat") {
                     $verify = true;  // S'il y a au moins un plat dans le panier, $verify devient true
                 }
             }
@@ -129,7 +129,7 @@ class CartComponent extends Component
     {
         Cart::instance('cart')->destroy();
         $this->emitTo('cart-icon-component', 'refreshComponent');
-        return redirect()->route('menu')->with('info', 'Désolé, vous ne pouvez commander qu\'entre 10h00 et 23h00. Merci de votre compréhension.');
+        return redirect()->route('plat')->with('info', 'Désolé, vous ne pouvez commander qu\'entre 10h00 et 23h00. Merci de votre compréhension.');
     }
 
     public function checkout()
@@ -165,7 +165,7 @@ class CartComponent extends Component
         } else {
             // On n'appele la méthode closedDoors() en dehors des heures d'ouverture
             $this->closedDoors();
-            return view('frontend.livewire.menu-component');
+            return view('frontend.livewire.plat-component');
         }
     }
 }

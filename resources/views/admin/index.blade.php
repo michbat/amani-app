@@ -31,7 +31,7 @@
                 <div class="card">
                     <div class="card-body bg-info" style="color: #333">
                         <h5 class="card-title text-center">Plats à la carte</h5>
-                        <p class="card-text text-center" style="font-weight: bolder; font-size: 20px;">{{ $menus }}</p>
+                        <p class="card-text text-center" style="font-weight: bolder; font-size: 20px;">{{ $plats }}</p>
                     </div>
                 </div>
             </div>
