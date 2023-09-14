@@ -24,11 +24,7 @@ class UnitTableSeeder extends Seeder
             [
                 'name' => 'Pièces',
                 'symbol' => 'PC',
-            ],
-            [
-                'name' => 'Degré Celsius',
-                'symbol' => '°C',
-            ],
+            ]
         ];
 
         Unit::insert($units);

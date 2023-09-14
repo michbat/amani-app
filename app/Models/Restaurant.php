@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Menu;
+use App\Models\Plat;
 use App\Models\Staff;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -19,9 +19,9 @@ class Restaurant extends Model
 
     // Matérialisation de la relation un restaurant a plusieurs recettes
 
-    public function menus(): HasMany
+    public function plats(): HasMany
     {
-        return $this->hasMany(Menu::class);
+        return $this->hasMany(Plat::class);
     }
 
     // Matérialisation de la relation un restaurant diffuse plusieurs médias

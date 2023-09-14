@@ -38,7 +38,7 @@
     </div>
 @endsection
 @section('scripts')
-    <script>
+    {{-- <script>
         function preventBack() {
             window.history.forward();
         };
@@ -46,5 +46,5 @@
         window.onunload = function() {
             null;
         }
-    </script>
+    </script> --}}
 @endsection

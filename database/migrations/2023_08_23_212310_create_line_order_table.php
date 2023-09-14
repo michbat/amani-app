@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('line_order', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('menu_id')->nullable()->constrained('menus')->nullOnDelete()->cascadeOnUpdate();
+            $table->foreignId('plat_id')->nullable()->constrained('plats')->nullOnDelete()->cascadeOnUpdate();
             $table->foreignId('drink_id')->nullable()->constrained('drinks')->nullOnDelete()->cascadeOnUpdate();
             $table->foreignId('order_id')->constrained('orders')->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('quantity');

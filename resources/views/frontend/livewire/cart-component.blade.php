@@ -142,7 +142,7 @@
                                 class="fas fa-plus-circle mx-2"></i>Ajout d'une boisson</a>
                     </div>
                     <div class="col-sm-12 text-start mt-4">
-                        <p style="color: red">Des produits commandés sont prêts au plus tard dans 30 minutes à partir de
+                        <p style="color: red">Des plats commandés sont prêts au plus tard dans 30 minutes à partir de
                             la confirmation de la commande. Vous avez 1h30 pour retirer votre commande dès qu'elle
                             est prête. Vous pouvez suivre l'état de votre commande sur votre compte et un e-mail vous
                             sera envoyé dès qu'elle prête.</p>

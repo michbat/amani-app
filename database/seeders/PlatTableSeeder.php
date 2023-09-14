@@ -3,13 +3,13 @@
 namespace Database\Seeders;
 
 use  Carbon\Carbon;
-use App\Models\Menu;
+use App\Models\Plat;
 use App\Models\Category;
 use App\Models\Restaurant;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 
-class MenuTableSeeder extends Seeder
+class PlatTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -20,7 +20,7 @@ class MenuTableSeeder extends Seeder
         $cat_pp_id = Category::where('designation', 'Plats principaux')->first()->id;
         $cat_dsrt_id = Category::where('designation', 'Desserts')->first()->id;
         $resto_id = Restaurant::where('name', 'Amani')->first()->id;
-        $menus = [
+        $plats = [
 
             // Les entrées
 
@@ -337,7 +337,7 @@ class MenuTableSeeder extends Seeder
 
         // Créer des menus à une minute d'intervalle.
 
-        foreach ($menus as $index => $menu) {
+        foreach ($plats as $index => $plat) {
             $timeInterval = $index * 60;
             $createdAt = Carbon::parse($base)->addSeconds($timeInterval);
             $updatedAt = $createdAt;
@@ -346,6 +346,6 @@ class MenuTableSeeder extends Seeder
             $menus[$index]['updated_at'] = $updatedAt;
         }
 
-        Menu::insert($menus);
+        Plat::insert($plats);
     }
 }

@@ -66,7 +66,7 @@ class RegistrationController extends Controller
         $user->password = Hash::make($request->password); // On hashe le mot de passe de l'utilisateur.
         $user->status = UserStatus::PENDING->value; // Le status du compte est mis en mode 'pending' en attendant la validation.
         $user->token = $token; // On affecte le token généré au champ token de la table de l'utilisateur.
-        
+
         $user->save(); // On enregistre le nouveau utilisateur dans la BDD de manière effective.
 
         /**

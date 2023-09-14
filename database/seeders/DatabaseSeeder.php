@@ -7,7 +7,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Database\Seeders\AdminSeeder;
 use Database\Seeders\TagTableSeeder;
-use Database\Seeders\MenuTableSeeder;
+use Database\Seeders\PlatTableSeeder;
 use Database\Seeders\TypeTableSeeder;
 use Database\Seeders\UnitTableSeeder;
 use Database\Seeders\DrinkTableSeeder;
@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             RestaurantTableSeeder::class,
             CategoryTableSeeder::class,
-            MenuTableSeeder::class,
+            PlatTableSeeder::class,
             DrinkTableSeeder::class,
             TagTableSeeder::class,
             TypeTableSeeder::class,

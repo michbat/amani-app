@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Menu;
+use App\Models\Plat;
 use App\Models\Unit;
 use App\Enums\StockStatus;
 use Illuminate\Database\Eloquent\Model;
@@ -47,8 +47,8 @@ class Ingredient extends Model
     //     return $this->hasMany(Menu::class);
     // }
 
-    public function menus(): BelongsToMany
+    public function plats(): BelongsToMany
     {
-        return $this->belongsToMany(Menu::class);
+        return $this->belongsToMany(Plat::class);
     }
 }

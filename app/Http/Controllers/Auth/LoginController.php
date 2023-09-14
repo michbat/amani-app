@@ -2,21 +2,33 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Enums\UserStatus;
 use App\Models\User;
+use App\Enums\UserStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Events\LoginSubmitDeniedEvent;
+use Illuminate\Support\Facades\Session;
 use App\Http\Requests\LoginSubmitRequest;
 
 class LoginController extends Controller
 {
+
     public function login()
     {
-        // Renvoit la page (la vue) de connexion
+
+        //Si la personne est connectée, elle ne doit pas accéder à nouveau à la page login
+
+        if (Auth::check()) {
+            return redirect()->back()->with('warning', 'Vous êtes déjà connecté!');
+        }
+
+        // Je stocke dans une variable de session, la route (la page) précédente sur laquelle le visiteur était avant de tenter de se connecter
+        // L'intérêt de cette démarche est de le ramèner à la page qu'il visitait une fois authentifié.
+
+        Session::put('previous_url', url()->previous());
         return view('auth.login');
     }
 
@@ -47,6 +59,7 @@ class LoginController extends Controller
         $accountStatus = $user->status->value;
 
 
+
         if ($credentialsIsOk && $accountStatus ==  UserStatus::ACTIVE->value) {
 
             /**
@@ -65,20 +78,22 @@ class LoginController extends Controller
 
             /**
              * Dans le cas où l'utilisateur a lancé le processus de changement de mot de passe et qu'un lien cliquable pour changer le
-             * mot de passe lui a été envoyé, le champ token est donc rempli.
-             * Si entretemps il retrouve son ancien mot de passe avant d'avoir fait un changement, il faut bien mettre à vide le champ token
+             * mot de passe lui a été envoyé, le champ token n'est donc pas vide.
+             * Si entretemps il retrouve la mémoire donc son ancien mot de passe avant d'avoir fait un changement, il faut bien mettre à vide le champ token
              * lors de sa connection. Pour rappel, dans notre système d'inscription et d'authentification, le token n'est généré que lorsque l'application
              * doit envoyer des liens de vérification cliquables par mail aux utilisateurs.
              */
 
-            if ($user->token)  // Si le user a un token
+            if ($user->token)  // Si jamais le user a encore un token
             {
                 $user->token = '';  // On l'efface dans le champ token de la table
                 $user->update(); // On met à jour les informations de l'utilisateur.
             }
 
             if (Auth::attempt($credentials)) {
-                return redirect()->route('home')->with('success', 'Bonjour ' . $user->firstname . ', Vous êtes connecté!');
+                // Une fois connecté, on ramène l'utilisateur à la page qu'il visitait avant de s'authentifier
+                
+                return redirect(Session::get('previous_url'))->with('success', 'Bonjour ' . $user->firstname . ', Vous êtes connecté!');
             } else {
                 return redirect()->back()->with('error', 'Une erreur s\'est produite. Veuillez retenter une connexion.');
             }
@@ -115,7 +130,7 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::logout();  // Instruction pour déconnecter un utilisateur connecté. 
+        Auth::logout();  // Instruction pour déconnecter un utilisateur connecté.
 
         return $request->wantsJson()
             ? new JsonResponse([], 204)

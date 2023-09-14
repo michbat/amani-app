@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Menu;
+use App\Models\Plat;
 use App\Models\Drink;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -20,13 +20,13 @@ class Category extends Model
 
     // La matérialisation de la relation, une catégorie peut référencer plusieurs menus.
 
-    public function menus(): HasMany
+    public function plats(): HasMany
     {
-        return $this->hasMany(Menu::class);
+        return $this->hasMany(Plat::class);
     }
 
     // Une catégorie peut référencer plusieurs boissons
-    
+
     public function drinks(): HasMany
     {
         return $this->hasMany(Drink::class);

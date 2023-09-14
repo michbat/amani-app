@@ -19,7 +19,6 @@ return new class extends Migration
             $table->double('quantityInStock');
             $table->double('quantityMinimum');
             $table->enum('stockStatus', ['available', 'notavailable']);
-            // $table->string('stockStatus')->default('available');
         });
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Menu;
+use App\Models\Plat;
 use App\Models\Drink;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Model;
@@ -19,9 +19,9 @@ class LineOrders extends Model
 
 
 
-    public function menu(): BelongsTo
+    public function plat(): BelongsTo
     {
-        return $this->belongsTo(Menu::class);
+        return $this->belongsTo(Plat::class);
     }
 
     public function drink(): BelongsTo

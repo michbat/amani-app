@@ -10,16 +10,16 @@
             <div class="container d-flex justify-content-between">
                 <div class="count_results">
                     @if ($menus->count() > 0)
-                        <p>{{ $menus->firstItem() }} à {{ $menus->lastItem() }} sur {{ $menus->total() }} item(s)</p>
+                        <p>{{ $menus->firstItem() }} à {{ $menus->lastItem() }} sur {{ $menus->total() }} plats(s)</p>
                     @endif
                 </div>
                 <div>
                     <select name="page" class="form-control" style="min-width: 150px" wire:model="pageItems">
-                        <option value="4">4 items</option>
-                        <option value="8">8 items</option>
-                        <option value="12">12 items</option>
-                        <option value="16">16 items</option>
-                        <option value="20">20 items</option>
+                        <option value="4">4 plats</option>
+                        <option value="8">8 plats</option>
+                        <option value="12">12 plats</option>
+                        <option value="16">16 plats</option>
+                        <option value="20">20 plats</option>
                     </select>
                 </div>
                 <div class="sort_select">
@@ -39,7 +39,7 @@
         <div class="collapse filters_2" id="collapseFilters">
             <div class="container margin_detail">
                 <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-4">
                         <div class="filter_type">
                             <h6>Categories</h6>
                             <ul>
@@ -87,7 +87,7 @@
                             </ul>
                         </div> --}}
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-4">
                         <div class="filter_type">
                             <h6>Prix</h6>
                             @php

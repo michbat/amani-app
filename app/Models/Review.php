@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Menu;
+use App\Models\Plat;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -24,8 +24,8 @@ class Review extends Model
 
     // Matérialisation de la relation un commentaire particulier ne peut concerner qu'un et un seul menu
 
-    public function menu(): BelongsTo
+    public function plat(): BelongsTo
     {
-        return $this->belongsTo(Menu::class);
+        return $this->belongsTo(Plat::class);
     }
 }

@@ -6,7 +6,7 @@ use App\Models\Tag;
 use App\Models\Review;
 use App\Models\Category;
 use App\Models\Ingredient;
-use App\Models\OrderLines;
+use App\Models\LineOrders;
 use App\Models\Restaurant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Menu extends Model
+class Plat extends Model
 {
     use HasFactory;
 
@@ -58,7 +58,7 @@ class Menu extends Model
 
     public function lineOrders(): HasMany
     {
-        return $this->hasMany(lineOrders::class);
+        return $this->hasMany(LineOrders::class);
     }
 
     // Un menu peut faire l'objet de plusieurs commentaires

@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use App\Models\Menu;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Plat;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Tag extends Model
@@ -19,8 +19,8 @@ class Tag extends Model
 
     // Matérialisation de la relation many to many (Un tag peut-être attribué à plusieurs recettes)
 
-    public function menus(): BelongsToMany
+    public function plats(): BelongsToMany
     {
-        return $this->belongsToMany(Menu::class);
+        return $this->belongsToMany(Plat::class);
     }
 }
