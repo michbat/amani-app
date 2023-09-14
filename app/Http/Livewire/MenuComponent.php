@@ -46,13 +46,22 @@ class MenuComponent extends Component
      *
      */
 
-    public function mount()
-    {
-        session()->put('menu','menu_page_visited');
-    }
+
+    // Lorsqu'une propriété de notre composant change, la méthode updated() est appelée et on reinitialise notre pagination
+    // Notamment pour tenir systématiquement compte des résultats de nos tris ou filtres.
+
     public function updated()
     {
         $this->resetPage();
+    }
+
+    // Lorsque la propriété $orderBy change, on crée une session pour sauvegarder le dernier critère de tri choisi dans le select
+    // Ainsi lorsqu'on change de page en ayant déjà fait un filtrage et qu'on revient ensuite à la page affichant les menus,
+    // On retrouve les résultats correspondant au critère de filtrage.
+
+    public function updatedOrderBy()
+    {
+        session()->put('sorting', $this->orderBy);
     }
 
     // Méthode pour ajouter un menu dans le panier
@@ -96,6 +105,15 @@ class MenuComponent extends Component
 
         $query = Menu::query();
 
+
+        $query->leftJoin('reviews', 'menus.id', '=', 'reviews.menu_id')
+            ->selectRaw('menus.*, floor(AVG(CASE WHEN reviews.published = 1 THEN reviews.rating ELSE NULL END)) as avg_rating')
+            ->groupBy('menus.id', 'menus.name', 'menus.price', 'menus.slug', 'menus.category_id', 'menus.restaurant_id', 'menus.description', 'menus.image', 'menus.price', 'menus.available', 'menus.canBeCommended', 'menus.created_at', 'menus.updated_at');
+
+
+
+
+
         // Un fitrage sur l'intervalle de prix
 
         if (!empty($this->priceIntervals)) {
@@ -118,6 +136,7 @@ class MenuComponent extends Component
             });
         }
 
+
         // Un filtrage par categories
 
         if (!empty($this->cats)) {
@@ -125,7 +144,14 @@ class MenuComponent extends Component
             $query->whereIn('category_id', Category::whereIn('designation', $this->cats)->pluck('id'));
         }
 
-        // Ordonner nos menus par prix, nouveauté (ordre d'enregistrement dans la BDD)
+
+        // On récupère notre variable de session dont la clé est 'sorting' et on l'affecte à la propriété $orderBy pour garder les résultats de
+        // notre dernier critère de tri
+
+
+        $this->orderBy = session()->get('sorting');
+
+        // Ordonner nos menus par prix ascendant et descendant, nouveauté (ordre d'enregistrement dans la BDD), rating (mieux noté au mal noté)
 
         switch ($this->orderBy) {
             case 'ascendant':
@@ -137,6 +163,8 @@ class MenuComponent extends Component
             case 'new':
                 $query->orderBy('created_at', 'DESC');
                 break;
+            case 'rating':
+                $query->orderBy('avg_rating', 'DESC');
             default:
                 //
         }

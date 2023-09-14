@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckVisitedMenuRoute
+class CheckAddedMenu
 {
     /**
      * Handle an incoming request.
@@ -29,7 +29,7 @@ class CheckVisitedMenuRoute
             return $next($request);
         }
 
-        if (!session()->has('menu') || count(Cart::instance('cart')->content()) == 0 || $verify == false) {
+        if (count(Cart::instance('cart')->content()) == 0 || $verify == false) {
             if ($verify == false) {
                 Cart::instance('cart')->destroy();
             }

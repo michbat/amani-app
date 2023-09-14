@@ -47,7 +47,14 @@ use App\Http\Livewire\DetailsDrinkComponent;
 
 Route::get('/', HomeComponent::class)->name('home');
 Route::get('/menu', MenuComponent::class)->name('menu');
-Route::get('/drink', DrinkComponent::class)->name('drink')->middleware('check.visited.menu');
+
+
+/**
+ * On affecte le middleware 'check.added.menu' qui vérifie si un visiteur ou un utilisateur qui n'est pas "generic user" tenter d'ajouter
+ * une boisson dans le panier sans avoir au préalable ajouté un menu (voir nos règles de gestion!)
+ */
+Route::get('/drink', DrinkComponent::class)->name('drink')->middleware('check.added.menu');
+
 Route::get('/cart', CartComponent::class)->name('cart');
 Route::get('/menu/{slug}', DetailsComponent::class)->name('details');
 Route::get('/drink/{slug}', DetailsDrinkComponent::class)->name('details.drink');

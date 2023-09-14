@@ -25,7 +25,7 @@
                 <div class="sort_select">
                     <select wire:model="orderBy">
                         <option value="default">Par défaut</option>
-                        {{-- <option value="rating">Mieux noté</option> --}}
+                        <option value="rating">Mieux noté</option>
                         <option value="new">Nouveauté</option>
                         <option value="ascendant">Prix croissant</option>
                         <option value="descendant">Prix décroissant</option>
@@ -39,7 +39,7 @@
         <div class="collapse filters_2" id="collapseFilters">
             <div class="container margin_detail">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <div class="filter_type">
                             <h6>Categories</h6>
                             <ul>
@@ -56,8 +56,8 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="filter_type">
+                    <div class="col-md-2">
+                        {{-- <div class="filter_type">
                             <h6>Avis</h6>
                             <ul>
                                 <li>
@@ -85,9 +85,9 @@
                                     </label>
                                 </li>
                             </ul>
-                        </div>
+                        </div> --}}
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <div class="filter_type">
                             <h6>Prix</h6>
                             @php
@@ -198,11 +198,43 @@
                                         <h3 class="p-2">{{ $menu->name }}</h3>
                                     </a>
 
+                                    {{-- Les étoiles du rating --}}
+
                                     @if ($menu->available === 0)
                                         <span class="text-danger">indisponible</span>
                                     @endif
+
                                     <div class="d-flex flex-column price_box mt-auto">
-                                        <p>{{ $menu->category->designation }}</p>
+                                        <p>
+                                            {{ $menu->category->designation }}
+                                            <a href="{{ route('details', ['slug' => $menu->slug]) }}">
+                                                <span class=" d-block rating mt-4">
+                                                    @php
+                                                        $cpt = 0;
+                                                        $rating = 0;
+                                                        foreach ($menu->reviews as $review) {
+                                                            if ($review->published == 1) {
+                                                                $cpt += 1;
+                                                                $rating += $review->rating;
+                                                            }
+                                                        }
+                                                        if ($cpt == 0) {
+                                                            $avg = floor($rating);
+                                                        } else {
+                                                            $avg = floor($rating / $cpt);
+                                                        }
+                                                    @endphp
+                                                    <em>{{ $cpt }} Avis</em>
+                                                    @for ($i = 0; $i < $avg; $i++)
+                                                        <i class="icon_star voted"></i>
+                                                    @endfor
+                                                    @for ($i = 0; $i < 5 - $avg; $i++)
+                                                        <i class="icon_star"></i>
+                                                    @endfor
+
+                                                </span>
+                                            </a>
+                                        </p>
                                         <span class="mb-3">
                                             {{ $menu->price }} &euro;
                                         </span>

@@ -48,8 +48,15 @@
                             @endforeach
                         @endif
                         <span class=" d-block rating mt-4">
-
-                            <em>{{ count($menu->reviews) }} Avis</em>
+                            @php
+                                $cpt = 0;
+                                foreach ($menu->reviews as $review) {
+                                    if ($review->published) {
+                                        $cpt += 1;
+                                    }
+                                }
+                            @endphp
+                            <em>{{ $cpt }} Avis</em>
                             @for ($i = 0; $i < $avg; $i++)
                                 <i class="icon_star voted"></i>
                             @endfor
