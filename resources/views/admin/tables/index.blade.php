@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="d-flex mt-5 justify-content-end">
-        <a class="btn btn-info btn-lg text-dark {{ $nt == 10 ? 'disabled' : '' }} "
+        <a class="btn btn-info btn-lg text-dark {{ $nt == 10 ? 'disabled' : '' }}"
             href="{{ route('admin.tables.create') }}"><i class="fas fa-plus mx-2"></i>Ajouter une table</a>
     </div>
     <div class="card mt-3">
@@ -57,7 +57,8 @@
                                         <form action="{{ route('admin.tables.destroy', $table->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger text-dark confirm"><i
+                                            <button type="submit"
+                                                class="btn btn-danger text-dark confirm" {{ $nt == 1 ? 'hidden' : '' }}><i
                                                     class="fas fa-trash mx-2"></i>Supprimer</button>
                                         </form>
                                     </div>
