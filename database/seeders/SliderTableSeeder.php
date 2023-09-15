@@ -34,7 +34,14 @@ class SliderTableSeeder extends Seeder
                 'restaurant_id' => $resto_id,
                 'title' => 'Plongez dans une expérience gastronomique inoubliable',
                 'content' => 'Grâce à notre menu créatif mettant en valeur des ingrédients frais et des saveurs innovantes, vous vous embarquerez pour un voyage gustatif captivant',
-                'image' => '/uploads/seeders/slider/slider-1.jpg'
+                'image' => '/uploads/seeders/slider/slider-3.jpg'
+
+            ],
+            [
+                'restaurant_id' => $resto_id,
+                'title' => 'Des spectacles de musique sympas et gratuits',
+                'content' => 'Rejoignez-nous chaque samedi pour des spectacles de musique gratuits dans notre restaurant. Détendez-vous, dînez et profitez de la musique en direct sans frais supplémentaires',
+                'image' => '/uploads/seeders/slider/slider-4.jpg'
 
             ],
         ];

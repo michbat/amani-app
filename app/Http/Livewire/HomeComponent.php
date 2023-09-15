@@ -27,6 +27,8 @@ class HomeComponent extends Component
         // On récupère un tableau de tous les objets sliders
         $sliders = Slider::all();
 
+        // dd($sliders);
+
         // On récupére l'objet restaurant dont le nom est 'Amani' (objet eloquent = enregistrement dans une table)
 
         $restaurant = Restaurant::where('name', 'Amani')->first();

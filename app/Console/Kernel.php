@@ -14,8 +14,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('orders:process')->everyFiveSeconds()->runInBackground();
-        $schedule->command('menusDrinks:order')->everySecond()->runInBackground();
-        $schedule->command('ingredients:monitoring')->everySecond()->runInBackground();
+        $schedule->command('platsDrinks:order')->everySecond()->runInBackground();
+        $schedule->command('ingredientsDrinks:monitoring')->everySecond()->runInBackground();
     }
     /**
      * Get the timezone that should be used by default for scheduled events.

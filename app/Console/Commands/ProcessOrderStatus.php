@@ -46,12 +46,12 @@ class ProcessOrderStatus extends Command
 
             foreach ($order->lineOrders as $lineOrder) {
                 // Si dans les lignes de commandes, il y a au moins une ligne qui contient un memu
-                if ($lineOrder->menu_id != '') {
+                if ($lineOrder->plat_id != '') {
                     $onlyDrinkInOrder = false;  // Notre variable drapeau se met à false
                 }
             }
 
-            // Si on n'a aucun menu dans les lignes de commande alors ce qu'on a commandé uniquement des boissonns.
+            // Si on n'a aucun plat dans les lignes de commande alors ce qu'on a commandé uniquement des boissonns.
             // Dans ce cas, on met le OrderStatus à récupérée (pickedup) puisque les commandes contenant uniquement des boissons
             // ne peuvent se dérouler qu'à l'intérieur du resto
 
