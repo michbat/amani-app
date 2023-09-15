@@ -16,6 +16,8 @@ class PlatTableSeeder extends Seeder
      */
     public function run(): void
     {
+        // On récupère les ids de catégories de plats et l'id du resto qui sont de clées étrangères dans la table "plats" 
+
         $cat_en_id = Category::where('designation', 'Entrées')->first()->id;
         $cat_pp_id = Category::where('designation', 'Plats principaux')->first()->id;
         $cat_dsrt_id = Category::where('designation', 'Desserts')->first()->id;
