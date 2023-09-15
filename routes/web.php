@@ -10,6 +10,7 @@ use App\Http\Livewire\ReviewComponent;
 use App\Http\Livewire\DetailsComponent;
 use App\Http\Livewire\CheckoutComponent;
 use App\Http\Livewire\WishlistComponent;
+use App\Http\Livewire\ReglementComponent;
 use App\Http\Livewire\DetailsDrinkComponent;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\MenuController;
@@ -23,6 +24,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DrinkController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\StaffController;
+use App\Http\Controllers\Admin\TableController;
 use App\Http\Livewire\CheckoutSuccessComponent;
 use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\SliderController;
@@ -33,7 +35,6 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\IngredientController;
 use App\Http\Controllers\Admin\RestaurantController;
 use App\Http\Controllers\Auth\RegistrationController;
-use App\Http\Livewire\ReglementComponent;
 
 /*
 |--------------------------------------------------------------------------
@@ -112,11 +113,11 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
     Route::resource('/sliders', SliderController::class);
     Route::resource('/staffs', StaffController::class);
 
+
+
     // Ouvrir ou fermer le restaurant
 
     Route::get('/open-close', [AdminController::class, 'openCloseRestaurant'])->name('openClose');
-
-
 
     // Routes pour gérer les commandes
 
@@ -143,6 +144,16 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
 
     Route::post('/plats/{plat}/tags', [PlatController::class, 'assignTags'])->name('plats.tags');
     Route::delete('/plats/{plat}/tags/{tag}', [PlatController::class, 'removeTag'])->name('plats.tags.remove');
+
+    // Routes pour gérer l'occupation des tables dans la salle
+
+    Route::get('/tables', [TableController::class, 'index'])->name('tables.index');
+    Route::get('/tables/create', [TableController::class, 'create'])->name('tables.create');
+    Route::post('/tables/store', [TableController::class, 'store'])->name('tables.store');
+    Route::get('/tables/{table}/edit', [TableController::class, 'edit'])->name('tables.edit');
+    Route::put('/tables/{table}/update', [TableController::class, 'update'])->name('tables.update');
+    Route::delete('/tables/{table}/destroy', [TableController::class, 'destroy'])->name('tables.destroy');
+    Route::get('/tables/{table}/setisfree', [TableController::class, 'setIsFree'])->name('tables.setisfree');
 });
 
 // Employee routes

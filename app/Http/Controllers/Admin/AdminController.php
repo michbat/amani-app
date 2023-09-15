@@ -6,6 +6,7 @@ use App\Models\Plat;
 use App\Models\User;
 use App\Models\Drink;
 use App\Models\Order;
+use App\Models\Table;
 use App\Models\Ingredient;
 use App\Models\Restaurant;
 use App\Http\Controllers\Controller;
@@ -20,22 +21,35 @@ class AdminController extends Controller
         $ingredients = Ingredient::all()->count(); // On récupère le nombre d'ingrédients en stock
         $opened =  Restaurant::all()[0]->opened;
         $orders = Order::all(); // On récupére le nombre de commandes effectuées
+        $tables = Table::all();
 
         $nbrOrders = $orders->count();
+        $nbrTables = $tables->count();
 
 
 
         $turnover = 0;
         $tax = 0;
+        $occupiedTable = 0;
 
         foreach ($orders as $order) {
             $turnover += $order->total;
             $tax += $order->tva;
         }
 
+        foreach($tables as $table)
+        {
+            if($table->isFree == 0)
+            {
+                $occupiedTable += 1;
+            }
+        }
 
 
-        return view('admin.index', compact('plats', 'drinks', 'users', 'opened', 'turnover', 'tax', 'ingredients', 'nbrOrders'));
+
+
+
+        return view('admin.index', compact('plats', 'drinks', 'users', 'opened', 'turnover', 'tax', 'ingredients', 'nbrOrders','occupiedTable','nbrTables'));
     }
 
     /**

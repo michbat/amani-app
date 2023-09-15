@@ -1,5 +1,5 @@
 <div class="main-sidebar sidebar-style-2">
-    <aside id="sidebar-wrapper">
+    <aside id="sidebar-wrapper m-5">
         <div class="sidebar-brand">
             <a href="{{ route('admin.index') }}">Data Management</a>
         </div>
@@ -136,7 +136,7 @@
             </li>
             <li class="dropdown {{ request()->routeIs('admin.staffs.*') ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                        class="fas fa-user-friends"></i>
+                        class="fas fa-user-tie"></i>
                     <span>Staff</span></a>
                 <ul class="dropdown-menu">
                     <li class="{{ request()->routeIs('admin.staffs.index') ? 'active' : '' }}"><a class="nav-link"
@@ -157,6 +157,14 @@
                 <ul class="dropdown-menu">
                     <li class="{{ request()->routeIs('admin.sliders.index') ? 'active' : '' }}"><a class="nav-link"
                             href="{{ route('admin.sliders.index') }}">Sliders</a></li>
+                </ul>
+            </li>
+            <li class="dropdown {{ request()->routeIs('admin.tables.*') ? 'active' : '' }}">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-table"></i>
+                    <span>Tables</span></a>
+                <ul class="dropdown-menu">
+                    <li class="{{ request()->routeIs('admin.tables.index') ? 'active' : '' }}"><a class="nav-link"
+                            href="{{ route('admin.tables.index') }}">Tables</a></li>
                 </ul>
             </li>
 

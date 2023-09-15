@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Database\Seeders\AdminSeeder;
+use Database\Seeders\TableSeeder;
 use Database\Seeders\TagTableSeeder;
 use Database\Seeders\PlatTableSeeder;
 use Database\Seeders\TypeTableSeeder;
@@ -39,6 +40,7 @@ class DatabaseSeeder extends Seeder
             GalleryTableSeeder::class,
             SliderTableSeeder::class,
             StaffTableSeeder::class,
+            TableSeeder::class,
         ]);
     }
 }

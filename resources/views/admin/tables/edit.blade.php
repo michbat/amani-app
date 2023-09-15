@@ -1,0 +1,44 @@
+@extends('admin.layouts.app')
+@section('title', 'Editer une table')
+
+@section('content')
+    <div class="d-flex mt-5 justify-content-end">
+        <a class="btn btn-info btn-lg text-dark" href="{{ route('admin.tables.index') }}"><i
+                class="fas fa-clipboard-list mx-2"></i>Revenir à l'index</a>
+    </div>
+    <div class="card mt-3">
+        <form action="{{ route('admin.tables.update', $table->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="card-header">
+                <h4>Editer une table</h4>
+            </div>
+            <div class="card-body">
+                <div class="form-group row mb-4">
+                    <div class="col-sm-6">
+                        <label class="form-label">Code de la table</label>
+                        <input type="text" class="form-control" value="{{ $table->code }}" disabled>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="seat" class="form-label">Places</label>
+                        <input type="number" class="form-control" name="seat" id="seat"
+                            placeholder="Nombre de places" value="{{ $table->seat }}">
+                        @error('seat')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer mb-4">
+                <button type="submit" class="btn btn-primary btn-lg text-dark px-5" style="min-width: 200px;"><i
+                        class="fas fa-edit mx-2"></i>Editer</button>
+            </div>
+        </form>
+    </div>
+@endsection
+
+@section('scripts')
+
+    <script src="{{ asset('assets/js/page/features-post-create.js') }}"></script>
+
+@endsection
