@@ -78,11 +78,11 @@ class User extends Authenticatable
         return $this->hasMany(Review::class);
     }
 
-    // Méthode hasRole($name) est utilisée par notre middleware pour vérifier si un utilisateur a droit d'accéder à une route ou pas en fonction de son rôle
+    // Méthode hasRole($name) est utilisée par notre middleware pour vérifier si un utilisateur a droit d'accéder à une route ou pas en fonction du nom son rôle
 
     public function hasRole($name): bool
     {
-        // Vérifie si le nom du rôle de l'utilisateur est dans la table Roles et renvoie false ou true
+        // Vérifie si le rôle lié à l'utilisateur authentifié correspond au rôle mis en paramètre dans le middleware
 
         return $this->role()->where('name', $name)->exists();
     }

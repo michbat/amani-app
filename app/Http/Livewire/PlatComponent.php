@@ -15,7 +15,12 @@ class PlatComponent extends Component
     use WithPagination;
 
 
+    // Lorsqu'il n'y qu'une seule page de plats, on cache la pagination
+
     public $hideOnSinglePage = true;
+
+    // On utilise la pagination de bootstrap
+
     protected $paginationTheme = 'bootstrap';
 
 
@@ -23,26 +28,26 @@ class PlatComponent extends Component
 
     public $pageItems = 12;
 
-    // Propriétés pour ordonner les plats par prix croissant ou décroissant, nouveauté, défaut
+    // Propriété pour ordonner les plats par prix croissant ou décroissant, nouveauté, rating
     public $orderBy = "default";
 
-    // Propriétés pour filtrer les plats par intervalles de prix
+    // Propriété de type tableau pour filtrer les plats par intervalles de prix
 
     public $priceIntervals = [];
 
-    // Propriété pour filtrer par catégories
+    // Propriété de type tableau pour filtrer par catégories de plat
 
     public $cats = [];
 
-    // Propriété pour actver ou désactiver le bouton ajouter en fonction de la plage d'horaire autorisée
+    // Propriété pour activer ou désactiver le bouton "ajouter" en fonction de la plage d'horaire autorisée
 
     public $canBeCommended;
 
     /**
      *
-     * La méthode updated() est appelée lorsqu'une propriété de notre composant est mise à jour
-     * via les interactions de l'utilisateur dans la vue associé à platComponent.
-     * Ici on reset l'ancienne pagination générée d'une ancienne recherche pour laisser la place à une nouvelle pagination
+     * La méthode updated() est appelée lorsqu'une propriété de notre composant change
+     * à travers des actions de l'utilisateur sur la vue associée à platComponent.
+     * Ici on "reset" l'ancienne pagination générée par un ancien affichage après un filtrage par exemple
      *
      */
 
@@ -55,13 +60,15 @@ class PlatComponent extends Component
         $this->resetPage();
     }
 
-    // Lorsque la propriété $orderBy change, on crée une session pour sauvegarder le dernier critère de tri choisi dans le select
-    // Ainsi lorsqu'on change de page en ayant déjà fait un filtrage et qu'on revient ensuite à la page affichant les plats,
+    // Lorsque la propriété $orderBy change, on crée une session pour sauvegarder le dernier critère de tri choisi à l'intérieur de la balise select de la vue
+    // Ainsi lorsqu'on change de page en ayant déjà fait un filtrage et qu'on revient ensuite à la page affichant des plats,
     // On retrouve les résultats correspondant au critère de filtrage.
+
+    // la méthode updatedOrderBy() surveille les changements de la propriétés $orderBy
 
     public function updatedOrderBy()
     {
-        session()->put('sorting', $this->orderBy);
+        session()->put('sorting', $this->orderBy);  // Lorsque $orderBy, on sauvergarde son état dans une variable de session dont la clé est 'sorting'
     }
 
     // Méthode pour ajouter un plat dans le panier
@@ -111,10 +118,7 @@ class PlatComponent extends Component
             ->groupBy('plats.id', 'plats.name', 'plats.price', 'plats.slug', 'plats.category_id', 'plats.restaurant_id', 'plats.description', 'plats.image', 'plats.price', 'plats.available', 'plats.canBeCommended', 'plats.created_at', 'plats.updated_at');
 
 
-
-
-
-        // Un fitrage sur l'intervalle de prix
+        // Un fitrage par intervalle de prix
 
         if (!empty($this->priceIntervals)) {
             $priceIntervalRanges = [

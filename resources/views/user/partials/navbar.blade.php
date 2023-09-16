@@ -1,6 +1,9 @@
-<nav class="navbar navbar-expand-lg bg-light">
+<nav class="navbar navbar-expand-lg" style="background-color: #c9c9c9">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ route('home') }}">Amani Resto</a>
+        <a class="navbar-brand" href="{{ route('home') }}">
+            <img src="{{ asset('frontend/assets/img/twitter_header_photo_2.png') }}" width="140" height="35"
+                alt="Amani Logo" class="logo_normal">
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -31,16 +34,16 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle mx-2" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Medias
+                        aria-expanded="false" style="color: black">
+                        Galerie
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Photo</a></li>
-                        <li><a class="dropdown-item" href="#">Vidéo</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-camera mx-2"></i>Photo</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-video mx-2"></i>Vidéo</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active mx-2" aria-current="page" href="#">Contact Us</a>
+                    <a class="nav-link active mx-2" aria-current="page" href="#">Contactez-nous</a>
                 </li>
                 @guest
                     @if (Route::has('login'))
@@ -56,19 +59,19 @@
                     @endif
                 @else
                     <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                        <a style="color: black;" id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             Hello, {{ Auth::user()->firstname }}
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{{ route('user.dashboard') }}">
-                                Mon Compte
+                                <i class="fas fa-user mx-2"></i>Mon Compte
                             </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                          document.getElementById('logout-form').submit();">
-                                Deconnexion
+                               <i class="fas fa-sign-out-alt mx-2"></i>Deconnexion
                             </a>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

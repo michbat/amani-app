@@ -15,12 +15,16 @@ class HasRoleMiddleware
      */
     public function handle(Request $request, Closure $next, string $role_name): Response
     {
-         // Si l'utilisateur n'est pas authentifié ou qu'il n'est pas admin
+         // Si l'utilisateur authentifié n'a pas le nom du rôle en paramètre du middleware,il est dirigé vers sur la page 403
+         // La méthode hasRole,implémentée dans la classe modèle "User", retourne une variable booléenne.
+         // hasRole interroge la table "roles" pour savoir si le nom du rôle en paramètre de la fonction correspond à celui de l'utilisateur
 
-         if (!auth()->user() || !auth()->user()->hasRole($role_name)) {
+
+         if (!auth()->user()->hasRole($role_name))
+         {
             // L'erreur code 403 est envoyé'
             abort(403);
         }
-        return $next($request);
+        return $next($request);  // Le middleware a été franchi donc on peut accéder aux routes protégées par ce middleware
     }
 }

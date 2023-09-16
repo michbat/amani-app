@@ -93,8 +93,6 @@ Route::post('/forgot-password-submit', [PasswordController::class, 'forgot_passw
 Route::get('/reset-password/{token}/{email}', [PasswordController::class, 'reset_password'])->name('reset.password');
 Route::post('/reset-password-submit', [PasswordController::class, 'reset_password_submit'])->name('reset.password.submit');
 
-Route::get('/resent-link', [PasswordController::class, 'resent_link'])->name('resent.link');
-Route::post('/resent-link-submit', [PasswordController::class, 'resent_link_submit'])->name('resent.link.submit');
 
 //  Admin routes
 
@@ -132,7 +130,7 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
     Route::get('/restaurants/{restaurant}/edit', [RestaurantController::class, 'edit'])->name('restaurants.edit');
     Route::put('/restaurants/{restaurant}/update', [RestaurantController::class, 'update'])->name('restaurants.update');
 
-    // Routes pour gérer les commentaires sur nos menus
+    // Routes pour gérer les commentaires sur nos plats
 
     Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
     Route::get('/reviews/{review}/show', [ReviewController::class, 'show'])->name('reviews.show');
@@ -140,12 +138,12 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
     Route::get('/reviews/{review}/publish', [ReviewController::class, 'publish'])->name('reviews.publish');
     Route::get('/reviews/{review}/censor', [ReviewController::class, 'censor'])->name('reviews.censor');
 
-    // Routes pour assigner des tags et enlèver un tag à un menu
+    // Routes pour assigner des tags et enlèver un tag à un plat
 
     Route::post('/plats/{plat}/tags', [PlatController::class, 'assignTags'])->name('plats.tags');
     Route::delete('/plats/{plat}/tags/{tag}', [PlatController::class, 'removeTag'])->name('plats.tags.remove');
 
-    // Routes pour gérer l'occupation des tables dans la salle
+    // Routes pour gérer des tables et leur occupation dans la salle
 
     Route::get('/tables', [TableController::class, 'index'])->name('tables.index');
     Route::get('/tables/create', [TableController::class, 'create'])->name('tables.create');
