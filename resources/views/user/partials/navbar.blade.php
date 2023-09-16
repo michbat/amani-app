@@ -38,8 +38,8 @@
                         Galerie
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-camera mx-2"></i>Photo</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-video mx-2"></i>Vidéo</a></li>
+                        <li><a class="dropdown-item" href="{{ route('photo') }}"><i class="fas fa-camera mx-2"></i>Photos</a></li>
+                        <li><a class="dropdown-item" href="{{ route('video') }}"><i class="fas fa-video mx-2"></i>Vidéos</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">

@@ -10,7 +10,7 @@
             <div class="container d-flex justify-content-between">
                 <div class="count_results">
                     @if ($plats->count() > 0)
-                        <p>{{ $plats->firstItem() }} à {{ $plats->lastItem() }} sur {{ $plats->total() }} plats(s)</p>
+                        <p>{{ $plats->firstItem() }} à {{ $plats->lastItem() }} sur {{ $plats->total() }} plat(s)</p>
                     @endif
                 </div>
                 <div>
@@ -273,7 +273,7 @@
                     @endif
                 </div>
 
-                <p class="text-center my-5"><a href="#0" class="btn btn-outline-success">Télécharger la carte (PDF)</a>
+                {{-- <p class="text-center my-5"><a href="#0" class="btn btn-outline-success">Télécharger la carte (PDF)</a> --}}
                 </p>
                 @if ($plats->hasPages())
                     <div class="d-flex justify-content-center">

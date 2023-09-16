@@ -2,7 +2,6 @@
 
 use App\Http\Livewire\CartComponent;
 use App\Http\Livewire\HomeComponent;
-use App\Http\Livewire\MenuComponent;
 use App\Http\Livewire\PlatComponent;
 use App\Http\Livewire\DrinkComponent;
 use Illuminate\Support\Facades\Route;
@@ -12,8 +11,9 @@ use App\Http\Livewire\CheckoutComponent;
 use App\Http\Livewire\WishlistComponent;
 use App\Http\Livewire\ReglementComponent;
 use App\Http\Livewire\DetailsDrinkComponent;
+use App\Http\Livewire\PhotoGalleryComponent;
+use App\Http\Livewire\VideoGalleryComponent;
 use App\Http\Controllers\Admin\TagController;
-use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\PlatController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TypeController;
@@ -67,6 +67,8 @@ Route::get('/checkout-success', CheckoutSuccessComponent::class)->name('checkout
 Route::get('/wishlist', WishlistComponent::class)->name('wishlist');
 Route::get('/review/{slug}/{user}', ReviewComponent::class)->name('review');
 Route::get('/reglement', ReglementComponent::class)->name('reglement');
+Route::get('/photo', PhotoGalleryComponent::class)->name('photo');
+Route::get('/video', VideoGalleryComponent::class)->name('video');
 
 // Paypal routes
 

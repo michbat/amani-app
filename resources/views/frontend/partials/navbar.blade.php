@@ -40,8 +40,8 @@
         <li class="submenu">
             <a href="#" class="show-submenu">Galerie</a>
             <ul>
-                <li><a href="#">Photo</a></li>
-                <li><a href="#">Video</a></li>
+                <li><a href="{{ route('photo') }}"><i class="fas fa-camera mx-2"></i>Photos</a></li>
+                <li><a href="{{ route('video') }}"><i class="fas fa-video mx-2"></i>Videos</a></li>
             </ul>
         </li>
         <li class="submenu">
