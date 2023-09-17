@@ -17,7 +17,9 @@ class WishlistComponent extends Component
                 Cart::instance('wishlist')->remove($content->rowId);
                 $this->emitTo('wishlist-icon-component', 'refreshComponent');
 
-                return redirect()->route('wishlist')->with('success', 'Produit enlevé de votre wishlist');
+                session()->flash('success_message', 'Plat retiré de la wishlist');
+                return redirect()->back();
+                // return redirect()->route('wishlist')->with('success', 'Produit enlevé de votre wishlist');
             }
         }
     }

@@ -76,9 +76,9 @@ class PlatComponent extends Component
     public function storePlat($plat_id, $plat_name, $plat_price)
     {
         Cart::instance('cart')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
-        $this->emitTo('cart-icon-component', 'refreshComponent');
-        session()->flash('success_message', 'Plat ajouté dans votre panier');
-        return redirect()->route('cart');
+        // session()->flash('success_message', 'Plat ajouté dans votre panier');
+        // $this->emitTo('cart-icon-component', 'refreshComponent');
+        return redirect()->route('plat')->with('success','Plat ajouté dans votre panier');
     }
 
     // Méthode pour ajouter un plat dans une wishlist
@@ -86,9 +86,9 @@ class PlatComponent extends Component
     public function addPlatToWishList($plat_id, $plat_name, $plat_price)
     {
         Cart::instance('wishlist')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
-        $this->emitTo('wishlist-icon-component', 'refreshComponent');
-        session()->flash('success_message', 'Plat ajouté à votre liste de souhaits');
-        return back();
+        // $this->emitTo('wishlist-icon-component', 'refreshComponent');
+        // session()->flash('success_message', 'Plat ajouté à votre liste de souhaits');
+        return redirect()->route('plat')->with('success','Plat ajouté à votre liste de souhaits');
     }
 
     // Méthode pour enlèver un plat de la wishlist
@@ -98,9 +98,10 @@ class PlatComponent extends Component
         foreach (Cart::instance('wishlist')->content() as $content) {
             if ($content->id == $plat_id) {
                 Cart::instance('wishlist')->remove($content->rowId);
-                $this->emitTo('wishlist-icon-component', 'refreshComponent');
-                session()->flash('success_message', 'Plat enlevé de votre liste de souhaits');
-                return back();
+                // $this->emitTo('wishlist-icon-component', 'refreshComponent');
+                // session()->flash('success_message', 'Plat enlevé de votre liste de souhaits');
+                // return back();
+                return redirect()->route('plat')->with('success','Plat enlevé à votre liste de souhaits');
             }
         }
     }

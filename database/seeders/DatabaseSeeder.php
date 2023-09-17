@@ -8,7 +8,9 @@ use Illuminate\Database\Seeder;
 use Database\Seeders\AdminSeeder;
 use Database\Seeders\TableSeeder;
 use Database\Seeders\TagTableSeeder;
+use Database\Seeders\BandTableSeeder;
 use Database\Seeders\PlatTableSeeder;
+use Database\Seeders\ShowTableSeeder;
 use Database\Seeders\TypeTableSeeder;
 use Database\Seeders\UnitTableSeeder;
 use Database\Seeders\DrinkTableSeeder;
@@ -41,6 +43,8 @@ class DatabaseSeeder extends Seeder
             SliderTableSeeder::class,
             StaffTableSeeder::class,
             TableSeeder::class,
+            BandTableSeeder::class,
+            ShowTableSeeder::class,
         ]);
     }
 }

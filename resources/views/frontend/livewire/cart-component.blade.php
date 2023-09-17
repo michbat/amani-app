@@ -53,29 +53,27 @@
                                         </div>
 
                                         <span class="item_cart">
-                                            @php
-                                                $plat = App\Models\Plat::where('name', $element->model->name)->first();
-                                                $isplat = false;
-                                                if ($plat) {
-                                                    $isPlat = true;
-                                                }
-                                            @endphp
-
-                                            @if ($isPlat)
+                                            @if ($element->associatedModel == 'App\Models\Plat')
                                                 <a href="{{ route('details', $element->model->slug) }}"
                                                     class="text-dark">
                                                     {{ $element->qty }}x {{ $element->model->name }}
                                                 </a>
-                                            @else
+                                            @endif
+                                            @if ($element->associatedModel == 'App\Models\Drink')
                                                 <a href="{{ route('details.drink', $element->model->slug) }}"
                                                     class="text-dark">
                                                     {{ $element->qty }}x {{ $element->model->name }}
                                                 </a>
                                             @endif
-                                            @if ($element->qty >= 10)
-                                                <span class="text-danger" style="font-size: 10px">(Veuillez nous
-                                                    contacter si vous voulez
-                                                    commander plus de 10 produits!!)</span>
+
+                                            {{-- Si c'est un plat que l'utilisateur a atteint 6 articles, on bloque le bouton d'ajout et on affiche un message --}}
+                                            @if ($element->associatedModel == 'App\Models\Plat' && $element->qty >= 6)
+                                                <p class="text-danger" style="font-size: 10px">Vous ne pouvez pas
+                                                    commander au delà de 6 articles d'un même plat sur une commande!</p>
+                                            @endif
+                                            @if ($element->associatedModel == 'App\Models\Drink' && $element->qty >= 10)
+                                                <p class="text-danger" style="font-size: 10px">Vous ne pouvez pas
+                                                    commander au delà de 10 articles d'une même boisson sur une commande!</p>
                                             @endif
                                         </span>
                                     </td>
@@ -89,7 +87,7 @@
                                             <span class="border border-1 p-1 text-center"
                                                 style="min-width: 100px;">{{ $element->qty }}</span>
                                             <button
-                                                class="btn btn-success btn-sm mx-2 {{ $element->qty >= 10 ? 'disabled' : '' }}"
+                                                class="btn btn-success btn-sm mx-2 {{ ($element->associatedModel == 'App\Models\Plat' && $element->qty >= 6) || ($element->associatedModel == 'App\Models\Drink' && $element->qty >= 10) ? 'disabled' : '' }}"
                                                 wire:click.prevent="increaseQuantity('{{ $element->rowId }}')">+</button>
                                         </div>
                                     </td>

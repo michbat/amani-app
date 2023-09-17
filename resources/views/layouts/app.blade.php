@@ -29,6 +29,10 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
         integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous" />
 
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+
     <!-- BASE CSS -->
     <link href="{{ asset('frontend/assets/css/vendors.min.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend/assets/css/style.css') }}" rel="stylesheet">
@@ -37,8 +41,6 @@
     <link href="{{ asset('frontend/assets/css/wizard.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/shop.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/stripe3.css') }}">
-
-
 
     <!-- YOUR CUSTOM CSS -->
     <link href="{{ asset('frontend/assets/css/custom.css') }}" rel="stylesheet">
@@ -106,6 +108,13 @@
             </div>
         </div>
     </div>
+
+
+    <!-- BOOTSTRAP & JQUERY -->
+
+    <script src="{{ asset('frontend/assets/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/popper.min.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/bootstrap.min.js') }}"></script>
 
 
 

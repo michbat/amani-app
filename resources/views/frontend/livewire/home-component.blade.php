@@ -29,17 +29,19 @@
 
     <div class="pattern_2">
         <div class="container margin_120_100 home_intro">
-            @if ($global->opened == 0)
+            @if ($global && $global->opened == 0)
                 <p style="color: red; font-size: 23px; text-align: center;">Restaurant fermé! PAS DE COMMANDES!!!</p>
             @endif
             <div class="row justify-content-center d-flex align-items-center">
                 <div class="col-lg-5 text-lg-center d-none d-lg-block" data-cue="slideInUp">
                     <figure>
-                        <img src="#" data-src="http://img.youtube.com/vi/{{ $video->videoId }}/0.jpg"
-                            width="354" height="440" alt="" class="img-fluid lazy">
-                        <a href="https://www.youtube.com/watch?v={{ $video->videoId }}" class="btn_play"
-                            data-cue="zoomIn" data-delay="500"><span class="pulse_bt"><i
-                                    class="arrow_triangle-right"></i></span></a>
+                        @if ($video)
+                            <img src="#" data-src="http://img.youtube.com/vi/{{ $video->videoId }}/0.jpg"
+                                width="354" height="440" alt="" class="img-fluid lazy">
+                            <a href="https://www.youtube.com/watch?v={{ $video->videoId }}" class="btn_play"
+                                data-cue="zoomIn" data-delay="500"><span class="pulse_bt"><i
+                                        class="arrow_triangle-right"></i></span></a>
+                        @endif
                     </figure>
                 </div>
                 <div class="col-lg-5 pt-lg-4">
@@ -48,7 +50,9 @@
                                 style="background-color: green!important"></em></span>
                         <h2>À propos de nous</h2>
                     </div>
-                    <p>{!! $restaurant->aboutUs !!}</p>
+                    @if ($global)
+                        <p>{!! $global->aboutUs !!}</p>
+                    @endif
                 </div>
             </div>
         </div>
@@ -114,7 +118,8 @@
                 <div class="item">
                     <div class="title">
                         <h4>{{ $staff->name }}<em>{{ $staff->fonction }}</em></h4>
-                    </div><img src="{{ asset($staff->image) }}" alt="{{ $staff->name }}" width="350" height="500">
+                    </div><img src="{{ asset($staff->image) }}" alt="{{ $staff->name }}" width="350"
+                        height="500">
                 </div>
             @endforeach
 

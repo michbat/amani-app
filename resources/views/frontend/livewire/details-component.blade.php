@@ -73,7 +73,7 @@
                             <div class="col-lg-4 col-md-6 d-flex justify-content-center">
                                 <div class="btn_add_to_cart">
                                     <a href="#"
-                                        class="btn btn-success {{ $plat->available === 0 || $quantity >= 10 || $plat->canBeCommended === 0 || $global->opened === 0 ? 'disabled' : '' }}"
+                                        class="btn btn-success {{ $plat->available === 0 || $quantity >= 6 || $plat->canBeCommended === 0 || $global->opened === 0 ? 'disabled' : '' }}"
                                         style="min-width: 190px"
                                         wire:click.prevent="storePlat({{ $plat->id }},'{{ $plat->name }}',{{ $plat->price }})"
                                         wire:model="$quantity"><i class="fas fa-shopping-cart mx-2"></i>Ajouter
@@ -105,9 +105,8 @@
                                 </div>
                             </div>
                             <div class="mt-3">
-                                @if ($quantity > 10)
-                                    <span class="text-danger text-center">Veuillez nous contacter si vous voulez
-                                        commander plus de 10 plats</span>
+                                @if ($quantity >= 6)
+                                    <span class="text-danger text-center">Vous ne pouvez pas commander au delà de 6 articles d'un même plat sur une seule commande</span>
                                 @endif
                             </div>
                         </div>

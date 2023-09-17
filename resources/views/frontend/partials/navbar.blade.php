@@ -33,12 +33,12 @@
         <li class="submenu">
             <a href="{{ route('plat') }}" class="show-submenu">Plats</a>
         </li>
-        {{-- <li class="submenu">
-            <a href="{{ route('drink') }}" class="show-submenu">Boissons</a>
-        </li> --}}
+        <li class="submenu">
+            <a href="{{ route('show') }}" class="show-submenu">Spectacles</a>
+        </li>
 
         <li class="submenu">
-            <a href="#" class="show-submenu">Galerie</a>
+            <a href="#" class="show-submenu">Galeries</a>
             <ul>
                 <li><a href="{{ route('photo') }}"><i class="fas fa-camera mx-2"></i>Photos</a></li>
                 <li><a href="{{ route('video') }}"><i class="fas fa-video mx-2"></i>Videos</a></li>

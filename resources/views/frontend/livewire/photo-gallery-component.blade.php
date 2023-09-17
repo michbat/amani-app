@@ -31,7 +31,10 @@
                                         </div>
                                     </div>
                                 @endforeach
-
+                            @else
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <h2>Pas de photos</h2>
+                                </div>
                             @endif
                         </div>
                     </ul>

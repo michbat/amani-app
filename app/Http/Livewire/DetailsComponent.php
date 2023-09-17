@@ -37,12 +37,12 @@ class DetailsComponent extends Component
 
         /**
          * Si le produit que l'on veut voir en détails se trouve dans le panier alors on affecte sa quantité à la propriété $quantity bindée (liée)
-         * dans la vue "details-component.blade.php" (wire:model="$quantity"). Sinon on lui affecte la valeur zéro.
+         * dans la vue "details-component.blade.php" (wire:model="$quantity"). Sinon on lui affecte la valeur zéro puisqu'il n'est pas encore dans le panier.
          */
 
         $item->first() != null ? $this->quantity = $item->first()->qty :  $this->quantity = 0;
 
-        session()->put('plat','plat_page_visited');
+        // session()->put('plat','plat_page_visited');
     }
 
     // Méthode pour ajouter un plat dans le panier

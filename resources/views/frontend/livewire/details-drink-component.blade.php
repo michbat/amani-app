@@ -40,7 +40,7 @@
                             <div class="col-lg-4 col-md-6 d-flex justify-content-center">
                                 <div class="btn_add_to_cart">
                                     <a href="#"
-                                        class="btn btn-success {{ $drink->available === 0 || $quantity > 10 || $drink->canBeCommended === 0 || $global->opened === 0 ? 'disabled' : '' }}"
+                                        class="btn btn-success {{ $drink->available === 0 || $quantity >= 10 || $drink->canBeCommended === 0 || $global->opened === 0 ? 'disabled' : '' }}"
                                         style="min-width: 190px"
                                         wire:click.prevent="storeDrink({{ $drink->id }},'{{ $drink->name }}',{{ $drink->price }})"
                                         wire:model="$quantity"><i class="fas fa-shopping-cart mx-2"></i>Ajouter
@@ -51,9 +51,8 @@
                                 </div>
                             </div>
                             <div class="mt-3">
-                                @if ($quantity > 10)
-                                    <span class="text-danger text-center">Veuillez nous contacter si vous voulez
-                                        commander plus de 10 boissons</span>
+                                @if ($quantity >= 10)
+                                    <span class="text-danger text-center">Vous ne pouvez pas commander au delà de 10 articles d'une même boisson sur une seule commande</span>
                                 @endif
                             </div>
                         </div>

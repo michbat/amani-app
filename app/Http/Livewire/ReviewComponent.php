@@ -34,7 +34,7 @@ class ReviewComponent extends Component
 
         $this->alreadyCommented =  Review::where('user_id', $this->user_id)->where('plat_id', $this->plat->id)->first();
 
-        // Si c'est le cas (si l'objet éloquent renvoyé lors de la requête n'est pas nul, on crée un message flash à destination du client)
+        // Si c'est le cas (si l'objet éloquent renvoyé lors de la requête n'est pas null, on crée un message flash à destination du client)
         if ($this->alreadyCommented != null) {
             session()->flash('warning_message', 'Vous avez déjà commenté ce plat. Vous ne pouvez pas commenter un produit plus d\'une fois.');
         }
@@ -71,7 +71,7 @@ class ReviewComponent extends Component
         ]);
 
 
-        // Si ce n'est que lorsque le client n'a pas commenté une seule un plat que l'on va sauvegarder son message.
+        // Si ce n'est que lorsque le client n'a pas déjà commenté le plat que l'on va sauvegarder son message.
 
         if ($this->alreadyCommented == null) {
             $review = new Review();

@@ -54,9 +54,9 @@ class DrinkComponent extends Component
     public function storeDrink($drink_id, $drink_name, $drink_price)
     {
         Cart::instance('cart')->add($drink_id, $drink_name, 1, $drink_price)->associate('App\Models\Drink');
-        $this->emitTo('cart-icon-component', 'refreshComponent');
-        session()->flash('success_message', 'Boisson ajoutée dans votre panier');
-        return redirect()->route('cart');
+        // $this->emitTo('cart-icon-component', 'refreshComponent');
+        // session()->flash('success_message', 'Boisson ajoutée dans votre panier');
+        return redirect()->route('drink')->with('success','Boisson ajoutée dans votre panier');
     }
 
     public function render()

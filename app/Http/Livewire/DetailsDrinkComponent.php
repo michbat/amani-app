@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Menu;
 use App\Models\Drink;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +16,7 @@ class DetailsDrinkComponent extends Component
     public function mount($slug)
     {
         // On affiche les informations détaillés d'une boisson en récupérant son slug et en faisant une requête eloquent pour le récupèrer
+        
         $this->slug = $slug;
         $this->drink = Drink::where('slug', $this->slug)->first();
 
@@ -36,7 +36,7 @@ class DetailsDrinkComponent extends Component
 
 
         /**
-         * Si le produit que l'on veut voir en détail se trouve dans le panier alors on affecte sa quantité à la propriété $quantity bindée (liée)
+         * Si le produit que l'on veut voir en détails se trouve dans le panier alors on affecte sa quantité à la propriété $quantity bindée (liée)
          * dans la vue "details-component.blade.php" (wire:model="$quantity"). Sinon on lui affecte la valeur zéro.
          */
 
@@ -75,7 +75,7 @@ class DetailsDrinkComponent extends Component
         }
     }
 
-    
+
 
 
     public function render()

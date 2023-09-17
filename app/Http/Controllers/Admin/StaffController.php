@@ -100,6 +100,8 @@ class StaffController extends Controller
         // On checke si une image a été chargée
 
         $charged = $request->hasFile('image');
+        $image = "";
+
         if ($charged) {
             $request->validate(
                 [

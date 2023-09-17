@@ -166,7 +166,7 @@
                             <h2 class="mb-3" style="display: inline-block">{{ $cat }},</h2>
                         @endforeach
                     @endempty
-                    @if ($global->opened == 0)
+                    @if ($global && $global->opened == 0)
                         <p style="color: red; font-size: 20px;">Restaurant fermé! PAS DE COMMANDES!!!</p>
                     @else
                         <p style="color: red; font-size: 20px;">Nous n'acceptons des commandes qu'entre 10 heures et 23
@@ -272,8 +272,6 @@
                         @endforeach
                     @endif
                 </div>
-
-                {{-- <p class="text-center my-5"><a href="#0" class="btn btn-outline-success">Télécharger la carte (PDF)</a> --}}
                 </p>
                 @if ($plats->hasPages())
                     <div class="d-flex justify-content-center">

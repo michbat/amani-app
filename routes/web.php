@@ -3,6 +3,7 @@
 use App\Http\Livewire\CartComponent;
 use App\Http\Livewire\HomeComponent;
 use App\Http\Livewire\PlatComponent;
+use App\Http\Livewire\ShowComponent;
 use App\Http\Livewire\DrinkComponent;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\ReviewComponent;
@@ -16,6 +17,7 @@ use App\Http\Livewire\VideoGalleryComponent;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\PlatController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\ShowController;
 use App\Http\Controllers\Admin\TypeController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\UserController;
@@ -69,6 +71,7 @@ Route::get('/review/{slug}/{user}', ReviewComponent::class)->name('review');
 Route::get('/reglement', ReglementComponent::class)->name('reglement');
 Route::get('/photo', PhotoGalleryComponent::class)->name('photo');
 Route::get('/video', VideoGalleryComponent::class)->name('video');
+Route::get('/show', ShowComponent::class)->name('show');
 
 // Paypal routes
 
@@ -112,6 +115,7 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
     Route::resource('/galleries', GalleryController::class);
     Route::resource('/sliders', SliderController::class);
     Route::resource('/staffs', StaffController::class);
+    Route::resource('/shows', ShowController::class);
 
 
 

@@ -32,10 +32,13 @@
                 <li class="nav-item">
                     <a class="nav-link active mx-2" aria-current="page" href="{{ route('plat') }}">Plats</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link active mx-2" aria-current="page" href="{{ route('show') }}">Spectacles</a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle mx-2" href="#" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false" style="color: black">
-                        Galerie
+                        Galeries
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{{ route('photo') }}"><i class="fas fa-camera mx-2"></i>Photos</a></li>
