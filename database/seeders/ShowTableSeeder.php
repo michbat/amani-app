@@ -53,7 +53,7 @@ class ShowTableSeeder extends Seeder
             ],
             [
                 'band_id' => 7,
-                'title' => 'Les nuits de Jazz',
+                'title' => 'Les nuits du Jazz',
                 'poster' => '/uploads/seeders/show/alabama_mood.jpg',
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam officiis atque quasi praesentium debitis corporis iusto, dolores veritatis aut quo voluptates culpa ipsa, eos fugiat sunt, eveniet labore magni laboriosam? Praesentium laboriosam vero saepe nemo enim porro eaque maiores quae consequuntur. Facilis veniam sit ea quasi eius iste beatae illum!',
             ],

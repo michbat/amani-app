@@ -13,8 +13,15 @@
                                             <p class="owl-slide-animated owl-slide-subtitle">
                                                 {!! $slider->content !!}
                                             </p>
-                                            <div class="owl-slide-animated owl-slide-cta"><a class="btn btn-success"
-                                                    href="{{ route('plat') }}" role="button">Notre Carte</a></div>
+                                            <div class="owl-slide-animated owl-slide-cta">
+                                                @if ($slider->id != 4)
+                                                    <a class="btn btn-success" href="{{ route('plat') }}" role="button"
+                                                        style="min-width: 200px">Notre Carte</a>
+                                                @else
+                                                    <a class="btn btn-success" href="{{ route('show') }}" role="button"
+                                                        style="min-width: 200px">Spectacles</a>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

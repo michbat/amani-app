@@ -15,6 +15,7 @@ use App\Http\Livewire\DetailsDrinkComponent;
 use App\Http\Livewire\PhotoGalleryComponent;
 use App\Http\Livewire\VideoGalleryComponent;
 use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\BandController;
 use App\Http\Controllers\Admin\PlatController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ShowController;
@@ -35,6 +36,7 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\User\UserAuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\IngredientController;
+use App\Http\Controllers\Admin\RepresentationController;
 use App\Http\Controllers\Admin\RestaurantController;
 use App\Http\Controllers\Auth\RegistrationController;
 
@@ -116,6 +118,8 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
     Route::resource('/sliders', SliderController::class);
     Route::resource('/staffs', StaffController::class);
     Route::resource('/shows', ShowController::class);
+    Route::resource('/bands', BandController::class);
+    Route::resource('/representations', RepresentationController::class);
 
 
 

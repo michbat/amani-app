@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Band;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class BandController extends Controller
 {
@@ -12,7 +13,9 @@ class BandController extends Controller
      */
     public function index()
     {
-        //
+        $bands = Band::orderBy('id', 'DESC')->paginate(10);
+
+        return view('admin.bands.index', compact('bands'));
     }
 
     /**
@@ -20,7 +23,7 @@ class BandController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.bands.create');
     }
 
     /**
@@ -28,7 +31,28 @@ class BandController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate(
+            [
+                'name' => 'required|unique:bands,name',
+                'member' => 'required|numeric|min:2|max:20',
+            ],
+            [
+                'name.required' => 'Le nom du groupe est obligatoire',
+                'name.unique' => 'Ce nom de groupe est déjà dans notre système',
+                'member.required' => 'Vous devez indiquer le nombre de membres de ce groupe',
+                'member.min' => 'Un groupe doit avoir au minimum 2 membres',
+                'member.max' => 'Un groupe doit avoir au maximum 20 membres',
+            ]
+        );
+
+        $band = new Band();
+
+        $band->name = $request->name;
+        $band->member = $request->member;
+
+        $band->save();
+
+        return redirect()->route('admin.bands.index')->with('toast_success', 'Groupe ajouté avec succès');
     }
 
     /**
@@ -42,24 +66,45 @@ class BandController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Band $band)
     {
-        //
+        return view('admin.bands.edit', compact('band'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Band $band)
     {
-        //
+        $request->validate(
+            [
+                'name' => 'required|unique:bands,name, ' . $band->id,
+                'member' => 'required|numeric|min:2|max:20',
+
+            ],
+            [
+                'name.required' => 'Le nom du groupe est obligatoire',
+                'name.unique' => 'Ce nom de groupe est déjà dans notre système',
+                'member.required' => 'Vous devez indiquer le nombre de membres de ce groupe',
+                'member.min' => 'Un groupe doit avoir au minimum 2 membres',
+                'member.max' => 'Un groupe doit avoir au maximum 20 membres',
+            ]
+        );
+
+        $band->name = $request->name;
+        $band->member = $request->member;
+
+        $band->update();
+
+        return redirect()->route('admin.bands.index')->with('toast_success', 'Groupe mis à jour avec succès');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Band $band)
     {
-        //
+        $band->delete();
+        return redirect()->route('admin.bands.index')->with('toast_success', 'Groupe supprimé avec succès');
     }
 }

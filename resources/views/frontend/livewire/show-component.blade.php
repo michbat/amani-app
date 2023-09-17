@@ -34,13 +34,15 @@
                                     width="500" height="350">
                                 <div class="card-body d-flex flex-column">
                                     <h3 class="card-title text-center mb-3">{{ $show->band->name }}</h3>
-                                    <h6
-                                        class="text-center mb-3 lead text-success {{ $show->isScheduled === 0 ? 'text-decoration-line-through' : '' }}">
-                                        Spectacle: {{ $show->title }} -
+                                    <h6 class="text-center">
+                                        <span
+                                            class="text-center mb-3 lead text-success {{ $show->isScheduled === 0 ? 'text-decoration-line-through' : '' }}">
+                                            Spectacle: {{ $show->title }}
+                                        </span>
                                         @if ($show->isScheduled)
-                                            <small class="text-center text-warning">En présentation</small>
+                                            <small class="text-center text-primary mx-2">(En présentation)</small>
                                         @else
-                                            <span class="text-center text-danger">Annulé</span>
+                                            <span class="text-center text-danger mx-2">(Annulé)</span>
                                         @endif
                                     </h6>
 
@@ -49,20 +51,20 @@
                                     </p>
                                     <div class="my-4 d-flex justify-content-center mt-auto">
                                         <!-- Button trigger modal -->
-                                        <button type="button"
-                                            class="btn btn-outline-success {{ $show->isScheduled === 0 ? 'disabled' : '' }}"
-                                            data-toggle="modal" data-target="#exampleModalCenter">
+                                        <button type="button" class="btn btn-outline-success" data-toggle="modal"
+                                            data-target="#modal-{{ $show->id }}">
                                             <i class="far fa-calendar-alt mx-2"></i>Programmation
                                         </button>
                                         <!-- Button trigger modal end -->
 
                                         <!-- Modal -->
-                                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                                        <div class="modal fade" id="modal-{{ $show->id }}" tabindex="-1" role="dialog"
                                             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title
+                                                        <h5 class="modal-title" id="exampleModalLongTitle">
+                                                            Spectacle: {{ $show->title }}
                                                         </h5>
                                                         <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close">
@@ -70,13 +72,29 @@
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        ...
+                                                        <h6 class="lead">Programmation: </h6>
+                                                        <ul>
+                                                            @foreach ($show->representations as $representation)
+                                                                <li>
+                                                                    <span
+                                                                        class="{{ $representation->canceled === 1 ? 'text-decoration-line-through' : '' }}">
+                                                                        {{ $representation->getNameDay($representation->representationDate) }}
+                                                                        {{ $representation->getRepresentationDateFormat($representation->representationDate) }}
+                                                                        de {{ $representation->startTime }} à
+                                                                        {{ $representation->endTime }}
+                                                                    </span>
+                                                                    @if ($representation->canceled === 1)
+                                                                        <span class="text-danger">
+                                                                            {{-- (Annulée) --}}
+                                                                        </span>
+                                                                    @endif
+                                                                </li>
+                                                            @endforeach
+                                                        </ul>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-primary">Save
-                                                            changes</button>
+                                                    <div class="modal-footer d-flex justify-content-center">
+                                                        <button type="button" class="btn btn-danger"
+                                                            data-dismiss="modal">Fermer</button>
                                                     </div>
                                                 </div>
                                             </div>

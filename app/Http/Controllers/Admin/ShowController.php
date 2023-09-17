@@ -58,7 +58,7 @@ class ShowController extends Controller
         $show->band_id = $request->band_id;
         $show->poster = uploadImage($poster, $path);
         $show->description = $request->description;
-        $show->isScheduled = $request->isScheduled;
+        // $show->isScheduled = $request->isScheduled;
 
         $show->save();
 
@@ -131,6 +131,18 @@ class ShowController extends Controller
         $show->isScheduled = $request->isScheduled;
 
         $show->update();
+
+        if ($show->isScheduled == 0) {
+            foreach ($show->representations as $representation) {
+                $representation->canceled = 1;
+                $representation->save();
+            }
+        } else {
+            foreach ($show->representations as $representation) {
+                $representation->canceled = 0;
+                $representation->save();
+            }
+        }
 
         return redirect()->route('admin.shows.index')->with('toast_success', 'Le spectacle a été mis à jour');
     }

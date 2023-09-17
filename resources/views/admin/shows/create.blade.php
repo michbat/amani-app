@@ -14,7 +14,7 @@
             </div>
             <div class="card-body">
                 <div class="form-group row mb-4">
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <label for="title" class="form-label">Titre</label>
                         <input type="text" class="form-control" name="title" id="title"
                             placeholder="Titre du spectacle" value="{{ old('title') }}">
@@ -23,7 +23,7 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <label for="band" class="form-label">Groupe</label>
                         <select name="band_id" id="band" class="form-control selectric">
                             @foreach ($bands as $band)
@@ -33,13 +33,13 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-sm-4">
+                    {{-- <div class="col-sm-4">
                         <label for="agenda" class="form-label">Agenda</label>
                         <select name="isScheduled" id="agenda" class="form-control selectric">
                             <option value="1">Programmé</option>
                             <option value="0">Annulé</option>
                         </select>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="form-group row mb-4">
@@ -64,7 +64,7 @@
                         @enderror
                     </div>
                 </div>
-                
+
                 <div class="card-footer mb-4">
                     <button type="submit" class="btn btn-primary btn-lg text-dark px-5" style="min-width: 200px;"><i
                             class="fas fa-plus-circle mx-2"></i>Ajouter</button>
