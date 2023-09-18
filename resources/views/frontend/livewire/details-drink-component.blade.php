@@ -16,9 +16,11 @@
             @endif
             <div class="row">
                 @if ($global->opened == 0)
-                    <p class="text-center text-danger" style="font-size: 20px;">Restaurant fermé! PAS DE COMMANDES!!!</p>
+                    <p class="text-center text-danger" style="font-size: 20px;">Restaurant fermé! PAS DE COMMANDES!!!
+                    </p>
                 @else
-                    <p class="text-center text-danger" style="font-size: 20px;">Nous n'acceptons des commandes qu'entre 10 heures et 23 heures!
+                    <p class="text-center text-danger" style="font-size: 20px;">Nous n'acceptons des commandes qu'entre
+                        10 heures et 23 heures!
                     </p>
                 @endif
                 <div class="col-lg-6 magnific-gallery">
@@ -39,20 +41,35 @@
                             </div>
                             <div class="col-lg-4 col-md-6 d-flex justify-content-center">
                                 <div class="btn_add_to_cart">
-                                    <a href="#"
-                                        class="btn btn-success {{ $drink->available === 0 || $quantity >= 10 || $drink->canBeCommended === 0 || $global->opened === 0 ? 'disabled' : '' }}"
-                                        style="min-width: 190px"
-                                        wire:click.prevent="storeDrink({{ $drink->id }},'{{ $drink->name }}',{{ $drink->price }})"
-                                        wire:model="$quantity"><i class="fas fa-shopping-cart mx-2"></i>Ajouter
+                                    @if (!auth()->user() || auth()->user()->firstname !== 'Generic')
+                                        <a href="#"
+                                            class="btn btn-success {{ $drink->available === 0 || $quantity >= 10 || $drink->canBeCommended === 0 || $global->opened === 0 ? 'disabled' : '' }}"
+                                            style="min-width: 190px"
+                                            wire:click.prevent="storeDrink({{ $drink->id }},'{{ $drink->name }}',{{ $drink->price }})"
+                                            wire:model="$quantity"><i class="fas fa-shopping-cart mx-2"></i>Ajouter
 
-                                        <span class="badge badge-light">{{ $quantity }}</span>
+                                            <span class="badge badge-info">{{ $quantity }}</span>
 
-                                    </a>
+                                        </a>
+                                    @else
+                                        <a href="#"
+                                            class="btn btn-success"
+                                            style="min-width: 190px"
+                                            wire:click.prevent="storeDrink({{ $drink->id }},'{{ $drink->name }}',{{ $drink->price }})"
+                                            wire:model="$quantity"><i class="fas fa-shopping-cart mx-2"></i>Ajouter
+
+                                            <span class="badge badge-info">{{ $quantity }}</span>
+
+                                        </a>
+                                    @endif
                                 </div>
                             </div>
                             <div class="mt-3">
-                                @if ($quantity >= 10)
-                                    <span class="text-danger text-center">Vous ne pouvez pas commander au delà de 10 articles d'une même boisson sur une seule commande</span>
+                                @if (!auth()->user() || auth()->user()->firstname !== 'Generic')
+                                    @if ($quantity >= 10)
+                                        <span class="text-danger text-center">Vous ne pouvez pas commander au delà de 10
+                                            articles d'une même boisson sur une seule commande</span>
+                                    @endif
                                 @endif
                             </div>
                         </div>

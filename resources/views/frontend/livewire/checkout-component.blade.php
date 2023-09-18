@@ -146,7 +146,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="payment_select" id="paypal">
+                            <div class="payment_select {{ auth()->user()->firstname === 'Generic' ? 'd-none' : '' }}" id="paypal">
                                 <label class="container_radio">Payer avec Paypal
                                     <input type="radio" value="paypal" wire:model="paymentMode">
                                     <span class="checkmark"></span>

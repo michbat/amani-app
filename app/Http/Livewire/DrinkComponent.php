@@ -44,6 +44,10 @@ class DrinkComponent extends Component
      * Ici on reset l'ancienne pagination générée d'une ancienne recherche pour laisser la place à une nouvelle pagination
      *
      */
+
+    public function mount()
+    {
+    }
     public function updated()
     {
         $this->resetPage();
@@ -53,10 +57,29 @@ class DrinkComponent extends Component
 
     public function storeDrink($drink_id, $drink_name, $drink_price)
     {
-        Cart::instance('cart')->add($drink_id, $drink_name, 1, $drink_price)->associate('App\Models\Drink');
-        // $this->emitTo('cart-icon-component', 'refreshComponent');
-        // session()->flash('success_message', 'Boisson ajoutée dans votre panier');
-        return redirect()->route('drink')->with('success','Boisson ajoutée dans votre panier');
+        /**
+         * Un visiteur qui simule un panier ou un utilisateur qui n'est pas 'Generic' sont limités à 10 boisssons par commande. Il faut pouvroir les emmpêcher
+         * d'ajouter un article-boisson si celui-ci a déjà atteint le nombre de 10 et ce ceux au niveau de la vue associé à 'DrinkComponent'
+         */
+
+        if (!Auth::user() || Auth::user()->firstname !== 'Generic') {
+
+            foreach (Cart::instance('cart')->content() as $content) {
+                if ($content->associatedModel == 'App\Models\Drink' && $content->id == $drink_id && $content->qty >= 10) {
+                    return redirect()->route('drink')->with('warning', 'Vous avez déjà 10 articles de cette boisson dans le panier! Impossible d\'en ajouter encore un!');
+                }
+            }
+
+            Cart::instance('cart')->add($drink_id, $drink_name, 1, $drink_price)->associate('App\Models\Drink');
+            return redirect()->route('drink')->with('success', 'Boisson ajoutée dans votre panier');
+        }
+
+        // L'utilisateur 'Generic' n'est soumis à aucune restriction en termes de quantité
+
+        if (Auth::user()->firstname == 'Generic') {
+            Cart::instance('cart')->add($drink_id, $drink_name, 1, $drink_price)->associate('App\Models\Drink');
+            return redirect()->route('drink')->with('success', 'Boisson ajoutée dans votre panier');
+        }
     }
 
     public function render()
@@ -116,12 +139,13 @@ class DrinkComponent extends Component
 
         $categories = Category::where('designation', 'Vins')->orWhere('designation', 'Softs')->orWhere('designation', 'Eaux')->orWhere('designation', 'Bières')->orderBy('designation', 'ASC')->get();
 
-        // Si le client est authentifié, il peut sauvegarde son panier et sa wishlist
+        // Si l'utilisateur authentifié n'est pas 'Generic', on prend une "photographie" de son panier et de sa wishlist
 
-        if (Auth::check()) {
+        if (Auth::check() && Auth::user()->firstname !== 'Generic') {
             Cart::instance('cart')->store(Auth::user()->id);
             Cart::instance('wishlist')->store(Auth::user()->id);
         }
+
 
         return view('frontend.livewire.drink-component', compact('drinks', 'categories'));
     }

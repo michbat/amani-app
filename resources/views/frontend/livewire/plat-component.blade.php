@@ -247,23 +247,25 @@
                                                 </span>
                                             </button>
                                             {{-- Si l'id du plat est dans la wishplats, cela veut dire qu'il y a été ajouté. On colore le bouton en rouge avec la classe bootstrap danger --}}
-                                            @if ($wishplats->contains($plat->id))
-                                                <button title="Enlèver ce plat à la liste de souhaits"
-                                                    class="btn btn-danger mx-2" type="button"
-                                                    wire:click.prevent="removePlatToWishList({{ $plat->id }})">
-                                                    <span>
-                                                        <i class="far fa-heart mx-2"></i>Wishlist
-                                                    </span>
-                                                </button>
-                                            @else
-                                                {{-- sinon on affiche un bouton outline (vide) --}}
-                                                <button title="Ajouter ce plat à la liste de souhaits"
-                                                    class="btn btn-outline-danger mx-2" type="button"
-                                                    wire:click.prevent="addPlatToWishList({{ $plat->id }},'{{ $plat->name }}',{{ $plat->price }})">
-                                                    <span>
-                                                        <i class="far fa-heart mx-2"></i>Wishlist
-                                                    </span>
-                                                </button>
+                                            @if (!auth()->user() || auth()->user()->firstname !== 'Generic')
+                                                @if ($wishplats->contains($plat->id))
+                                                    <button title="Enlèver ce plat à la liste de souhaits"
+                                                        class="btn btn-danger mx-2" type="button"
+                                                        wire:click.prevent="removePlatToWishList({{ $plat->id }})">
+                                                        <span>
+                                                            <i class="far fa-heart mx-2"></i>Wishlist
+                                                        </span>
+                                                    </button>
+                                                @else
+                                                    {{-- sinon on affiche un bouton outline (vide) --}}
+                                                    <button title="Ajouter ce plat à la liste de souhaits"
+                                                        class="btn btn-outline-danger mx-2" type="button"
+                                                        wire:click.prevent="addPlatToWishList({{ $plat->id }},'{{ $plat->name }}',{{ $plat->price }})">
+                                                        <span>
+                                                            <i class="far fa-heart mx-2"></i>Wishlist
+                                                        </span>
+                                                    </button>
+                                                @endif
                                             @endif
                                         </div>
                                     </div>

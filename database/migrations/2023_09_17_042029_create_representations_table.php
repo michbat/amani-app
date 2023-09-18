@@ -19,6 +19,8 @@ return new class extends Migration
             $table->time('startTime');
             $table->time('endTime');
             $table->boolean('canceled')->default(false);
+            $table->boolean('canceledThroughShow')->default(false);
+            $table->boolean('isExpired')->default(false);
         });
     }
 

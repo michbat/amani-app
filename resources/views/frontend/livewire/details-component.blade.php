@@ -72,41 +72,56 @@
                             </div>
                             <div class="col-lg-4 col-md-6 d-flex justify-content-center">
                                 <div class="btn_add_to_cart">
-                                    <a href="#"
-                                        class="btn btn-success {{ $plat->available === 0 || $quantity >= 6 || $plat->canBeCommended === 0 || $global->opened === 0 ? 'disabled' : '' }}"
-                                        style="min-width: 190px"
-                                        wire:click.prevent="storePlat({{ $plat->id }},'{{ $plat->name }}',{{ $plat->price }})"
-                                        wire:model="$quantity"><i class="fas fa-shopping-cart mx-2"></i>Ajouter
+                                    @if (!auth()->user() || auth()->user()->firstname !== 'Generic')
+                                        <a href="#"
+                                            class="btn btn-success {{ $plat->available === 0 || $quantity >= 6 || $plat->canBeCommended === 0 || $global->opened === 0 ? 'disabled' : '' }}"
+                                            style="min-width: 190px"
+                                            wire:click.prevent="storePlat({{ $plat->id }},'{{ $plat->name }}',{{ $plat->price }})"
+                                            wire:model="$quantity"><i class="fas fa-shopping-cart mx-2"></i>Ajouter
 
-                                        <span class="badge badge-light">{{ $quantity }}</span>
+                                            <span class="badge badge-info">{{ $quantity }}</span>
 
-                                    </a>
+                                        </a>
+                                    @else
+                                        <a href="#" class="btn btn-success" style="min-width: 190px"
+                                            wire:click.prevent="storePlat({{ $plat->id }},'{{ $plat->name }}',{{ $plat->price }})"
+                                            wire:model="$quantity"><i class="fas fa-shopping-cart mx-2"></i>Ajouter
+
+                                            <span class="badge badge-info">{{ $quantity }}</span>
+
+                                        </a>
+                                    @endif
                                 </div>
                                 <div class="btn_add_to_cart">
                                     {{-- Si l'id du plat est dans la wishplats, cela veut dire qu'il y a été ajouté. On colore le bouton en rouge avec la classe bootstrap danger --}}
-                                    @if ($wishplats->contains($plat->id))
-                                        <button title="Enlèver ce plat à la liste de souhaits"
-                                            class="btn btn-danger mx-2" style="min-width: 200px;"
-                                            wire:click.prevent="removePlatToWishList({{ $plat->id }})">
-                                            <span>
-                                                <i class="far fa-heart mx-2"></i>Wishlist
-                                            </span>
-                                        </button>
-                                    @else
-                                        {{-- sinon on affiche un bouton outline (vide) --}}
-                                        <button title="Ajouter ce plat à la liste de souhaits"
-                                            class="btn btn-outline-danger mx-2" style="min-width: 200px;"
-                                            wire:click.prevent="addPlatToWishList({{ $plat->id }},'{{ $plat->name }}',{{ $plat->price }})">
-                                            <span>
-                                                <i class="far fa-heart mx-2"></i>Wishlist
-                                            </span>
-                                        </button>
+                                    @if (!auth()->user() || auth()->user()->firstname !== 'Generic')
+                                        @if ($wishplats->contains($plat->id))
+                                            <button title="Enlèver ce plat à la liste de souhaits"
+                                                class="btn btn-danger mx-2" style="min-width: 200px;"
+                                                wire:click.prevent="removePlatToWishList({{ $plat->id }})">
+                                                <span>
+                                                    <i class="far fa-heart mx-2"></i>Wishlist
+                                                </span>
+                                            </button>
+                                        @else
+                                            {{-- sinon on affiche un bouton outline (vide) --}}
+                                            <button title="Ajouter ce plat à la liste de souhaits"
+                                                class="btn btn-outline-danger mx-2" style="min-width: 200px;"
+                                                wire:click.prevent="addPlatToWishList({{ $plat->id }},'{{ $plat->name }}',{{ $plat->price }})">
+                                                <span>
+                                                    <i class="far fa-heart mx-2"></i>Wishlist
+                                                </span>
+                                            </button>
+                                        @endif
                                     @endif
                                 </div>
                             </div>
                             <div class="mt-3">
-                                @if ($quantity >= 6)
-                                    <span class="text-danger text-center">Vous ne pouvez pas commander au delà de 6 articles d'un même plat sur une seule commande</span>
+                                @if (!auth()->user() || auth()->user()->firstname !== 'Generic')
+                                    @if ($quantity >= 6)
+                                        <span class="text-danger text-center">Vous ne pouvez pas commander au delà de 6
+                                            articles d'un même plat sur une seule commande</span>
+                                    @endif
                                 @endif
                             </div>
                         </div>

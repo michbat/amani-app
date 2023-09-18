@@ -75,10 +75,29 @@ class PlatComponent extends Component
 
     public function storePlat($plat_id, $plat_name, $plat_price)
     {
-        Cart::instance('cart')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
-        // session()->flash('success_message', 'Plat ajouté dans votre panier');
-        // $this->emitTo('cart-icon-component', 'refreshComponent');
-        return redirect()->route('plat')->with('success','Plat ajouté dans votre panier');
+        /**
+         * Un visiteur qui simule un panier ou un utilisateur qui n'est pas 'Generic' sont limités à 10 boisssons par commande. Il faut pouvroir les emmpêcher
+         * d'ajouter un article-boisson si celui-ci a déjà atteint le nombre de 10 et ce ceux au niveau de la vue associé à 'DrinkComponent'
+         */
+
+        if (!Auth::user() || Auth::user()->firstname !== 'Generic') {
+
+            foreach (Cart::instance('cart')->content() as $content) {
+                if ($content->associatedModel == 'App\Models\Plat' && $content->id == $plat_id && $content->qty >= 6) {
+                    return redirect()->route('plat')->with('warning', 'Vous avez déjà 6 articles de ce plat dans le panier! Impossible d\'en ajouter encore un!');
+                }
+            }
+
+            Cart::instance('cart')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
+            return redirect()->route('plat')->with('success', 'Plat ajouté dans votre panier');
+        }
+
+        // L'utilisateur 'Generic' n'est soumis à aucune restriction en termes de quantité
+
+        if (Auth::user()->firstname == 'Generic') {
+            Cart::instance('cart')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
+            return redirect()->route('plat')->with('success', 'Plat ajouté dans votre panier');
+        }
     }
 
     // Méthode pour ajouter un plat dans une wishlist
@@ -88,7 +107,7 @@ class PlatComponent extends Component
         Cart::instance('wishlist')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
         // $this->emitTo('wishlist-icon-component', 'refreshComponent');
         // session()->flash('success_message', 'Plat ajouté à votre liste de souhaits');
-        return redirect()->route('plat')->with('success','Plat ajouté à votre liste de souhaits');
+        return redirect()->route('plat')->with('success', 'Plat ajouté à votre liste de souhaits');
     }
 
     // Méthode pour enlèver un plat de la wishlist
@@ -101,7 +120,7 @@ class PlatComponent extends Component
                 // $this->emitTo('wishlist-icon-component', 'refreshComponent');
                 // session()->flash('success_message', 'Plat enlevé de votre liste de souhaits');
                 // return back();
-                return redirect()->route('plat')->with('success','Plat enlevé à votre liste de souhaits');
+                return redirect()->route('plat')->with('success', 'Plat enlevé à votre liste de souhaits');
             }
         }
     }
@@ -181,12 +200,13 @@ class PlatComponent extends Component
         $categories = Category::orderBy('designation', 'ASC')->get();
         $categories = Category::where('designation', 'Entrées')->orWhere('designation', 'Plats principaux')->orWhere('designation', 'Desserts')->orderBy('designation', 'ASC')->get();
 
-        // Si le client est authentifié, on sauvegarde son panier et sa wishlist
+        // Si l'utilisateur authentifié n'est pas 'Generic', on prend une "photographie" de son panier et de sa wishlist
 
-        if (Auth::check()) {
+        if (Auth::check() && Auth::user()->firstname !== 'Generic') {
             Cart::instance('cart')->store(Auth::user()->id);
             Cart::instance('wishlist')->store(Auth::user()->id);
         }
+
 
         return view('frontend.livewire.plat-component', compact('plats', 'categories'));
     }

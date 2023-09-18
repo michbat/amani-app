@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Events\LoginSubmitDeniedEvent;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\LoginSubmitRequest;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class LoginController extends Controller
 {
@@ -91,8 +92,17 @@ class LoginController extends Controller
             }
 
             if (Auth::attempt($credentials)) {
+
+                // Si l'utilisateur est authentifié et non 'Generic', on restaure son panier et sa wishlist sauvegardés
+
+                if (Auth::check() && Auth::user()->firstname !== 'Generic') {
+
+                    Cart::instance('cart')->restore(Auth::user()->id);
+                    Cart::instance('wishlist')->restore(Auth::user()->id);
+                }
+
                 // Une fois connecté, on ramène l'utilisateur à la page qu'il visitait avant de s'authentifier
-                
+
                 return redirect(Session::get('previous_url'))->with('success', 'Bonjour ' . $user->firstname . ', Vous êtes connecté!');
             } else {
                 return redirect()->back()->with('error', 'Une erreur s\'est produite. Veuillez retenter une connexion.');
@@ -131,6 +141,13 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();  // Instruction pour déconnecter un utilisateur connecté.
+
+        // On detruit les instances du panier et de la wishlist en cours
+
+        Cart::instance('cart')->destroy();
+        Cart::instance('wishlist')->destroy();
+
+        // On redirige l'utilisateur déconnecté (donc qui devient un guestà vers la page d'accueil
 
         return $request->wantsJson()
             ? new JsonResponse([], 204)

@@ -45,13 +45,9 @@ class HomeComponent extends Component
 
         $staffs = Staff::orderBy('name', 'ASC')->get();
 
-        // Si le client est authentifié, il est dirigé vers l'accueil. On restaure son panier et sa wishlist sauvegardés
-        // avant le rendu de la vue "home-component"
+        // Si l'utilisateur est authentifié et qu'il n'est pas 'Generic, on prend une 'photographie' de son panier et wishlist
 
-        if (Auth::check()) {
-
-            Cart::instance('cart')->restore(Auth::user()->id);
-            Cart::instance('wishlist')->restore(Auth::user()->id);
+        if (Auth::check() && Auth::user()->firstname !== 'Generic') {
 
             Cart::instance('cart')->store(Auth::user()->id);
             Cart::instance('wishlist')->store(Auth::user()->id);

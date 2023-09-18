@@ -31,7 +31,7 @@ class DrinkTableSeeder extends Seeder
                 'image' => '/uploads/seeders/drink/1-paillet_quancard.png',
                 'price' => 11.50,
                 'available' => 1,
-                'quantityInStock' => 30,
+                'quantityInStock' => 100,
                 'quantityMinimum' => 10,
 
             ],
@@ -43,7 +43,7 @@ class DrinkTableSeeder extends Seeder
                 'image' => '/uploads/seeders/drink/2-montcharmerg.png',
                 'price' => 11.75,
                 'available' => 1,
-                'quantityInStock' => 30,
+                'quantityInStock' => 100,
                 'quantityMinimum' => 10,
 
             ],
@@ -55,7 +55,7 @@ class DrinkTableSeeder extends Seeder
                 'image' => '/uploads/seeders/drink/3-barboulotnew.png',
                 'price' => 8.75,
                 'available' => 1,
-                'quantityInStock' => 30,
+                'quantityInStock' => 100,
                 'quantityMinimum' => 10,
 
             ],
@@ -67,7 +67,7 @@ class DrinkTableSeeder extends Seeder
                 'image' => '/uploads/seeders/drink/4-colonnebl.png',
                 'price' => 13.75,
                 'available' => 1,
-                'quantityInStock' => 30,
+                'quantityInStock' => 100,
                 'quantityMinimum' => 10,
 
             ],
@@ -83,7 +83,7 @@ class DrinkTableSeeder extends Seeder
                 'image' => '/uploads/seeders/drink/5-biere-grosse-bertha.jpg',
                 'price' => 3.75,
                 'available' => 1,
-                'quantityInStock' => 30,
+                'quantityInStock' => 100,
                 'quantityMinimum' => 10,
 
             ],
@@ -96,7 +96,7 @@ class DrinkTableSeeder extends Seeder
                 'image' => '/uploads/seeders/drink/6-biere-saison-dupont.jpg',
                 'price' => 2.00,
                 'available' => 1,
-                'quantityInStock' => 30,
+                'quantityInStock' => 100,
                 'quantityMinimum' => 10,
 
             ],
@@ -108,7 +108,7 @@ class DrinkTableSeeder extends Seeder
                 'image' => '/uploads/seeders/drink/7-biere-chimay-doree.jpg',
                 'price' => 2.50,
                 'available' => 1,
-                'quantityInStock' => 30,
+                'quantityInStock' => 100,
                 'quantityMinimum' => 10,
 
             ],
@@ -121,7 +121,7 @@ class DrinkTableSeeder extends Seeder
                 'image' => '/uploads/seeders/drink/8-biere-rochefort.jpg',
                 'price' => 2.75,
                 'available' => 1,
-                'quantityInStock' => 30,
+                'quantityInStock' => 100,
                 'quantityMinimum' => 10,
 
             ],
@@ -134,7 +134,7 @@ class DrinkTableSeeder extends Seeder
                 'image' => '/uploads/seeders/drink/9-biere-chimay-bleue.jpg',
                 'price' => 5.75,
                 'available' => 1,
-                'quantityInStock' => 30,
+                'quantityInStock' => 100,
                 'quantityMinimum' => 10,
 
             ],
@@ -147,7 +147,7 @@ class DrinkTableSeeder extends Seeder
                 'image' => '/uploads/seeders/drink/10-biere-westmalle-tripel.jpg',
                 'price' => 3.00,
                 'available' => 1,
-                'quantityInStock' => 30,
+                'quantityInStock' => 100,
                 'quantityMinimum' => 10,
 
             ],
@@ -161,7 +161,7 @@ class DrinkTableSeeder extends Seeder
                 'image' => '/uploads/seeders/drink/11-biere-guldenberg-de-ranke.jpg',
                 'price' => 5.50,
                 'available' => 1,
-                'quantityInStock' => 30,
+                'quantityInStock' => 100,
                 'quantityMinimum' => 10,
 
             ],
@@ -175,7 +175,7 @@ class DrinkTableSeeder extends Seeder
                 'image' => '/uploads/seeders/drink/12-biere-moinette-biologique.jpg',
                 'price' => 7.50,
                 'available' => 1,
-                'quantityInStock' => 30,
+                'quantityInStock' => 100,
                 'quantityMinimum' => 10,
 
             ],
@@ -191,7 +191,7 @@ class DrinkTableSeeder extends Seeder
                 'price' => 2.50,
                 'available' => 1,
                 'quantityInStock' => 100,
-                'quantityMinimum' => 20,
+                'quantityMinimum' => 10,
 
             ],
             [
@@ -203,7 +203,7 @@ class DrinkTableSeeder extends Seeder
                 'price' => 2.50,
                 'available' => 1,
                 'quantityInStock' => 100,
-                'quantityMinimum' => 20,
+                'quantityMinimum' => 10,
 
             ],
             [
@@ -215,7 +215,7 @@ class DrinkTableSeeder extends Seeder
                 'price' => 3.50,
                 'available' => 1,
                 'quantityInStock' => 100,
-                'quantityMinimum' => 20,
+                'quantityMinimum' => 10,
 
             ],
             [
@@ -227,7 +227,7 @@ class DrinkTableSeeder extends Seeder
                 'price' => 2.50,
                 'available' => 1,
                 'quantityInStock' => 100,
-                'quantityMinimum' => 20,
+                'quantityMinimum' => 10,
 
             ],
             [
@@ -239,7 +239,7 @@ class DrinkTableSeeder extends Seeder
                 'price' => 2.50,
                 'available' => 1,
                 'quantityInStock' => 100,
-                'quantityMinimum' => 20,
+                'quantityMinimum' => 10,
 
             ],
 
@@ -254,7 +254,7 @@ class DrinkTableSeeder extends Seeder
                 'price' => 3.00,
                 'available' => 1,
                 'quantityInStock' => 100,
-                'quantityMinimum' => 20,
+                'quantityMinimum' => 10,
 
             ],
             [
@@ -266,7 +266,7 @@ class DrinkTableSeeder extends Seeder
                 'price' => 5.50,
                 'available' => 1,
                 'quantityInStock' => 100,
-                'quantityMinimum' => 20,
+                'quantityMinimum' => 10,
 
             ],
             [
@@ -278,7 +278,7 @@ class DrinkTableSeeder extends Seeder
                 'price' => 5.25,
                 'available' => 1,
                 'quantityInStock' => 100,
-                'quantityMinimum' => 20,
+                'quantityMinimum' => 10,
 
             ],
         ];

@@ -22,7 +22,7 @@
                         <th>Nom de l'ingrédient</th>
                         <th>Type</th>
                         <th class="text-center">Quantité en stock</th>
-                        <th class="text-center">Quantité minimum en stock</th>
+                        <th class="text-center">Seuil minimum en stock</th>
                         <th class="text-center">Disponibilité</th>
                         <th>Unité (Symbole)</th>
                         <th class="text-center">Actions</th>

@@ -16,7 +16,7 @@ class DetailsDrinkComponent extends Component
     public function mount($slug)
     {
         // On affiche les informations détaillés d'une boisson en récupérant son slug et en faisant une requête eloquent pour le récupèrer
-        
+
         $this->slug = $slug;
         $this->drink = Drink::where('slug', $this->slug)->first();
 
@@ -28,10 +28,12 @@ class DetailsDrinkComponent extends Component
         $cartInstance = Cart::instance('cart');
         $drinkId = $this->drink->id;
 
+        // dd($drinkId);
+
         // On récupère une boisson ($item) présente dans le panier en comparant des id.
 
         $item = $cartInstance->search(function ($cartItem) use ($drinkId) {
-            return $cartItem->id === $drinkId;
+            return $cartItem->id === $drinkId && $cartItem->associatedModel == 'App\Models\Drink';
         });
 
 
@@ -47,8 +49,10 @@ class DetailsDrinkComponent extends Component
     public function storeDrink($drink_id, $drink_name, $drink_price)
     {
         Cart::instance('cart')->add($drink_id, $drink_name, 1, $drink_price)->associate('App\Models\Drink');
+        $this->quantity += 1;
+        $this->emitTo('cart-icon-component', 'refreshComponent');
         session()->flash('success_message', 'Boisson ajoutée dans votre panier');
-        return redirect()->route('cart');
+        return redirect()->back();
     }
 
     // Méthode pour ajouter un menu dans une wishlist
@@ -83,9 +87,9 @@ class DetailsDrinkComponent extends Component
         $drink = $this->drink;
 
 
-        // Si le client est authentifié, on sauvegarde son panier et sa wishlist
+        // Si l'utilisateur authentifié n'est pas 'Generic', on prend une "photographie" de son panier et de sa wishlist
 
-        if (Auth::check()) {
+        if (Auth::check() && Auth::user()->firstname !== 'Generic') {
             Cart::instance('cart')->store(Auth::user()->id);
             Cart::instance('wishlist')->store(Auth::user()->id);
         }

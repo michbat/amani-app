@@ -31,7 +31,7 @@ class DetailsComponent extends Component
         // On récupère un plat ($item) présent dans le panier en comparant des id.
 
         $item = $cartInstance->search(function ($cartItem) use ($platId) {
-            return $cartItem->id === $platId;
+            return $cartItem->id === $platId && $cartItem->associatedModel == 'App\Models\Plat';
         });
 
 
@@ -49,8 +49,10 @@ class DetailsComponent extends Component
     public function storePlat($plat_id, $plat_name, $plat_price)
     {
         Cart::instance('cart')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
+        $this->quantity += 1;
+        $this->emitTo('cart-icon-component', 'refreshComponent');
         session()->flash('success_message', 'Plat ajouté dans votre panier');
-        return redirect()->route('cart');
+        return redirect()->back();
     }
 
     // Méthode pour ajouter un plat dans une wishlist
@@ -86,9 +88,9 @@ class DetailsComponent extends Component
 
         $avg = floor($reviews->avg('rating'));  // Moyenne des reviews publiés!
 
-        // Si le client est authentifié, on sauvegarde son panier et sa wishlist
+        // Si l'utilisateur authentifié n'est pas 'Generic', on prend une "photographie" de son panier et de sa wishlist
 
-        if (Auth::check()) {
+        if (Auth::check() && Auth::user()->firstname !== 'Generic') {
             Cart::instance('cart')->store(Auth::user()->id);
             Cart::instance('wishlist')->store(Auth::user()->id);
         }

@@ -89,7 +89,7 @@
                     </div>
                     <div class="col-sm-6">
                         <label class="form-label text-left col-12" for="canBeCommended">Commandable</label>
-                        <select class="form-control selectric" name="canBeCommended" id="canBeCommended">
+                        <select class="form-control selectric" name="canBeCommended" id="canBeCommended" disabled>
                             <option {{ $drink->canBeCommended == 1 ? 'selected' : '' }} value="1">Commandable</option>
                             <option {{ $drink->canBeCommended == 0 ? 'selected' : '' }} value="0">Non Commandable
                             </option>

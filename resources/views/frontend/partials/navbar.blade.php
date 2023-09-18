@@ -8,9 +8,13 @@
     </div>
     <ul>
 
-        <li class="submenu">
-            @livewire('wishlist-icon-component')
-        </li>
+        {{-- Seul le guest et un utilisateur autre que 'Generic' peuvent voir l'icône wishlist --}}
+
+        @if (!auth()->user() || auth()->user()->firstname !== 'Generic')
+            <li class="submenu">
+                @livewire('wishlist-icon-component')
+            </li>
+        @endif
         @auth
             @if (Auth::user()->hasRole('admin'))
                 <li class="submenu">

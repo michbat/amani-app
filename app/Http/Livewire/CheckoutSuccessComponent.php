@@ -21,9 +21,9 @@ class CheckoutSuccessComponent extends Component
 
     public function render()
     {
-        // On sauvegarde le panier et la wishlist du client connecté.
+        // On prend la "photographie" du panier et de la wishlist de l'utilisateur connecté qui n'est pas 'Generic'.
 
-        if (Auth::check()) {
+        if (Auth::check() && Auth::user()->firstname !== 'Generic') {
             Cart::instance('cart')->store(Auth::user()->id);
             Cart::instance('wishlist')->store(Auth::user()->id);
         }

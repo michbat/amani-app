@@ -24,22 +24,51 @@ class WishlistComponent extends Component
         }
     }
 
-    // Méthode pour ajouter un plat dans le panier
+    // Méthode pour ajouter un plat dans le panier à partir de la wishlist
 
     public function storePlat($plat_id, $plat_name, $plat_price)
     {
 
-        Cart::instance('cart')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
+        /**
+         * Un visiteur qui simule un panier ou un utilisateur qui n'est pas 'Generic' sont limités à 6 articles d'un plat par commande. Il faut pouvoir les   emmpêcher
+         * d'ajouter un article-plat si celui-ci a déjà atteint le nombre de 6
+         */
 
-        $this->emitTo('cart-icon-component', 'refreshComponent');
+        if (!Auth::user() || Auth::user()->firstname !== 'Generic') {
 
-        // Si le plat est ajouté de la carte, on l'efface de la wishlist, faisant appel à la méthode removePlatToWishList()
+            foreach (Cart::instance('cart')->content() as $content) {
+                if ($content->associatedModel == 'App\Models\Plat' && $content->id == $plat_id && $content->qty >= 6) {
+                    session()->flash('warning_message', 'Vous avez déjà 6 articles de ce plat dans le panier! Impossible d\'en ajouter encore un!');
+                    return redirect()->back();
+                }
+            }
 
-        $this->removePlatToWishList($plat_id);
+            Cart::instance('cart')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
 
-        session()->flash('success_message', 'Plat ajouté dans votre panier et retiré de la wishlist');
-        return redirect()->back();
-        // return redirect()->route('wishlist')->with('success', 'Plat ajouté dans votre panier et retiré de la wishlist');
+            $this->emitTo('cart-icon-component', 'refreshComponent');
+
+            // Si le plat est ajouté de la carte, on l'efface de la wishlist, faisant appel à la méthode removePlatToWishList()
+
+            $this->removePlatToWishList($plat_id);
+
+            session()->flash('success_message', 'Plat ajouté dans votre panier et retiré de la wishlist');
+            return redirect()->back();
+        }
+
+        // L'utilisateur 'Generic' n'est soumis à aucune restriction en termes de quantité
+
+        if (Auth::user()->firstname == 'Generic') {
+            Cart::instance('cart')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
+
+            $this->emitTo('cart-icon-component', 'refreshComponent');
+
+            // Si le plat est ajouté de la carte, on l'efface de la wishlist, faisant appel à la méthode removePlatToWishList()
+
+            $this->removePlatToWishList($plat_id);
+
+            session()->flash('success_message', 'Plat ajouté dans votre panier et retiré de la wishlist');
+            return redirect()->back();
+        }
     }
 
     public function render()

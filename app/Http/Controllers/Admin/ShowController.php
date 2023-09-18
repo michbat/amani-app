@@ -134,12 +134,12 @@ class ShowController extends Controller
 
         if ($show->isScheduled == 0) {
             foreach ($show->representations as $representation) {
-                $representation->canceled = 1;
+                $representation->canceledThroughShow = 1;
                 $representation->save();
             }
         } else {
             foreach ($show->representations as $representation) {
-                $representation->canceled = 0;
+                $representation->canceledThroughShow = 0;
                 $representation->save();
             }
         }

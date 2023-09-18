@@ -67,13 +67,17 @@
                                             @endif
 
                                             {{-- Si c'est un plat que l'utilisateur a atteint 6 articles, on bloque le bouton d'ajout et on affiche un message --}}
-                                            @if ($element->associatedModel == 'App\Models\Plat' && $element->qty >= 6)
-                                                <p class="text-danger" style="font-size: 10px">Vous ne pouvez pas
-                                                    commander au delà de 6 articles d'un même plat sur une commande!</p>
-                                            @endif
-                                            @if ($element->associatedModel == 'App\Models\Drink' && $element->qty >= 10)
-                                                <p class="text-danger" style="font-size: 10px">Vous ne pouvez pas
-                                                    commander au delà de 10 articles d'une même boisson sur une commande!</p>
+                                            @if (!auth()->user() && auth()->user()->firstame != 'Generic')
+                                                @if ($element->associatedModel == 'App\Models\Plat' && $element->qty >= 6)
+                                                    <p class="text-danger" style="font-size: 10px">Vous ne pouvez pas
+                                                        commander au delà de 6 articles d'un même plat sur une commande!
+                                                    </p>
+                                                @endif
+                                                @if ($element->associatedModel == 'App\Models\Drink' && $element->qty >= 10)
+                                                    <p class="text-danger" style="font-size: 10px">Vous ne pouvez pas
+                                                        commander au delà de 10 articles d'une même boisson sur une
+                                                        commande!</p>
+                                                @endif
                                             @endif
                                         </span>
                                     </td>
@@ -86,9 +90,14 @@
                                                 wire:click.prevent="decreaseQuantity('{{ $element->rowId }}')">-</button>
                                             <span class="border border-1 p-1 text-center"
                                                 style="min-width: 100px;">{{ $element->qty }}</span>
-                                            <button
-                                                class="btn btn-success btn-sm mx-2 {{ ($element->associatedModel == 'App\Models\Plat' && $element->qty >= 6) || ($element->associatedModel == 'App\Models\Drink' && $element->qty >= 10) ? 'disabled' : '' }}"
-                                                wire:click.prevent="increaseQuantity('{{ $element->rowId }}')">+</button>
+                                            @if (!auth()->user() || auth()->user()->firstname !== 'Generic')
+                                                <button
+                                                    class="btn btn-success btn-sm mx-2 {{ ($element->associatedModel == 'App\Models\Plat' && $element->qty >= 6) || ($element->associatedModel == 'App\Models\Drink' && $element->qty >= 10) ? 'disabled' : '' }}"
+                                                    wire:click.prevent="increaseQuantity('{{ $element->rowId }}')">+</button>
+                                            @else
+                                                <button class="btn btn-success btn-sm mx-2"
+                                                    wire:click.prevent="increaseQuantity('{{ $element->rowId }}')">+</button>
+                                            @endif
                                         </div>
                                     </td>
                                     <td>
@@ -140,10 +149,16 @@
                                 class="fas fa-plus-circle mx-2"></i>Ajout d'une boisson</a>
                     </div>
                     <div class="col-sm-12 text-start mt-4">
-                        <p style="color: red">Des plats commandés sont prêts au plus tard dans 30 minutes à partir de
-                            la confirmation de la commande. Vous avez 1h30 pour retirer votre commande dès qu'elle
-                            est prête. Vous pouvez suivre l'état de votre commande sur votre compte et un e-mail vous
-                            sera envoyé dès qu'elle prête.</p>
+                        {{-- Si c'est un guest ou que l' utilisateur connecté n'est pas 'Genenric, on affiche le message' --}}
+                        @if (auth()->user() === null || auth()->user()->firstname !== 'Generic')
+                            <p style="color: red; font-size:22px;">Vous ne pouvez pas commander des boissons sans commander au moins un plat! Des plats commandés sont prêts au plus tard dans 30 minutes à partir
+                                de
+                                la confirmation de la commande. Vous avez donc 1h30 pour retirer votre commande dès qu'elle
+                                est prête. Vous pouvez suivre l'état de votre commande sur votre compte et un e-mail
+                                vous
+                                sera envoyé dès qu'elle prête. Vous ne pouvez commander plus de 6 articles d'un plat et plus de 10
+                                articles d'une boisson sur une commande!!</p>
+                        @endif
                     </div>
                 </div>
                 <!-- /cart_actions -->

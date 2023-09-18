@@ -101,15 +101,15 @@
                                                             <td class="text-center"><img src="{{ asset($item->plat->image) }}"
                                                                     alt="{{ $item->plat->name }}" style="width: 60px;">
                                                             </td>
-                                                            <td>{{ $item->plat->name }}</td>
-                                                            <td>{{ $item->plat->price }}&euro;</td>
+                                                            <td class="text-center">{{ $item->plat->name }}</td>
+                                                            <td class="text-center">{{ $item->plat->price }}&euro;</td>
                                                         @else
                                                             {{-- Si $item est un drink --}}
-                                                            <td><img src="{{ asset($item->drink->image) }}"
-                                                                    alt="{{ $item->drink->name }}" style="width: 60px;">
+                                                            <td class="text-center"><img src="{{ asset($item->drink->image) }}"
+                                                                    alt="{{ $item->drink->name }}" style="width: 60px; height: 40px;">
                                                             </td>
-                                                            <td>{{ $item->drink->name }}</td>
-                                                            <td>{{ $item->drink->price }}&euro;</td>
+                                                            <td class="text-center">{{ $item->drink->name }}</td>
+                                                            <td class="text-center">{{ $item->drink->price }}&euro;</td>
                                                         @endif
                                                         <td class="text-center">{{ $item->quantity }}</td>
                                                         <td class="text-center">{{ $item->sellPrice }}&euro;</td>

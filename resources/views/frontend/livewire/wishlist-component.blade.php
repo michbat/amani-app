@@ -15,6 +15,12 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
+                @if ($message = Session::get('warning_message'))
+                    <div class="alert alert-danger alert-dismissible fade show my-4" role="alert">
+                        <strong>{{ $message }}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
                 <div class="main_title center">
                     <span style="background-color: green!important"><em
                             style="background-color: green!important"></em></span>

@@ -58,8 +58,8 @@
                                         <!-- Button trigger modal end -->
 
                                         <!-- Modal -->
-                                        <div class="modal fade" id="modal-{{ $show->id }}" tabindex="-1" role="dialog"
-                                            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal fade" id="modal-{{ $show->id }}" tabindex="-1"
+                                            role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -77,15 +77,15 @@
                                                             @foreach ($show->representations as $representation)
                                                                 <li>
                                                                     <span
-                                                                        class="{{ $representation->canceled === 1 ? 'text-decoration-line-through' : '' }}">
+                                                                        class="{{ $representation->canceled === 1 || $representation->canceledThroughShow === 1 ? 'text-decoration-line-through' : '' }}">
                                                                         {{ $representation->getNameDay($representation->representationDate) }}
                                                                         {{ $representation->getRepresentationDateFormat($representation->representationDate) }}
                                                                         de {{ $representation->startTime }} à
                                                                         {{ $representation->endTime }}
                                                                     </span>
-                                                                    @if ($representation->canceled === 1)
+                                                                    @if ($representation->canceled === 1 || $representation->canceledThroughShow === 1)
                                                                         <span class="text-danger">
-                                                                            {{-- (Annulée) --}}
+                                                                            (Annulée)
                                                                         </span>
                                                                     @endif
                                                                 </li>

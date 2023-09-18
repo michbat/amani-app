@@ -19,10 +19,10 @@
                         <th>Image</th>
                         <th>Nom</th>
                         <th>Catégorie</th>
-                        <th>Description</th>
+                        <th>Quantité en stock</th>
+                        <th>Seuil minimum en stock</th>
                         <th>Prix</th>
                         <th>Disponible</th>
-                        <th>Commandable</th>
                         <th class="text-center">Actions</th>
                     </tr>
                 </thead>
@@ -44,20 +44,14 @@
                                 <td style="font-weight: bolder">
                                     {{ $drink->category_id === null ? 'Pas de catégorie' : $drink->category->designation }}
                                 </td>
-                                <td>{{ str()->limit($drink->description, 10) }}</td>
+                                <td><span>{{ $drink->quantityInStock }}</span></td>
+                                <td><span>{{ $drink->quantityMinimum }}</span></td>
                                 <td style="font-weight: bolder">{{ $drink->price }} &euro;</td>
                                 <td>
                                     <span
                                         class="btn btn-sm text-dark {{ $drink->available == 1 ? 'btn-info' : 'btn-danger' }}"
                                         style="border-radius: 50px; min-width: 100px;">
                                         {{ $drink->available == 1 ? 'Disponible' : 'Non disponible' }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span
-                                        class="btn btn-sm text-dark {{ $drink->canBeCommended == 1 ? 'btn-info' : 'btn-danger' }}"
-                                        style="border-radius: 50px; min-width: 100px;">
-                                        {{ $drink->canBeCommended == 1 ? 'Commandable' : 'Pas commandable' }}
                                     </span>
                                 </td>
                                 <td>

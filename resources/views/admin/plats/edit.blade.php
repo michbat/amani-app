@@ -78,13 +78,24 @@
                     </div>
                 </div>
                 <div class="form-group row mb-4">
-                    <label class="form-label text-left col-12" for="available">Disponibilité</label>
-                    <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <label class="form-label text-left" for="available">Disponibilité</label>
                         <select class="form-control selectric" name="available" id="available">
                             <option {{ $plat->available == 1 ? 'selected' : '' }} value="1">Disponible</option>
                             <option {{ $plat->available == 0 ? 'selected' : '' }} value="0">Non Disponible</option>
                         </select>
                         @error('available')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label text-left" for="canBeCommended">Commandable</label>
+                        <select class="form-control selectric" name="canBeCommended" id="canBeCommended">
+                            <option {{ $plat->canBeCommended == 1 ? 'selected' : '' }} value="1">Commandable</option>
+                            <option {{ $plat->canBeCommended == 0 ? 'selected' : '' }} value="0">Non Commandable
+                            </option>
+                        </select>
+                        @error('canBeCommended')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
