@@ -67,7 +67,7 @@
                                             @endif
 
                                             {{-- Si c'est un plat que l'utilisateur a atteint 6 articles, on bloque le bouton d'ajout et on affiche un message --}}
-                                            @if (!auth()->user() && auth()->user()->firstame != 'Generic')
+                                            @if (auth()->user() === null || auth()->user()->firstname !== 'Generic')
                                                 @if ($element->associatedModel == 'App\Models\Plat' && $element->qty >= 6)
                                                     <p class="text-danger" style="font-size: 10px">Vous ne pouvez pas
                                                         commander au delà de 6 articles d'un même plat sur une commande!

@@ -73,12 +73,17 @@ class WishlistComponent extends Component
 
     public function render()
     {
-        // Si le client est authentifié, on sauvegarde son panier et sa wishlist
+        // Si l'utilisateur authentifié  n'est pas 'Generic', on sauvegarde son panier et sa wishlist
 
-        if (Auth::check()) {
-
+        if (Auth::check() && Auth::user()->firstname !== 'Generic') {
             Cart::instance('cart')->store(Auth::user()->id);
             Cart::instance('wishlist')->store(Auth::user()->id);
+        }
+
+        // Si l'utilisateur connecté est 'Generic', on sauvegarde uniquement son panier
+
+        if (Auth::check() && Auth::user()->firstname === 'Generic') {
+            Cart::instance('cart')->store(Auth::user()->id);
         }
 
         return view('frontend.livewire.wishlist-component');

@@ -101,6 +101,11 @@ class LoginController extends Controller
                     Cart::instance('wishlist')->restore(Auth::user()->id);
                 }
 
+                if (Auth::check() && Auth::user()->firstname === 'Generic') {
+                    Cart::instance('wishlist')->destroy();
+                    Cart::instance('cart')->restore(Auth::user()->id);
+                }
+
                 // Une fois connecté, on ramène l'utilisateur à la page qu'il visitait avant de s'authentifier
 
                 return redirect(Session::get('previous_url'))->with('success', 'Bonjour ' . $user->firstname . ', Vous êtes connecté!');

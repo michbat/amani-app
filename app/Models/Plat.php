@@ -20,48 +20,48 @@ class Plat extends Model
 
     protected $guarded = ['id'];
 
-    // Matérialisation de la relation un menu ne peut avoir qu'une et une seule catégorie
+    // Matérialisation de la relation un plat ne peut qu'appartenir qu' à une et une seule catégorie
 
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
-    // Matérialisation de la relation un menu n'appartient qu'à notre restaurant
+    // Matérialisation de la relation un plat n'appartient qu'à notre restaurant
 
     public function restaurant(): BelongsTo
     {
         return $this->belongsTo(Restaurant::class);
     }
 
-    // Matérialisation de la relation un menu peut avoir plusieurs tags
+    // Matérialisation de la relation un plat peut avoir plusieurs tags
 
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
     }
 
-    // Fonction qui vérifie si un tag est affecté à un menu
+    // Méthode qui vérifie si un tag est affecté à un plat
 
     public function hasTag($name): bool
     {
         return $this->tags()->where('name', $name)->exists();
     }
 
-    // Matérialisation de la relation un ingrédient peut entrer dans la composition de plusieurs menus
+    // Matérialisation de la relation un ingrédient peut entrer dans la composition de plusieurs plats
 
     public function ingredients(): BelongsToMany
     {
         return $this->belongsToMany(Ingredient::class)->withPivot('amount');
     }
 
-    // Un menu peut être concerné par plusieurs commandes
+    // Un plat peut être concerné par plusieurs commandes
 
     public function lineOrders(): HasMany
     {
         return $this->hasMany(LineOrders::class);
     }
 
-    // Un menu peut faire l'objet de plusieurs commentaires
+    // Un plat peut faire l'objet de plusieurs commentaires
 
     public function reviews(): HasMany
     {

@@ -87,12 +87,19 @@ class DetailsDrinkComponent extends Component
         $drink = $this->drink;
 
 
-        // Si l'utilisateur authentifié n'est pas 'Generic', on prend une "photographie" de son panier et de sa wishlist
+        // Si l'utilisateur authentifié  n'est pas 'Generic', on sauvegarde son panier et sa wishlist
 
         if (Auth::check() && Auth::user()->firstname !== 'Generic') {
             Cart::instance('cart')->store(Auth::user()->id);
             Cart::instance('wishlist')->store(Auth::user()->id);
         }
+
+        // Si l'utilisateur connecté est 'Generic', on sauvegarde uniquement son panier
+
+        if (Auth::check() && Auth::user()->firstname === 'Generic') {
+            Cart::instance('cart')->store(Auth::user()->id);
+        }
+
 
         return view('frontend.livewire.details-drink-component', compact('drink'));
     }
