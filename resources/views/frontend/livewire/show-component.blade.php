@@ -34,6 +34,7 @@
                                     width="500" height="350">
                                 <div class="card-body d-flex flex-column">
                                     <h3 class="card-title text-center mb-3">{{ $show->band->name }}</h3>
+
                                     <h6 class="text-center">
                                         <span
                                             class="text-center mb-3 lead text-success {{ $show->isScheduled === 0 ? 'text-decoration-line-through' : '' }}">
@@ -49,6 +50,26 @@
                                     <p class="card-text">
                                         {!! $show->description !!}
                                     </p>
+                                    <div class="mb-5 mt-4" style="font-weight: 400; color: green">
+                                        <div>
+                                            <span>Styles de musique: </span>
+                                            @foreach ($show->band->musics as $music)
+                                                <span>
+                                                    {{ $music->style }},
+                                                </span>
+                                            @endforeach
+                                        </div>
+
+                                        <div>
+                                            <span>Artistes:</span>
+                                            @foreach ($show->band->artists as $artist)
+                                                <span>
+                                                    {{ $artist->name }},
+                                                </span>
+                                            @endforeach
+                                        </div>
+
+                                    </div>
                                     <div class="my-4 d-flex justify-content-center mt-auto">
                                         <!-- Button trigger modal -->
                                         <button type="button" class="btn btn-outline-success" data-toggle="modal"

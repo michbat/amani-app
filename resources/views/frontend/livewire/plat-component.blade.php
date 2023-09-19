@@ -25,7 +25,6 @@
                 <div class="sort_select">
                     <select wire:model="orderBy">
                         <option value="default">Par défaut</option>
-                        <option value="rating">Mieux noté</option>
                         <option value="new">Nouveauté</option>
                         <option value="ascendant">Prix croissant</option>
                         <option value="descendant">Prix décroissant</option>
@@ -56,36 +55,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-2">
-                        {{-- <div class="filter_type">
-                            <h6>Avis</h6>
-                            <ul>
-                                <li>
-                                    <label class="container_check">Superb 9+ <small>06</small>
-                                        <input type="checkbox">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="container_check">Very Good 8+ <small>12</small>
-                                        <input type="checkbox">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="container_check">Good 7+ <small>17</small>
-                                        <input type="checkbox">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="container_check">Pleasant 6+ <small>43</small>
-                                        <input type="checkbox">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </li>
-                            </ul>
-                        </div> --}}
+                    <div class="col-md-4">
                     </div>
                     <div class="col-md-4">
                         <div class="filter_type">
@@ -272,6 +242,10 @@
                                 </div>
                             </div>
                         @endforeach
+                    @else
+                        <div class="d-flex justify-content-center align-items-center my-5">
+                            <p class="display-3 lead">Oups... Nous n'avons rien trouvé!</p>
+                        </div>
                     @endif
                 </div>
                 </p>

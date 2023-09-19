@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('types', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique();
-
-        });
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('failed_jobs');
+        Schema::dropIfExists('personal_access_tokens');
     }
 
     /**
@@ -23,6 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('types');
+        //
     }
 };

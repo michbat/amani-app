@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Music;
 use Illuminate\Database\Seeder;
 use Database\Seeders\AdminSeeder;
 use Database\Seeders\TableSeeder;
@@ -14,7 +15,9 @@ use Database\Seeders\ShowTableSeeder;
 use Database\Seeders\TypeTableSeeder;
 use Database\Seeders\UnitTableSeeder;
 use Database\Seeders\DrinkTableSeeder;
+use Database\Seeders\MusicTableSeeder;
 use Database\Seeders\StaffTableSeeder;
+use Database\Seeders\ArtistTableSeeder;
 use Database\Seeders\SliderTableSeeder;
 use Database\Seeders\GalleryTableSeeder;
 use Database\Seeders\CategoryTableSeeder;
@@ -45,6 +48,8 @@ class DatabaseSeeder extends Seeder
             TableSeeder::class,
             BandTableSeeder::class,
             ShowTableSeeder::class,
+            ArtistTableSeeder::class,
+            MusicTableSeeder::class,
         ]);
     }
 }

@@ -15,11 +15,11 @@ class PlatComponent extends Component
     use WithPagination;
 
 
-    // Lorsqu'il n'y qu'une seule page de plats, on cache la pagination
+    // Lorsqu'il n'y qu'une seule page de plats, on masque la pagination
 
     public $hideOnSinglePage = true;
 
-    // On utilise la pagination de bootstrap
+    // On utilise la pagination de Bootstrap
 
     protected $paginationTheme = 'bootstrap';
 
@@ -28,7 +28,8 @@ class PlatComponent extends Component
 
     public $pageItems = 12;
 
-    // Propriété pour ordonner les plats par prix croissant ou décroissant, nouveauté, rating
+    // Propriété pour ordonner les plats par prix croissant ou décroissant, nouveauté.
+
     public $orderBy = "default";
 
     // Propriété de type tableau pour filtrer les plats par intervalles de prix
@@ -39,36 +40,14 @@ class PlatComponent extends Component
 
     public $cats = [];
 
-    // Propriété pour activer ou désactiver le bouton "ajouter" en fonction de la plage d'horaire autorisée
-
-    public $canBeCommended;
-
-    /**
-     *
-     * La méthode updated() est appelée lorsqu'une propriété de notre composant change
-     * à travers des actions de l'utilisateur sur la vue associée à platComponent.
-     * Ici on "reset" l'ancienne pagination générée par un ancien affichage après un filtrage par exemple
-     *
-     */
 
 
-    // Lorsqu'une propriété de notre composant change, la méthode updated() est appelée et on reinitialise notre pagination
-    // Notamment pour tenir systématiquement compte des résultats de nos tris ou filtres.
+    // Lorsqu'une propriété du composant change, la méthode updated() est appelée et je reinitialise notre pagination
+    // pour notamment tenir compte de résultats de nos filtres.
 
     public function updated()
     {
         $this->resetPage();
-    }
-
-    // Lorsque la propriété $orderBy change, on crée une session pour sauvegarder le dernier critère de tri choisi à l'intérieur de la balise select de la vue
-    // Ainsi lorsqu'on change de page en ayant déjà fait un filtrage et qu'on revient ensuite à la page affichant des plats,
-    // On retrouve les résultats correspondant au critère de filtrage.
-
-    // la méthode updatedOrderBy() surveille les changements de la propriétés $orderBy
-
-    public function updatedOrderBy()
-    {
-        session()->put('sorting', $this->orderBy);  // Lorsque $orderBy, on sauvergarde son état dans une variable de session dont la clé est 'sorting'
     }
 
     // Méthode pour ajouter un plat dans le panier
@@ -76,11 +55,12 @@ class PlatComponent extends Component
     public function storePlat($plat_id, $plat_name, $plat_price)
     {
         /**
-         * Un visiteur qui simule un panier ou un utilisateur qui n'est pas 'Generic' sont limités à 10 boisssons par commande. Il faut pouvroir les emmpêcher
-         * d'ajouter un article-boisson si celui-ci a déjà atteint le nombre de 10 et ce ceux au niveau de la vue associé à 'DrinkComponent'
+         * Un visiteur qui simule un panier ou un utilisateur authentifié qui n'est pas 'Generic' ne peut ajouter plus de 6 articles d'un plat par commande selon notre règle de gestion. Il faut pouvoir l'en emmpêcher.
          */
 
         if (!Auth::user() || Auth::user()->firstname !== 'Generic') {
+
+            // Lorsqu'un visiteur ou un user ordinaire veut ajouter un plat dans un panier, je parcours d'abord le contenu du panier pour voir si ce plat n'a pas atteint la limite de la quantité d'articles autorisés à la commande
 
             foreach (Cart::instance('cart')->content() as $content) {
                 if ($content->associatedModel == 'App\Models\Plat' && $content->id == $plat_id && $content->qty >= 6) {
@@ -88,11 +68,13 @@ class PlatComponent extends Component
                 }
             }
 
+            // Si la limite n'a pas été atteinte, on ajoute le produit dans le panier
+
             Cart::instance('cart')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
             return redirect()->route('plat')->with('success', 'Plat ajouté dans votre panier');
         }
 
-        // L'utilisateur 'Generic' n'est soumis à aucune restriction en termes de quantité
+        // L'utilisateur 'Generic' n'est soumis pas à une quelconque restriction des quantités à commander
 
         if (Auth::user()->firstname == 'Generic') {
             Cart::instance('cart')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
@@ -100,13 +82,11 @@ class PlatComponent extends Component
         }
     }
 
-    // Méthode pour ajouter un plat dans une wishlist
+    // Méthode pour ajouter un plat dans la wishlist
 
     public function addPlatToWishList($plat_id, $plat_name, $plat_price)
     {
         Cart::instance('wishlist')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
-        // $this->emitTo('wishlist-icon-component', 'refreshComponent');
-        // session()->flash('success_message', 'Plat ajouté à votre liste de souhaits');
         return redirect()->route('plat')->with('success', 'Plat ajouté à votre liste de souhaits');
     }
 
@@ -117,9 +97,6 @@ class PlatComponent extends Component
         foreach (Cart::instance('wishlist')->content() as $content) {
             if ($content->id == $plat_id) {
                 Cart::instance('wishlist')->remove($content->rowId);
-                // $this->emitTo('wishlist-icon-component', 'refreshComponent');
-                // session()->flash('success_message', 'Plat enlevé de votre liste de souhaits');
-                // return back();
                 return redirect()->route('plat')->with('success', 'Plat enlevé à votre liste de souhaits');
             }
         }
@@ -132,63 +109,59 @@ class PlatComponent extends Component
 
         $query = Plat::query();
 
-
-        $query->leftJoin('reviews', 'plats.id', '=', 'reviews.plat_id')
-            ->selectRaw('plats.*, floor(AVG(CASE WHEN reviews.published = 1 THEN reviews.rating ELSE NULL END)) as avg_rating')
-            ->groupBy('plats.id', 'plats.name', 'plats.price', 'plats.slug', 'plats.category_id', 'plats.restaurant_id', 'plats.description', 'plats.image', 'plats.price', 'plats.available', 'plats.canBeCommended', 'plats.created_at', 'plats.updated_at');
-
-
         // Un fitrage par intervalle de prix
 
+        // Je vérifie d'abord si $priceIntervals n'est pas vide auquel cas, l'utilisateur n'a pas utilisé le filtre par prix. la propriété $priceIntervals est bindée dans la vue associée à notre composant
+
         if (!empty($this->priceIntervals)) {
+            // Je crée un tableau qui accueille les intervalles de prix affichées dans la vue
             $priceIntervalRanges = [
-                '0-5' => [0, 5],
+                '0-5' => [0, 5],   // 'O-5' est associée à la borne [0-5]
                 '5-10' => [5, 10],
                 '10-15' => [10, 15],
                 '15-20' => [15, 20],
                 '20-25' => [20, 25],
             ];
 
+            // La fonction PHP array_map() recevant en paramètre une fonction callback, un tableau et retournant un tableau, mappe ici des intervalles de prix sélectionnées par le client donc stockées dans la propriété tableau $priceIntervals.
+
             $selectedPriceRanges = array_map(function ($interval) use ($priceIntervalRanges) {
-                return $priceIntervalRanges[$interval];
+                return $priceIntervalRanges[$interval]; // Retourne les bornes dont les clés ($interval) sont des valeurs se trouvant dans la propriété tableau $priceIntervals
             }, $this->priceIntervals);
 
+            // Méthode orWhere est un constructeur de requêtes conditionnelles (les orWhereBetween dans la boucle foreach). On utilise une fonction callback pour regrouper ces requêtes conditionnelles.
+
             $query->orWhere(function ($query) use ($selectedPriceRanges) {
+                // Je parcours les intervalles de prix sélectionnés se trouvant dans le tableau  $selectedPriceRanges
                 foreach ($selectedPriceRanges as $range) {
-                    $query->orWhereBetween('price', $range);
+                    $query->orWhereBetween('price', $range);  // Je vérifie si le prix est compris entre les bornes inférieures et supérieures de chaque intervalle cochée.
                 }
             });
         }
 
 
         // Un filtrage par categories
+        // Je vérifie d'abord si la propriété tableau $cats n'est pas vide
 
         if (!empty($this->cats)) {
+
+            // Si oui, je récupère des catégories dont les ids correspondent aux ids de catégories dans le tableau $cats (donc cochées dans la vue)
 
             $query->whereIn('category_id', Category::whereIn('designation', $this->cats)->pluck('id'));
         }
 
-
-        // On récupère notre variable de session dont la clé est 'sorting' et on l'affecte à la propriété $orderBy pour garder les résultats de
-        // notre dernier critère de tri
-
-
-        $this->orderBy = session()->get('sorting');
-
-        // Ordonner nos plats par prix ascendant et descendant, nouveauté (ordre d'enregistrement dans la BDD), rating (mieux noté au mal noté)
+        // Ordonner nos plats par prix ascendant et descendant, nouveauté (date d'enregistrement dans la BDD)
 
         switch ($this->orderBy) {
             case 'ascendant':
-                $query->orderBy('price', 'ASC');
+                $query->orderBy('price', 'ASC');  // Moins chère au plus chère
                 break;
             case 'descendant':
-                $query->orderBy('price', 'DESC');
+                $query->orderBy('price', 'DESC');  // Plus chère au moins chère
                 break;
             case 'new':
-                $query->orderBy('created_at', 'DESC');
+                $query->orderBy('created_at', 'DESC');  // De la date la plus recente à la date la plus ancienne
                 break;
-            case 'rating':
-                $query->orderBy('avg_rating', 'DESC');
             default:
                 //
         }
@@ -197,10 +170,11 @@ class PlatComponent extends Component
 
         $plats = $query->paginate($this->pageItems);
 
-        $categories = Category::orderBy('designation', 'ASC')->get();
+        // Récupération de toutes les catégories de plats rangées par ordre alphabétique
+
         $categories = Category::where('designation', 'Entrées')->orWhere('designation', 'Plats principaux')->orWhere('designation', 'Desserts')->orderBy('designation', 'ASC')->get();
 
-        // Si l'utilisateur authentifié  n'est pas 'Generic', on sauvegarde son panier et sa wishlist
+        // Si l'utilisateur authentifié  et n'est pas 'Generic', on sauvegarde son panier et sa wishlist
 
         if (Auth::check() && Auth::user()->firstname !== 'Generic') {
             Cart::instance('cart')->store(Auth::user()->id);
@@ -214,6 +188,7 @@ class PlatComponent extends Component
         }
 
 
+        // On retourne la vue avec la collection d'objets "Plat" et "Category"
 
         return view('frontend.livewire.plat-component', compact('plats', 'categories'));
     }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('galleries', function (Blueprint $table) {
             $table->id();
             $table->foreignId('restaurant_id')->constrained('restaurants')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('title');
+            $table->string('title')->unique();
             $table->string('image');
             $table->string('videoId')->nullable();
             $table->enum('galleryType', ['photo', 'video']);

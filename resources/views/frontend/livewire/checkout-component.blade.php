@@ -161,7 +161,6 @@
                             </div>
                             <div>
                                 <input type="checkbox"  wire:model="acceptance">
-                                {{-- @dd($acceptance) --}}
                                 <a href="{{ route('reglement') }}" alt="Lire les termes et conditions">
                                     <span class="text-dark">J'accepte les termes et conditions de vente</span>
                                 </a>

@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('ingredients', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('type_id')->nullable()->constrained('types')->nullOnDelete()->cascadeOnUpdate();
-            $table->foreignId('unit_id')->nullable()->constrained('units')->nullOnDelete()->cascadeOnUpdate();
-            $table->string('name');
+            $table->foreignId('type_id')->constrained('types')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('unit_id')->constrained('units')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->string('name')->unique();
             $table->double('quantityInStock');
             $table->double('quantityMinimum');
             $table->enum('stockStatus', ['available', 'notavailable']);

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('ingredient_plat', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ingredient_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('plat_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('ingredient_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('plat_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->float('amount');
         });
     }

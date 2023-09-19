@@ -20,11 +20,17 @@ class PlatController extends Controller
      */
     public function index()
     {
-        // On récupère les enregistrements de la table "plats" triés par ordre alphabétique sous forme d'un tableau d'objets de type "Plat" et les affiche sous forme de pages où chaque page contient 10 plats.
+        // Je récupère les enregistrements de la table "plats" triés par ordre alphabétique sous forme d'un tableau d'objets de type "Plat" et les affiche sur des pages où chaque page contient 10 plats. La relati
+
+        /**
+         * Je récupère les enregistrements de la table "plats" triés par ordre alphabétique sous forme d'un tableau d'objets de type
+         * "Plat" et les affiche sur des pages où chaque page contient 10 plats.
+         */
 
         $plats = Plat::with('ingredients')->orderBy('name')->paginate(10);
 
-        // On retourne la vue "index" dans laquelle on injecte le tableau d'objets de type "Plat"
+        // Je retourne la vue "index" dans laquelle j'injecte le tableau d'objets de type "Plat"
+
         return view('admin.plats.index', compact('plats'));
     }
 
@@ -33,12 +39,12 @@ class PlatController extends Controller
      */
     public function create()
     {
-        // On récupère des enregistrements des  tables "categories" et "ingredients" triés par ordre alphabétique sous forme de tableaux d'objets de types respectifs.
+        // Je récupère les enregistrements des tables "categories" et "ingredients" triés par ordre alphabétique sous forme de tableaux d'objets.
 
         $categories = Category::orderBy('designation')->get();
         $ingredients = Ingredient::orderBy('name')->get();
 
-        // On retourne la vue "create" tout en injectant nos tableaux d'objets dans cette vue.
+        // Je retourne la vue "create" tout en injectant ces collections d'objets dans cette vue.
 
         return view('admin.plats.create', compact('categories', 'ingredients'));
     }
@@ -48,39 +54,39 @@ class PlatController extends Controller
      */
     public function store(PlatCreateRequest $request)
     {
-        // On vérifie si les données saisies dans la formulaire de création d'un plat respectent nos règles de validation définies dans la classe request PlatCreateRequest
+        // Je vérifie si les données saisies dans la formulaire de création d'un plat respectent des règles de validation que j'ai définies dans la classe request PlatCreateRequest
 
         $request->validated();
 
-        // On récupère l'image et on définit le repertoire dans lequel on va stocker l'image
+        // Je récupère l'image et je définis le chemin du dossier dans lequel je vais stocker l'image
 
         $image = $request->file('image');
         $path = '/uploads/plat/';
 
-        $plat = new Plat(); // On crée un nouvel objet $plat de la classe modèle 'Plat'.
+        $plat = new Plat(); // Je crée un nouvel objet $plat de la classe modèle 'Plat'.
 
-        // On affecte aux propriétés de l'objet $plat des valeurs saisies dans le formulaire
+        // J'affecte aux propriétés de l'objet $plat des valeurs saisies dans le formulaire
 
         $plat->name = $request->name;
-        $plat->slug = Str::slug($request->name, '-');  // La méthode statique slug () de la classe Str permet créer un slug
+        $plat->slug = Str::slug($request->name, '-');  // La méthode statique slug() de la classe Str permet créer un slug
         $plat->description = $request->description;
-        $plat->image = uploadImage($image, $path); // On fait appel à notre fonction helper pour traîter l'image
+        $plat->image = uploadImage($image, $path); // Je fais appel à ma fonction helper pour traîter l'image
         $plat->price = $request->price;
         $plat->available = $request->available;
         $plat->category_id = $request->category_id;
         $plat->restaurant_id = Restaurant::where('name', 'Amani')->first()->id;
 
-        // On récupère une collection d'ingrédients qu'on a choisis d'associer à notre plat dans le formulaire puis on parcourt chaque élément de la collection pour récupérer la quantité (amount) de chaque ingrédient choisi qui, alors, est retournée dans un tableau associatif (clé => valeur).
+        // Je récupère une collection d'ingrédients que j'ai choisis d'associer à mon plat puis je parcours chaque élément de la collection pour récupérer la quantité (amount) de chaque ingrédient choisi qui, alors, est retournée dans un tableau associatif (clé => valeur).
 
         $ingredients = collect($request->input('ingredients', []))->map(function ($amount) {
             return ['amount' => $amount];
         });
 
-        $plat->save();  // On sauve notre objet $plat c'est à dire on enregistre les données saisies dans le formulaire dans la BDD
+        $plat->save();  // Je sauve mon objet $plat, c'est à dire, j'enregistre les données saisies dans le formulaire dans la BDD
 
-        $plat->ingredients()->sync($ingredients);  // On associe l'ensemble de tableaux associatifs contenant des quantités des ingrédients composant le plat crée en faisant appel à la méthode sync()
+        $plat->ingredients()->sync($ingredients);  // J'associe l'ensemble de tableaux associatifs contenant des quantités des ingrédients composant le plat crée en faisant appel à la méthode sync()
 
-        // On retourne la vue "index" contenant la liste de nos plats (sous forme d'un tableau)
+        // Je retourne la vue "index" contenant la liste de nos plats.
 
         return redirect()->route('admin.plats.index')->with('toast_success', 'Le plat a été ajouté avec succès');
     }
@@ -90,10 +96,10 @@ class PlatController extends Controller
      */
     public function show(Plat $plat)
     {
-        // On récupère une collection d'objets (les enregistrements de la table "tags" triés par ordre alphabétique) de la classe modèle "Tag" classé par leur noms
+        // Je récupère une collection d'objets (les enregistrements de la table "tags" triés par ordre alphabétique) de la classe modèle "Tag" classé par leur noms
         $tags = Tag::orderBy('name')->get();
 
-        // On retourne la vue "show "tout en injectant le tableau d'objets et l'objet $plat concerné par ces tags.
+        // Je retourne la vue "show "tout en injectant le tableau d'objets et l'objet $plat concerné par ces tags.
 
         return view('admin.plats.show', compact('plat', 'tags'));
     }
@@ -103,25 +109,25 @@ class PlatController extends Controller
      */
     public function edit(Plat $plat)
     {
-        // On récupère l'ensemble de nos catégories (les enregistrements de la table "categories" triés par ordre alphabetique) sous forme d'un tableau d'objets de type "Category"
+        // Je récupère l'ensemble de mes catégories (les enregistrements de la table "categories" triés par ordre alphabetique) sous forme d'un tableau d'objets de type "Category"
 
         $categories = Category::orderBy('designation')->get();
 
-        // On récupère les enregistrements dans la table "tags" triés par ordre alphabétique  (sous forme d'un tableau d'objets de type "Tag")
+        // Je récupère les enregistrements dans la table "tags" triés par ordre alphabétique  (sous forme d'un tableau d'objets de type "Tag")
 
         $tags = Tag::orderBy('name')->get();
 
-        $plat->load('ingredients');  // la méthode load() pré-charge des ingrédients associés au plat qu'on cherche à mettre à jour
+        $plat->load('ingredients');  // la méthode load() pré-charge des ingrédients associés au plat que je cherche à mettre à jour
 
 
-        // On récupère d'abord les enregistrements de la table "ingredients" triés par ordre alphabétique puis on utilise la méthode map() pour parcourir chaque ingrédient de la collection récupérée. firstWhere vérifie si l'ingredient parcouru fait parti des ingrédients composant le plat que l'on veut à éditer. Si c'est le cas, on recupère la quantité de cette ingrédient qui se trouve dans la table pivot "ingredient_plat" puis l'objet $ngredient" dans la collection $ingredients. Si ce n'est pas le cas, c'est null qui est retourné.
+        // Je récupère d'abord les enregistrements de la table "ingredients" triés par ordre alphabétique puis j'utilise la méthode map() pour parcourir chaque ingrédient de la collection récupérée. firstWhere vérifie si l'ingredient parcouru fait parti des ingrédients du plat que je cherche à éditer. Si c'est le cas, je recupère la quantité de cet ingrédient qui se trouve dans la table pivot "ingredient_plat" puis je retourne l'objet $ngredient" qui s'ajoute alors au tableau d'ingredients composant le plat en cours d'édition. Si ce n'est pas le cas, c'est null qui est retourné.
 
         $ingredients = Ingredient::orderBy('name')->get()->map(function ($ingredient) use ($plat) {
             $ingredient->value = data_get($plat->ingredients->firstWhere('id', $ingredient->id), 'pivot.amount') ?? null;
             return $ingredient;
         });
 
-        // On retourne la vue "edit" dans laquelle on injecte objets pour lequels on veut afficher la valeur des propriétés dans cette vue (par interpolation {{  }})
+        // Je retourne la vue "edit" dans laquelle on injecte des objets dont je veux afficher les propriétés dans la vue via l'interpolation
 
         return view('admin.plats.edit', compact('plat', 'categories', 'tags', 'ingredients'));
     }
@@ -131,24 +137,24 @@ class PlatController extends Controller
      */
     public function update(PlatEditRequest $request, Plat $plat)
     {
-        // On vérifie si les données de mise à jour saisies dans le formulaire respectent nos règles de validation définies dans la classe PlatEditRequest
+        // Je vérifie si les données de mise à jour saisies dans le formulaire respectent nos règles de validation définies dans la classe PlatEditRequest
 
         $request->validated();
 
-        // On checke si une image a été chargée
+        // Je vérifie si une image a été chargée
 
         $charged = $request->hasFile('image');
 
         // Si c'est le cas
 
         if ($charged) {
-            $image = $request->file('image'); // On récupère l'image dans une variable $image
-            $path = '/uploads/plat/';  // On défini le dossier dans lequel on va la stocker
-            $old_path = public_path($plat->image); // On récupère le chemin absolu du dossier où l'image  actuelle est stockée
+            $image = $request->file('image'); // Je récupère l'image dans une variable $image
+            $path = '/uploads/plat/';  // Je définis le dossier dans lequel on va la stocker
+            $old_path = public_path($plat->image); // Je récupère le chemin absolu vers le dossier dans lequel l'image actuelle est stockée
 
         }
 
-        // On met à jour les informations
+        // J'update les informations
 
         $plat->name = $request->name;
         $plat->slug = Str::slug($request->name, '-');
@@ -162,9 +168,11 @@ class PlatController extends Controller
             return ['amount' => $amount];
         });
 
-        $plat->update(); // On rend effectif cette mise à jour dans la BDD
+        $plat->update(); // Je rends effective cette mise à jour dans la BDD
 
-        $plat->ingredients()->sync($ingredients); // On ajoute les ingrédients du plat  mis à jour
+        $plat->ingredients()->sync($ingredients); // J'associe des ingrédients au plat mis à jour
+
+        // Je retourne à l'index
 
         return redirect()->route('admin.plats.index')->with('toast_success', 'Le plat a été mis à jour avec succès');
     }
@@ -174,11 +182,16 @@ class PlatController extends Controller
      */
     public function destroy(Plat $plat)
     {
+        // Je vérifie si le fichier image du plat existe dans notre dossier
+
         if (file_exists(public_path($plat->image))) {
+            // Si oui, j'efface ce fichier du répertoire
             unlink(public_path($plat->image));
         }
 
-        $plat->delete();
+        $plat->delete();  // Je supprime l'objet de type "Plat" concerné donc j'efface dans la BDD la ligne d'enregistrement concerné
+
+        // Je retourne à l'index
 
         return redirect()->route('admin.plats.index')->with('toast_success', 'Le plat a été supprimé avec succès');
     }
@@ -187,7 +200,11 @@ class PlatController extends Controller
 
     public function assignTags(Request $request, Plat $plat)
     {
+        // J'assigne au plat un tableau de tags choisis en utilisant la méthode sync()
+
         $plat->tags()->sync($request->tags);
+
+        // Je reste sur la vue d'affectation de tags avec un message flash (toast) de succès.
 
         return back()->with('toast_success', 'Le(s) tag(s) a (ont) été ajouté(s) au plat');
     }
@@ -198,12 +215,14 @@ class PlatController extends Controller
     {
         // La méthode hasTag() a été définie dans la classe modèle "Tag"
 
+        // Je vérifie si, effectivement, le plat a le tag que je veux enlèver
+
         if ($plat->hasTag($tag->name)) {
-            $plat->tags()->detach($tag);  // On enlève le tag en utilisant la méthode detach()
-            return back()->with('toast_success', 'Le tag a été supprimé avec success');  // On affiche un message confirmant cette suppression
+            $plat->tags()->detach($tag);  // J'enlève le tag en utilisant la méthode detach()
+            return back()->with('toast_success', 'Le tag a été supprimé avec success');  // J'affiche un message confirmant le détachement
         }
 
-        // Si jamais le tag n'est pas associé au plat, on affiche un message ad hoc
+        // Si jamais le tag n'est pas associé au plat, on affiche un message flash informatif. 
 
         return redirect()->back()->with('toast_info', 'Ce tag n\'est pas assigné à ce plat');
     }
