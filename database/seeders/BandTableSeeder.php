@@ -41,7 +41,7 @@ class BandTableSeeder extends Seeder
             ],
             [
                 'name' => 'Alabama Mood',
-                'member' => 8,
+                'member' => 6,
             ],
             [
                 'name' => 'Majestic',

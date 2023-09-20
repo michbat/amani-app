@@ -36,9 +36,26 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\User\UserAuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\IngredientController;
-use App\Http\Controllers\Admin\RepresentationController;
 use App\Http\Controllers\Admin\RestaurantController;
 use App\Http\Controllers\Auth\RegistrationController;
+use App\Http\Controllers\Personnel\PersonnelController;
+use App\Http\Controllers\Admin\RepresentationController;
+use App\Http\Controllers\Personnel\TagPersonnelController;
+use App\Http\Controllers\Personnel\BandPersonnelController;
+use App\Http\Controllers\Personnel\PlatPersonnelController;
+use App\Http\Controllers\Personnel\ShowPersonnelController;
+use App\Http\Controllers\Personnel\TypePersonnelController;
+use App\Http\Controllers\Personnel\UnitPersonnelController;
+use App\Http\Controllers\Personnel\DrinkPersonnelController;
+use App\Http\Controllers\Personnel\OrderPersonnelController;
+use App\Http\Controllers\Personnel\StaffPersonnelController;
+use App\Http\Controllers\Personnel\TablePersonnelController;
+use App\Http\Controllers\Personnel\SliderPersonnelController;
+use App\Http\Controllers\Personnel\GalleryPersonnelController;
+use App\Http\Controllers\Personnel\CategoryPersonnelController;
+use App\Http\Controllers\Personnel\IngredientPersonnelController;
+use App\Http\Controllers\Personnel\RestaurantPersonnelController;
+use App\Http\Controllers\Personnel\RepresentationPersonnelController;
 
 /*
 |--------------------------------------------------------------------------
@@ -167,8 +184,58 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
 // Employee routes
 
 Route::middleware(['auth', 'role:personnel'])->name('personnel.')->prefix('/personnel')->group(function () {
-    // Route::get('/', [BackEndController::class, 'index'])->name('index');
+    Route::get('/', [PersonnelController::class, 'index'])->name('index');
+    Route::resource('/categories', CategoryPersonnelController::class);
+    Route::resource('/plats', PlatPersonnelController::class);
+    Route::resource('/drinks', DrinkPersonnelController::class);
+    Route::resource('/tags', TagPersonnelController::class);
+    Route::resource('/types', TypePersonnelController::class);
+    Route::resource('/ingredients', IngredientPersonnelController::class);
+    Route::resource('/units', UnitPersonnelController::class);
+    Route::resource('/galleries', GalleryPersonnelController::class);
+    Route::resource('/sliders', SliderPersonnelController::class);
+    Route::resource('/staffs', StaffPersonnelController::class);
+    Route::resource('/shows', ShowPersonnelController::class);
+    Route::resource('/bands', BandPersonnelController::class);
+    Route::resource('/representations', RepresentationPersonnelController::class);
+
+
+
+    // Ouvrir ou fermer le restaurant
+
+    Route::get('/open-close', [PersonnelController::class, 'openCloseRestaurant'])->name('openClose');
+
+    // Routes pour gérer les commandes
+
+    Route::get('/orders', [OrderPersonnelController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}/edit', [OrderPersonnelController::class, 'edit'])->name('orders.edit');
+    Route::put('/orders/{order}/update', [OrderPersonnelController::class, 'update'])->name('orders.update');
+    Route::delete('/orders/{order}/destroy', [OrderPersonnelController::class, 'destroy'])->name('orders.destroy');
+
+    // Routes pour gérer les informations sur le restaurant
+
+    Route::get('/restaurants', [RestaurantPersonnelController::class, 'index'])->name('restaurants.index');
+    Route::get('/restaurants/{restaurant}/edit', [RestaurantPersonnelController::class, 'edit'])->name('restaurants.edit');
+    Route::put('/restaurants/{restaurant}/update', [RestaurantPersonnelController::class, 'update'])->name('restaurants.update');
+
+
+    // Routes pour assigner des tags et enlèver un tag à un plat
+
+    Route::post('/plats/{plat}/tags', [PlatPersonnelController::class, 'assignTags'])->name('plats.tags');
+    Route::delete('/plats/{plat}/tags/{tag}', [PlatPersonnelController::class, 'removeTag'])->name('plats.tags.remove');
+
+    // Routes pour gérer des tables et leur occupation dans la salle
+
+    Route::get('/tables', [TablePersonnelController::class, 'index'])->name('tables.index');
+    Route::get('/tables/create', [TablePersonnelController::class, 'create'])->name('tables.create');
+    Route::post('/tables/store', [TablePersonnelController::class, 'store'])->name('tables.store');
+    Route::get('/tables/{table}/edit', [TablePersonnelController::class, 'edit'])->name('tables.edit');
+    Route::put('/tables/{table}/update', [TablePersonnelController::class, 'update'])->name('tables.update');
+    Route::delete('/tables/{table}/destroy', [TablePersonnelController::class, 'destroy'])->name('tables.destroy');
+    Route::get('/tables/{table}/setisfree', [TablePersonnelController::class, 'setIsFree'])->name('tables.setisfree');
 });
+
+
 
 // Authenticated User routes
 
