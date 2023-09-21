@@ -85,10 +85,10 @@
                             </div>
                         </div>
                         <div class="card-footer h-100 d-flex flex-column justify-content-center align-items-center">
-                            <form action="{{ route('user.delete.account', ['user' => auth()->user()]) }}" method="POST">
+                            <form action="{{ route('user.delete.account', ['user' => auth()->user()]) }}" method="POST" id="formulaire">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="mt-auto btn btn-outline-success btn-lg">Cliquez ici <i
+                                <button type="submit" class="mt-auto btn btn-outline-success btn-lg confirm">Cliquez ici<i
                                         class="fa fa-arrow-alt-circle-right mx-2"></i></button>
                             </form>
                         </div>
@@ -97,4 +97,39 @@
             </div>
         </div>
     </section>
+@endsection
+
+@section('scripts')
+    <script>
+        // On récupère la classe '.confirm' du bouton delete
+
+        $('.confirm').click(function(event) {
+            // Choisir le formulaire qui contient bouton
+            let form = $(this).closest("form");
+
+            // Empêcher le comportement par défaut du formulaire
+
+            event.preventDefault();
+
+            //Configuration de la boîte Alert
+
+            Swal.fire({
+                title: 'Suppression d\'un compte',
+                text: "Voulez-vous vraiment supprimer votre compte ?",
+                cancelButtonText: "Non",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui'
+            }).then((result) => {
+
+                //Si confirmé au niveau de la boîte alert en appuyant sur Oui
+
+                if (result.isConfirmed) {
+                    form.submit(); // On soumet le formulaire
+                }
+            })
+        });
+    </script>
 @endsection

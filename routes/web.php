@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\TableController;
 use App\Http\Livewire\CheckoutSuccessComponent;
+use App\Http\Controllers\Admin\ArtistController;
 use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\GalleryController;
@@ -52,6 +53,7 @@ use App\Http\Controllers\Personnel\MusicPersonnelController;
 use App\Http\Controllers\Personnel\OrderPersonnelController;
 use App\Http\Controllers\Personnel\StaffPersonnelController;
 use App\Http\Controllers\Personnel\TablePersonnelController;
+use App\Http\Controllers\Personnel\ArtistPersonnelController;
 use App\Http\Controllers\Personnel\SliderPersonnelController;
 use App\Http\Controllers\Personnel\GalleryPersonnelController;
 use App\Http\Controllers\Personnel\CategoryPersonnelController;
@@ -140,6 +142,7 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
     Route::resource('/bands', BandController::class);
     Route::resource('/representations', RepresentationController::class);
     Route::resource('/musics', MusicController::class);
+    Route::resource('/artists', ArtistController::class);
 
 
 
@@ -208,6 +211,7 @@ Route::middleware(['auth', 'role:personnel'])->name('personnel.')->prefix('/pers
     Route::resource('/bands', BandPersonnelController::class);
     Route::resource('/representations', RepresentationPersonnelController::class);
     Route::resource('/musics', MusicPersonnelController::class);
+    Route::resource('/artists', ArtistPersonnelController::class);
 
     // Ouvrir ou fermer le restaurant
 

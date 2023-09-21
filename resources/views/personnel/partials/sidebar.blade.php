@@ -90,6 +90,16 @@
                             class="nav-link" href="{{ route('personnel.ingredients.index') }}">Ingredients</a></li>
                 </ul>
             </li>
+            <li class="dropdown {{ request()->routeIs('personnel.artists.*') ? 'active' : '' }}">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                        class="fas fa-microphone-alt"></i>
+                    <span>Artistes</span></a>
+                <ul class="dropdown-menu">
+                    <li class="{{ request()->routeIs('personnel.artists.index') ? 'active' : '' }}"><a class="nav-link"
+                            href="{{ route('personnel.artists.index') }}">Artistes</a>
+                    </li>
+                </ul>
+            </li>
 
             {{-- Section Spectacles --}}
 
@@ -104,7 +114,8 @@
                 </ul>
             </li>
             <li class="dropdown {{ request()->routeIs('personnel.bands.*') ? 'active' : '' }}">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-drum mx-2"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                        class="fas fa-drum mx-2"></i>
                     <span>Groupes</span></a>
                 <ul class="dropdown-menu">
                     <li class="{{ request()->routeIs('personnel.bands.index') ? 'active' : '' }}"><a class="nav-link"

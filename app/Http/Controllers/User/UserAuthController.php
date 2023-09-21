@@ -155,8 +155,14 @@ class UserAuthController extends Controller
             return redirect()->back()->with('warning', 'Vous êtes un membre du personnel, vous ne pouvez pas supprimer vous-même votre compte. Veuillez contacter l\'administrateur du site.');
         }
 
+        // Seul l'administrateur peut supprimer le user "Generic"
 
-        // Si le rôle de l'utilisateur n'est ni 'admin', ni 'personnel', c'est alors un 'user'. Lui il a le droit de supprimer son compte directement
+        if ($user->firstname === 'Generic') {
+            return redirect()->back()->with('warning', 'Vous ne pouvez pas supprimer ce compte. Veuillez contacter l\'administrateur du site.');
+        }
+
+
+        // Si le rôle de l'utilisateur n'est ni 'admin', ni 'personnel' et n'a pour nom "Genenric" c'est alors un 'user' ordinaire. Lui il a le droit de supprimer son compte directement
 
         $user->delete();
         Auth::logout();

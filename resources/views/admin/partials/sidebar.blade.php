@@ -135,8 +135,7 @@
                 </ul>
             </li>
             <li class="dropdown {{ request()->routeIs('admin.bands.*') ? 'active' : '' }}">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                        class="fas fa-drum"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-drum"></i>
                     <span>Groupes</span></a>
                 <ul class="dropdown-menu">
                     <li class="{{ request()->routeIs('admin.bands.index') ? 'active' : '' }}"><a class="nav-link"
@@ -159,6 +158,16 @@
                 <ul class="dropdown-menu">
                     <li class="{{ request()->routeIs('admin.musics.index') ? 'active' : '' }}"><a class="nav-link"
                             href="{{ route('admin.musics.index') }}">Musiques</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown {{ request()->routeIs('admin.artists.*') ? 'active' : '' }}">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                        class="fas fa-microphone-alt"></i>
+                    <span>Artistes</span></a>
+                <ul class="dropdown-menu">
+                    <li class="{{ request()->routeIs('admin.artists.index') ? 'active' : '' }}"><a class="nav-link"
+                            href="{{ route('admin.artists.index') }}">Artistes</a>
                     </li>
                 </ul>
             </li>
