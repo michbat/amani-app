@@ -181,7 +181,7 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
     Route::get('/tables/{table}/setisfree', [TableController::class, 'setIsFree'])->name('tables.setisfree');
 });
 
-// Employee routes
+// Personnel routes
 
 Route::middleware(['auth', 'role:personnel'])->name('personnel.')->prefix('/personnel')->group(function () {
     Route::get('/', [PersonnelController::class, 'index'])->name('index');
@@ -198,8 +198,6 @@ Route::middleware(['auth', 'role:personnel'])->name('personnel.')->prefix('/pers
     Route::resource('/shows', ShowPersonnelController::class);
     Route::resource('/bands', BandPersonnelController::class);
     Route::resource('/representations', RepresentationPersonnelController::class);
-
-
 
     // Ouvrir ou fermer le restaurant
 

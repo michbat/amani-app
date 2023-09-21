@@ -76,7 +76,7 @@ class RegistrationController extends Controller
          */
         event(new RegisterVerifyEvent($user));
 
-        return redirect()->route('login')->with('info', 'Votre nouveau compte doit être activé pour pouvoir vous connecter. Un lien a été envoyé à votre adresse e-mail.');
+        return redirect()->route('home')->with('info', 'Votre nouveau compte doit être activé pour pouvoir vous connecter. Un lien a été envoyé à votre adresse e-mail.');
 
     }
 
@@ -90,6 +90,13 @@ class RegistrationController extends Controller
          *  On vérifie si le token et l'adresse e-mail dans le lien envoyé appartiennent bel et bien à un utilisateur enregistré dans la BDD.
          *  On récupère un objet éloquent $user si la requête trouve l'utilisateur ou null si elle ne trouve rien.
          */
+
+
+        if(url()->previous() == 'http://localhost:8000/login')
+        {
+            return redirect()->route('home');
+        }
+
 
         $user = User::where('token', $token)->where('email', $email)->first();
 

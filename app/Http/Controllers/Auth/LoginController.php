@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Route;
 use App\Events\LoginSubmitDeniedEvent;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\LoginSubmitRequest;
@@ -30,6 +31,7 @@ class LoginController extends Controller
         // L'intérêt de cette démarche est de le ramèner à la page qu'il visitait une fois authentifié.
 
         Session::put('previous_url', url()->previous());
+
         return view('auth.login');
     }
 
