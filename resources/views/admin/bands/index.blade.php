@@ -44,7 +44,10 @@
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-center">
-
+                                        <a class="btn btn-warning text-dark mx-2"
+                                            href="{{ route('admin.bands.show', $band->id) }}"><i
+                                                class="fas fa-music mx-2"></i>({{ $band->musics->count() }})
+                                            musique(s)</a>
                                         <a class="btn btn-primary mx-2 text-dark"
                                             href="{{ route('admin.bands.edit', $band->id) }}"><i
                                                 class="fas fa-edit mx-2"></i>Editer</a>

@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Band;
 use App\Models\Music;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
 
 class MusicTableSeeder extends Seeder
 {
@@ -22,10 +22,7 @@ class MusicTableSeeder extends Seeder
                 'style' => 'Pop'
             ],
             [
-                'style' => 'Pop/Rock'
-            ],
-            [
-                'style' => 'Rap/Hip-Hop'
+                'style' => 'Hip-Hop'
             ],
             [
                 'style' => 'Jazz'
@@ -34,7 +31,7 @@ class MusicTableSeeder extends Seeder
                 'style' => 'Variétés'
             ],
             [
-                'style' => 'Reggae/Ska'
+                'style' => 'Reggae'
             ],
             [
                 'style' => 'Afro-Pop'
@@ -45,12 +42,11 @@ class MusicTableSeeder extends Seeder
 
         $music_1 = Music::find(1);  // Rock
         $music_2 = Music::find(2);  // Pop
-        $music_3 = Music::find(3);   // Pop/Rock
-        $music_4 = Music::find(4);   // Rap/Hip-Hop
-        $music_5 = Music::find(5);   // Jazz
-        $music_6 = Music::find(6);   // Variétés
-        $music_7 = Music::find(7);   // Reggae/Ska
-        $music_8 = Music::find(8);  // Afro-Pop
+        $music_3 = Music::find(3);   // Hip-Hop
+        $music_4 = Music::find(4);   // Jazz
+        $music_5 = Music::find(5);   // Variétés
+        $music_6 = Music::find(6);   // Reggae
+        $music_7 = Music::find(7);  // Afro-Pop
 
         $band_1 = Band::find(1);  // Cool and Gang
         $band_2 = Band::find(2);  // Jah Bless
@@ -62,13 +58,13 @@ class MusicTableSeeder extends Seeder
         $band_8 = Band::find(8); // Majestic
 
 
-        $band_1->musics()->attach($music_4);
-        $band_2->musics()->attach($music_7);
-        $band_3->musics()->attach([$music_1->id, $music_3->id]);
+        $band_1->musics()->attach($music_3);
+        $band_2->musics()->attach($music_6);
+        $band_3->musics()->attach([$music_1->id, $music_2->id]);
         $band_4->musics()->attach($music_2);
-        $band_5->musics()->attach($music_6);
-        $band_6->musics()->attach([$music_8->id, $music_4->id]);
-        $band_7->musics()->attach($music_5);
-        $band_8->musics()->attach([$music_1->id, $music_3->id, $music_6->id]);
+        $band_5->musics()->attach($music_5);
+        $band_6->musics()->attach([$music_7->id, $music_3->id]);
+        $band_7->musics()->attach($music_4);
+        $band_8->musics()->attach([$music_1->id, $music_2->id, $music_5->id]);
     }
 }

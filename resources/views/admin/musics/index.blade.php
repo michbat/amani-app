@@ -1,19 +1,18 @@
-@extends('personnel.layouts.app')
-@section('title', 'Bands Index')
+@extends('admin.layouts.app')
+@section('title', 'Music Index')
 
 @section('content')
     <div class="d-flex mt-5 justify-content-end">
-        <a class="btn btn-info btn-lg text-dark" href="{{ route('personnel.bands.create') }}"><i
-                class="fas fa-plus mx-2"></i>Ajouter
-            un groupe de musique</a>
+        <a class="btn btn-info btn-lg text-dark" href="{{ route('admin.musics.create') }}"><i
+                class="fas fa-plus mx-2"></i>Ajouter un style de musique</a>
     </div>
     <div class="card mt-3">
         <div class="card-header">
             <div class="card-header d-flex flex-column justify-content-center align-items-start">
-                <h4>Liste des groupes de musique</h4>
+                <h4>Liste des styles de musique</h4>
                 {{-- <p>{{ $ingredients->count() }} sur {{ $ingredients->total() }}</p> --}}
                 {{-- <p>{{ $ingredients->currentPage() }} sur {{ $ingredients->perPage() }}</p> --}}
-                <p>{{ $bands->firstItem() }} à {{ $bands->lastItem() }} sur {{ $bands->total() }} groupe(s)</p>
+                <p>{{ $musics->firstItem() }} à {{ $musics->lastItem() }} sur {{ $musics->total() }} style(s) de musique</p>
             </div>
         </div>
         <div class="card-body">
@@ -21,38 +20,29 @@
                 <thead>
                     <tr>
                         <th>N°</th>
-                        <th>Nom du groupe</th>
-                        <th>Membres</th>
+                        <th>Style</th>
                         <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if (count($bands) > 0)
-                        @foreach ($bands as $band)
+                    @if (count($musics) > 0)
+                        @foreach ($musics as $music)
                             <tr>
                                 <td>{{ $loop->index + 1 }}</td>
                                 <td>
                                     <span class="btn btn-sm btn-info text-dark"
                                         style="border-radius: 50px; min-width: 100px;">
-                                        {{ $band->name }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span style="font-weight: bolder;">
-                                        {{ $band->member }}
+                                        {{ $music->style }}
                                     </span>
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-center">
-                                        <a class="btn btn-warning text-dark mx-2"
-                                            href="{{ route('personnel.bands.show', $band->id) }}"><i
-                                                class="fas fa-music mx-2"></i>({{ $band->musics->count() }})
-                                            musique(s)</a>
+
                                         <a class="btn btn-primary mx-2 text-dark"
-                                            href="{{ route('personnel.bands.edit', $band->id) }}"><i
+                                            href="{{ route('admin.musics.edit', $music->id) }}"><i
                                                 class="fas fa-edit mx-2"></i>Editer</a>
 
-                                        <form action="{{ route('personnel.bands.destroy', $band->id) }}" method="POST">
+                                        <form action="{{ route('admin.musics.destroy', $music->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger text-dark confirm"><i
@@ -75,7 +65,7 @@
         </div>
     </div>
     <div class="d-flex justify-content-center mt-5">
-        {{ $bands->links() }}
+        {{ $musics->links() }}
     </div>
 @endsection
 
@@ -94,8 +84,8 @@
             //Configuration de la boîte Alert
 
             Swal.fire({
-                title: 'Suppression de groupe de musique',
-                text: "Voulez-vous supprimer ce groupe?",
+                title: 'Suppression de style de musique',
+                text: "Voulez-vous supprimer ce style de musique?",
                 cancelButtonText: "Non",
                 icon: 'warning',
                 showCancelButton: true,

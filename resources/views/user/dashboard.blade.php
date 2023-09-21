@@ -85,10 +85,12 @@
                             </div>
                         </div>
                         <div class="card-footer h-100 d-flex flex-column justify-content-center align-items-center">
-                            <h5>
-                                <a href="#" class="mt-auto btn btn-outline-success btn-lg">Cliquez ici <i
-                                        class="fa fa-arrow-alt-circle-right mx-2"></i></a>
-                            </h5>
+                            <form action="{{ route('user.delete.account', ['user' => auth()->user()]) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="mt-auto btn btn-outline-success btn-lg">Cliquez ici <i
+                                        class="fa fa-arrow-alt-circle-right mx-2"></i></button>
+                            </form>
                         </div>
                     </div>
                 </div>

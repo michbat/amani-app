@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DrinkController;
+use App\Http\Controllers\Admin\MusicController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\TableController;
@@ -47,6 +48,7 @@ use App\Http\Controllers\Personnel\ShowPersonnelController;
 use App\Http\Controllers\Personnel\TypePersonnelController;
 use App\Http\Controllers\Personnel\UnitPersonnelController;
 use App\Http\Controllers\Personnel\DrinkPersonnelController;
+use App\Http\Controllers\Personnel\MusicPersonnelController;
 use App\Http\Controllers\Personnel\OrderPersonnelController;
 use App\Http\Controllers\Personnel\StaffPersonnelController;
 use App\Http\Controllers\Personnel\TablePersonnelController;
@@ -137,6 +139,8 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
     Route::resource('/shows', ShowController::class);
     Route::resource('/bands', BandController::class);
     Route::resource('/representations', RepresentationController::class);
+    Route::resource('/musics', MusicController::class);
+
 
 
 
@@ -170,6 +174,11 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->gro
     Route::post('/plats/{plat}/tags', [PlatController::class, 'assignTags'])->name('plats.tags');
     Route::delete('/plats/{plat}/tags/{tag}', [PlatController::class, 'removeTag'])->name('plats.tags.remove');
 
+    // Routes pour assigner des style de musiques et enlèver un style de musique à un groupe
+
+    Route::post('/bands/{band}/musics', [BandController::class, 'assignMusics'])->name('bands.musics');
+    Route::delete('/bands/{band}/musics/{music}', [BandController::class, 'removeMusic'])->name('bands.musics.remove');
+
     // Routes pour gérer des tables et leur occupation dans la salle
 
     Route::get('/tables', [TableController::class, 'index'])->name('tables.index');
@@ -198,6 +207,7 @@ Route::middleware(['auth', 'role:personnel'])->name('personnel.')->prefix('/pers
     Route::resource('/shows', ShowPersonnelController::class);
     Route::resource('/bands', BandPersonnelController::class);
     Route::resource('/representations', RepresentationPersonnelController::class);
+    Route::resource('/musics', MusicPersonnelController::class);
 
     // Ouvrir ou fermer le restaurant
 
@@ -221,6 +231,11 @@ Route::middleware(['auth', 'role:personnel'])->name('personnel.')->prefix('/pers
 
     Route::post('/plats/{plat}/tags', [PlatPersonnelController::class, 'assignTags'])->name('plats.tags');
     Route::delete('/plats/{plat}/tags/{tag}', [PlatPersonnelController::class, 'removeTag'])->name('plats.tags.remove');
+
+    // Routes pour assigner des style de musiques et enlèver un style de musique à un groupe
+
+    Route::post('/bands/{band}/musics', [BandPersonnelController::class, 'assignMusics'])->name('bands.musics');
+    Route::delete('/bands/{band}/musics/{music}', [BandPersonnelController::class, 'removeMusic'])->name('bands.musics.remove');
 
     // Routes pour gérer des tables et leur occupation dans la salle
 
@@ -253,4 +268,8 @@ Route::middleware(['auth'])->name('user.')->prefix('/user')->group(function () {
 
     Route::get('/invoice/{order}/generate', [UserAuthController::class, 'getOrderInvoice'])->name('invoice.generate');
     Route::get('/invoice/{order}/download', [UserAuthController::class, 'downloadPDFInvoice'])->name('invoice.download');
+
+    // Suppression de compte
+
+    Route::delete('/account/{user}/delete', [UserAuthController::class, 'deleteAccount'])->name('delete.account');
 });

@@ -63,7 +63,7 @@
                                         </span>
                                         <div class="d-flex justify-content-center align-items-center">
                                             <button title="Ajouter ce plat au panier" type="button"
-                                                class="btn btn-success {{ $item->model->available === 0 || $item->model->canBeCommended === 0 ? 'disabled' : '' }}"
+                                                class="btn btn-success {{ $item->model->available === 0 || $item->model->canBeCommended === 0 || $global->opened === 0 ? 'disabled' : '' }}"
                                                 wire:click.prevent="storePlat({{ $item->model->id }},'{{ $item->model->name }}',{{ $item->model->price }})">
                                                 <span style="color: white;">
                                                     <i class="fas fa-shopping-cart mx-2"></i>Ajouter

@@ -127,7 +127,7 @@
             <li class="menu-header">Spectacles et programmations</li>
             <li class="dropdown {{ request()->routeIs('admin.shows.*') ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                        class="fas fa-theater-masks mx-2"></i>
+                        class="fas fa-theater-masks"></i>
                     <span>Spectacles</span></a>
                 <ul class="dropdown-menu">
                     <li class="{{ request()->routeIs('admin.shows.index') ? 'active' : '' }}"><a class="nav-link"
@@ -136,7 +136,7 @@
             </li>
             <li class="dropdown {{ request()->routeIs('admin.bands.*') ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                        class="fas fa-drum mx-2"></i>
+                        class="fas fa-drum"></i>
                     <span>Groupes</span></a>
                 <ul class="dropdown-menu">
                     <li class="{{ request()->routeIs('admin.bands.index') ? 'active' : '' }}"><a class="nav-link"
@@ -145,11 +145,20 @@
             </li>
             <li class="dropdown {{ request()->routeIs('admin.representations.*') ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                        class="far fa-calendar-alt mx-2"></i>
+                        class="far fa-calendar-alt"></i>
                     <span>Représentations</span></a>
                 <ul class="dropdown-menu">
                     <li class="{{ request()->routeIs('admin.representations.index') ? 'active' : '' }}"><a
                             class="nav-link" href="{{ route('admin.representations.index') }}">Représentations</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown {{ request()->routeIs('admin.musics.*') ? 'active' : '' }}">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-music"></i>
+                    <span>Musiques</span></a>
+                <ul class="dropdown-menu">
+                    <li class="{{ request()->routeIs('admin.musics.index') ? 'active' : '' }}"><a class="nav-link"
+                            href="{{ route('admin.musics.index') }}">Musiques</a>
                     </li>
                 </ul>
             </li>

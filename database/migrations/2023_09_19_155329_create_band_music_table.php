@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('band_id');
             $table->unsignedBigInteger('music_id');
             $table->foreign('band_id')->references('id')->on('bands');
-            $table->foreign('music_id')->references('id')->on('music');
+            $table->foreign('music_id')->references('id')->on('musics');
         });
     }
 

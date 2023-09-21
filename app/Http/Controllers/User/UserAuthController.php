@@ -139,4 +139,27 @@ class UserAuthController extends Controller
         $pdf = PDF::loadView('user.invoice', compact('order'));
         return $pdf->download('facture_' . $order->id . '.pdf');
     }
+
+    public function deleteAccount(User $user)
+    {
+        // Si l'utilisateur est 'admin', on lui interdit de supprimer son compte.
+
+        if ($user->hasRole('admin')) {
+
+            return redirect()->back()->with('warning', 'Vous ne pouvez pas supprimer un compte d\'administrateur!');
+        }
+
+        // Si l'utilisateur a un rôle 'personnel', on lui interdit de supprimer son compte. Seul l'administrateur peut le faire.
+
+        if ($user->hasRole('personnel')) {
+            return redirect()->back()->with('warning', 'Vous êtes un membre du personnel, vous ne pouvez pas supprimer vous-même votre compte. Veuillez contacter l\'administrateur du site.');
+        }
+
+
+        // Si le rôle de l'utilisateur n'est ni 'admin', ni 'personnel', c'est alors un 'user'. Lui il a le droit de supprimer son compte directement
+
+        $user->delete();
+        Auth::logout();
+        return redirect()->route('home')->with('info', 'Votre compte a été supprimé. Vous ne pouvez plus vous connecter avec vos anciens identfifiants');
+    }
 }

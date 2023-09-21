@@ -12,6 +12,7 @@ class Music extends Model
     use HasFactory;
 
     public $timestamps = false;
+    public $table = 'musics';
 
     protected $guarded = ['id'];
 

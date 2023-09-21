@@ -38,4 +38,12 @@ class Band extends Model
     {
         return $this->belongsToMany(Music::class);
     }
+
+    // Méthode qui vérifie si un style de musique est affecté à un groupe
+
+    public function hasMusic($style): bool
+    {
+        return $this->musics()->where('style', $style)->exists();
+    }
+
 }

@@ -9,7 +9,8 @@
         </div>
         <ul class="sidebar-menu">
             <li class="active">
-                <a href="{{ route('personnel.index') }}" class="nav-link"><i class="fas fa-home"></i><span>Index</span></a>
+                <a href="{{ route('personnel.index') }}" class="nav-link"><i
+                        class="fas fa-home"></i><span>Index</span></a>
             </li>
 
             {{-- Section Commandes --}}
@@ -35,8 +36,9 @@
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-map"></i>
                     <span>Catégories de produits</span></a>
                 <ul class="dropdown-menu">
-                    <li class="{{ request()->routeIs('personnel.categories.index') ? 'active' : '' }}"><a class="nav-link"
-                            href="{{ route('personnel.categories.index') }}">Catégories de produits</a></li>
+                    <li class="{{ request()->routeIs('personnel.categories.index') ? 'active' : '' }}"><a
+                            class="nav-link" href="{{ route('personnel.categories.index') }}">Catégories de
+                            produits</a></li>
                 </ul>
             </li>
             <li class="dropdown {{ request()->routeIs('personnel.plats.*') ? 'active' : '' }}">
@@ -81,8 +83,7 @@
                 </ul>
             </li>
             <li class="dropdown {{ request()->routeIs('personnel.ingredients.*') ? 'active' : '' }}">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                        class="fas fa-apple-alt"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-apple-alt"></i>
                     <span>Ingredients</span></a>
                 <ul class="dropdown-menu">
                     <li class="{{ request()->routeIs('personnel.ingredients.index') ? 'active' : '' }}"><a
@@ -95,7 +96,7 @@
             <li class="menu-header">Spectacles et programmations</li>
             <li class="dropdown {{ request()->routeIs('personnel.shows.*') ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                        class="fas fa-theater-masks mx-2"></i>
+                        class="fas fa-theater-masks"></i>
                     <span>Spectacles</span></a>
                 <ul class="dropdown-menu">
                     <li class="{{ request()->routeIs('personnel.shows.index') ? 'active' : '' }}"><a class="nav-link"
@@ -103,8 +104,7 @@
                 </ul>
             </li>
             <li class="dropdown {{ request()->routeIs('personnel.bands.*') ? 'active' : '' }}">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                        class="fas fa-drum mx-2"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-drum mx-2"></i>
                     <span>Groupes</span></a>
                 <ul class="dropdown-menu">
                     <li class="{{ request()->routeIs('personnel.bands.index') ? 'active' : '' }}"><a class="nav-link"
@@ -113,11 +113,21 @@
             </li>
             <li class="dropdown {{ request()->routeIs('personnel.representations.*') ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                        class="far fa-calendar-alt mx-2"></i>
+                        class="far fa-calendar-alt"></i>
                     <span>Représentations</span></a>
                 <ul class="dropdown-menu">
                     <li class="{{ request()->routeIs('personnel.representations.index') ? 'active' : '' }}"><a
-                            class="nav-link" href="{{ route('personnel.representations.index') }}">Représentations</a>
+                            class="nav-link"
+                            href="{{ route('personnel.representations.index') }}">Représentations</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown {{ request()->routeIs('personnel.musics.*') ? 'active' : '' }}">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-music"></i>
+                    <span>Musiques</span></a>
+                <ul class="dropdown-menu">
+                    <li class="{{ request()->routeIs('personnel.musics.index') ? 'active' : '' }}"><a
+                            class="nav-link" href="{{ route('personnel.musics.index') }}">Musiques</a>
                     </li>
                 </ul>
             </li>
@@ -131,7 +141,8 @@
                     <span>Restaurant Info</span></a>
                 <ul class="dropdown-menu">
                     <li class="{{ request()->routeIs('personnel.restaurants.index') ? 'active' : '' }}"><a
-                            class="nav-link" href="{{ route('personnel.restaurants.index') }}">Restaurant Info</a></li>
+                            class="nav-link" href="{{ route('personnel.restaurants.index') }}">Restaurant Info</a>
+                    </li>
                 </ul>
             </li>
             <li class="dropdown {{ request()->routeIs('personnel.staffs.*') ? 'active' : '' }}">
@@ -139,32 +150,33 @@
                         class="fas fa-user-tie"></i>
                     <span>Staff</span></a>
                 <ul class="dropdown-menu">
-                    <li class="{{ request()->routeIs('personnel.staffs.index') ? 'active' : '' }}"><a class="nav-link"
-                            href="{{ route('personnel.staffs.index') }}">Staff</a></li>
+                    <li class="{{ request()->routeIs('personnel.staffs.index') ? 'active' : '' }}"><a
+                            class="nav-link" href="{{ route('personnel.staffs.index') }}">Staff</a></li>
                 </ul>
             </li>
             <li class="dropdown {{ request()->routeIs('personnel.galleries.*') ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-video"></i>
                     <span>Galerie des médias</span></a>
                 <ul class="dropdown-menu">
-                    <li class="{{ request()->routeIs('personnel.galleries.index') ? 'active' : '' }}"><a class="nav-link"
-                            href="{{ route('personnel.galleries.index') }}">Galerie des médias</a></li>
+                    <li class="{{ request()->routeIs('personnel.galleries.index') ? 'active' : '' }}"><a
+                            class="nav-link" href="{{ route('personnel.galleries.index') }}">Galerie des médias</a>
+                    </li>
                 </ul>
             </li>
             <li class="dropdown {{ request()->routeIs('personnel.sliders.*') ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-film"></i>
                     <span>Sliders</span></a>
                 <ul class="dropdown-menu">
-                    <li class="{{ request()->routeIs('personnel.sliders.index') ? 'active' : '' }}"><a class="nav-link"
-                            href="{{ route('personnel.sliders.index') }}">Sliders</a></li>
+                    <li class="{{ request()->routeIs('personnel.sliders.index') ? 'active' : '' }}"><a
+                            class="nav-link" href="{{ route('personnel.sliders.index') }}">Sliders</a></li>
                 </ul>
             </li>
             <li class="dropdown {{ request()->routeIs('personnel.tables.*') ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-table"></i>
                     <span>Tables</span></a>
                 <ul class="dropdown-menu">
-                    <li class="{{ request()->routeIs('personnel.tables.index') ? 'active' : '' }}"><a class="nav-link"
-                            href="{{ route('personnel.tables.index') }}">Tables</a></li>
+                    <li class="{{ request()->routeIs('personnel.tables.index') ? 'active' : '' }}"><a
+                            class="nav-link" href="{{ route('personnel.tables.index') }}">Tables</a></li>
                 </ul>
             </li>
 
