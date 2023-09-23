@@ -58,7 +58,7 @@ class IngredientDrinkStockMonitoring extends Command
         foreach ($drinks as $drink) {
             if (($drink->quantityInStock / 3) <= $drink->quantityMinimum) {
                 $drink->available = 0;
-                $drink->update();
+                $drink->save();
             }
         }
     }

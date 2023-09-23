@@ -54,17 +54,35 @@ class PlatComponent extends Component
 
     public function storePlat($plat_id, $plat_name, $plat_price)
     {
-        /**
-         * Un visiteur qui simule un panier ou un utilisateur authentifié qui n'est pas 'Generic' ne peut ajouter plus de 6 articles d'un plat par commande selon notre règle de gestion. Il faut pouvoir l'en emmpêcher.
-         */
-
         if (!Auth::user() || Auth::user()->firstname !== 'Generic') {
 
-            // Lorsqu'un visiteur ou un user ordinaire veut ajouter un plat dans un panier, je parcours d'abord le contenu du panier pour voir si ce plat n'a pas atteint la limite de la quantité d'articles autorisés à la commande
+            if (Cart::instance('cart')->content()->count() > 0) {
 
-            foreach (Cart::instance('cart')->content() as $content) {
-                if ($content->associatedModel == 'App\Models\Plat' && $content->id == $plat_id && $content->qty >= 6) {
-                    return redirect()->route('plat')->with('warning', 'Vous avez déjà 6 articles de ce plat dans le panier! Impossible d\'en ajouter encore un!');
+                foreach (Cart::instance('cart')->content() as $content) {
+                    $plat = Plat::where('name', $plat_name)->first();
+
+                    $ingredients = $plat->ingredients;
+
+                    foreach ($ingredients as $ingredient) {
+                        if ((($ingredient->quantityInStock / 3) - ($ingredient->pivot->amount * $content->qty)) <= $ingredient->quantityMinimum) {
+                            return redirect()->route('plat')->with('warning', 'Vous ne pouvez plus ajouter ce plat. Stock limité.');
+                        }
+                    }
+
+
+                    if ($content->associatedModel == 'App\Models\Plat' && $content->id == $plat_id && $content->qty >= 6) {
+                        return redirect()->route('plat')->with('warning', 'Vous avez déjà 6 articles de ce plat dans le panier! Impossible d\'en ajouter encore un!');
+                    }
+                }
+            } else {
+                $plat = Plat::where('name', $plat_name)->first();
+
+                $ingredients = $plat->ingredients;
+
+                foreach ($ingredients as $ingredient) {
+                    if ((($ingredient->quantityInStock / 3) - $ingredient->pivot->amount) <= $ingredient->quantityMinimum) {
+                        return redirect()->route('plat')->with('warning', 'Vous ne pouvez plus ajouter ce plat. Stock limité.');
+                    }
                 }
             }
 
@@ -74,9 +92,31 @@ class PlatComponent extends Component
             return redirect()->route('plat')->with('success', 'Plat ajouté dans votre panier');
         }
 
-        // L'utilisateur 'Generic' n'est soumis pas à une quelconque restriction des quantités à commander
-
         if (Auth::user()->firstname == 'Generic') {
+            if (Cart::instance('cart')->content()->count() > 0) {
+
+                foreach (Cart::instance('cart')->content() as $content) {
+                    $plat = Plat::where('name', $plat_name)->first();
+
+                    $ingredients = $plat->ingredients;
+
+                    foreach ($ingredients as $ingredient) {
+                        if ((($ingredient->quantityInStock / 3) - ($ingredient->pivot->amount * $content->qty)) <= $ingredient->quantityMinimum) {
+                            return redirect()->route('plat')->with('warning', 'Vous ne pouvez plus ajouter ce plat. Stock limité.');
+                        }
+                    }
+                }
+            } else {
+                $plat = Plat::where('name', $plat_name)->first();
+
+                $ingredients = $plat->ingredients;
+
+                foreach ($ingredients as $ingredient) {
+                    if ((($ingredient->quantityInStock / 3) - $ingredient->pivot->amount) <= $ingredient->quantityMinimum) {
+                        return redirect()->route('plat')->with('warning', 'Vous ne pouvez plus ajouter ce plat. Stock limité.');
+                    }
+                }
+            }
             Cart::instance('cart')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
             return redirect()->route('plat')->with('success', 'Plat ajouté dans votre panier');
         }

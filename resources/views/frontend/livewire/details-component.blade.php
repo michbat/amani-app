@@ -14,6 +14,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
+            @if ($message = Session::get('warning_message'))
+                <div class="alert alert-danger alert-dismissible fade show my-4" role="alert">
+                    <strong>{{ $message }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             <div class="row">
                 @if ($global->opened == 0)
                     <p class="text-center text-danger" style="font-size: 20px;">Restaurant fermé! PAS DE COMMANDES!!!

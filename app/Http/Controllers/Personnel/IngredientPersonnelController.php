@@ -130,11 +130,11 @@ class IngredientPersonnelController extends Controller
         // On met la propriété stockStatus à AVAILABLE
         // Les menus liés à cet ingrédient redeviennent disponibles à la commande
 
-        if ($request->quantityInStock > $request->quantityMinimum) {
+        if (($request->quantityInStock / 3) > $request->quantityMinimum) {
             $ingredient->stockStatus = StockStatus::AVAILABLE->value;
-            foreach ($ingredient->menus as $menu) {
-                $menu->available =  1;
-                $menu->update();
+            foreach ($ingredient->plats as $plat) {
+                $plat->available =  1;
+                $plat->update();
             }
         }
 

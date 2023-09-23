@@ -109,8 +109,8 @@
                     {{-- On affiche dans l'entête de la carte des ingredients qui composent le menu --}}
                     <h4>Editer des ingredients du plat: </h4>
                     @foreach ($plat->ingredients as $ingredient)
-                        <span class="btn btn-warning text-dark mx-2">{{ $plat->name }}
-                            ({{ $plat->pivot->amount }} {{ $plat->unit->name }})
+                        <span class="btn btn-warning text-dark mx-2">{{ $ingredient->name }}
+                            ({{ $ingredient->pivot->amount }} {{ $ingredient->unit->name }})
                         </span>
                     @endforeach
                 </div>

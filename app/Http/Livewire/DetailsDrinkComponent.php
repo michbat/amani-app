@@ -48,6 +48,27 @@ class DetailsDrinkComponent extends Component
     // Méthode pour ajouter un menu dans le panier
     public function storeDrink($drink_id, $drink_name, $drink_price)
     {
+        if (Cart::instance('cart')->content()->count() > 0) {
+            foreach (Cart::instance('cart')->content() as $content) {
+                $drink = Drink::where('name', $drink_name)->first();
+
+                if ($content->associatedModel == 'App\Models\Drink' && (($drink->quantityInStock / 3) - $content->qty) <= $drink->quantityMinimum) {
+                    session()->flash('warning_message', 'Vous ne pouvez plus ajouter cette boisson. Stock limité.');
+                    return redirect()->back();
+                }
+            }
+        } else {
+            // Sinon, c'est la première qu'on ajoute le plat. On vérifie tout de même si les quantités sont suffisante pour un premier ajout
+
+            $drink = Drink::where('name', $drink_name)->first();
+
+
+            if (($drink->quantityInStock / 3) <= $drink->quantityMinimum) {
+                session()->flash('warning_message', 'Vous ne pouvez plus ajouter ce plat. Stock limité');
+                return redirect()->back();
+            }
+        }
+        
         Cart::instance('cart')->add($drink_id, $drink_name, 1, $drink_price)->associate('App\Models\Drink');
         $this->quantity += 1;
         $this->emitTo('cart-icon-component', 'refreshComponent');

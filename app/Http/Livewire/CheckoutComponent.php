@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use Exception;
+use Carbon\Carbon;
 use App\Models\Plat;
 use App\Models\User;
 use App\Models\Order;
@@ -21,7 +22,7 @@ use Srmklive\PayPal\Services\PayPal as PayPalClient;
 class CheckoutComponent extends Component
 {
     public $paymentMode = "card"; // Méthode de paiement en ligne par défaut
-    public $nameOnCard, $number, $exp_month, $exp_year, $cvc, $user;
+    public $nameOnCard, $number, $expirationDate, $cvc, $user;
     public $acceptance;
 
     //  Règles de validation
@@ -29,8 +30,7 @@ class CheckoutComponent extends Component
     protected $cardValidationRules = [
         'nameOnCard' => 'required',
         'number' => 'required|numeric|digits:16',
-        'exp_month' => 'required|numeric|digits_between:1,2',
-        'exp_year' => 'required|numeric|digits:4',
+        'expirationDate' => 'required|date|after_or_equal:today',
         'cvc' => 'required|numeric|digits:3',
     ];
 
@@ -61,29 +61,17 @@ class CheckoutComponent extends Component
         if ($this->paymentMode == "card") {
 
             $this->validate($this->cardValidationRules, [
-                'alpha_num' => 'Veuillez indiquer le nom et le prénom qui se trouvent sur la carte',
+                'nameOnCard.required' => 'Veuillez indiquer le nom et le prénom qui se trouvent sur la carte',
                 'number.required' => 'Le numéro de carte est requis',
                 'number.numeric' => 'Le numéro de carte doit être exclusivement en chiffres',
                 'number.digits' => 'La carte doit comporter 16 chiffres',
-                'exp_month.required' => 'Le mois d\'expiration',
-                'exp_month.numeric' => 'Le mois doit être en chiffres',
-                'exp_month.digits_between' => 'Saisissez un ou deux chiffre pour indiquer le mot d\'expiration. Ex: 9,10',
-                'exp_year.required' => 'L\'année d\'expiration',
-                'exp_year.numeric' => 'L\'année doit être en chiffres',
-                'exp_year.digits' => 'L\'année d\'expiration doit comporter 4 chiffres',
+                'expirationDate.required' => 'Vous devez indiquer la date d\'expiration de la carte',
+                'expirationDate.date' => 'Vous devez saisir une date',
+                'expirationDate.after_or_equal' => 'La date d\'expiration doit être supérieure ou égale à celle d\'aujourd\'hui',
                 'cvc.required' => 'Le CCV est requis',
                 'cvc.numeric' => 'Le CCV doit être en chiffres',
                 'cvc' => 'Le CVV doit comporter 3 chiffres',
             ]);
-
-            $this->validate(
-                [
-                    'acceptance' => 'required',
-                ],
-                [
-                    'acceptance.required' => 'Vous devez accepter les termes et conditions de vente',
-                ]
-            );
 
 
             $order = $this->makeCardOrder();
@@ -280,7 +268,7 @@ class CheckoutComponent extends Component
         $order->total = Cart::instance('cart')->total();
         $order->nameOnCard = $this->nameOnCard;
         $order->numberOnCard = CheckoutComponent::cardMasking($this->number, 'X');
-        $order->expirationDate = $this->exp_month . '/' . $this->exp_year;
+        $order->expirationDate =  Carbon::parse($this->expirationDate)->format('Y-m-d');
         $order->paymentMode = PaymentMode::CARD->value;
         $order->paymentStatus = PaymentStatus::PAID->value;
         $order->orderStatus = OrderStatus::CONFIRMED->value;

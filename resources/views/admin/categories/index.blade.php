@@ -4,7 +4,7 @@
 @section('content')
     <div class="d-flex mt-5 justify-content-end">
         <a class="btn btn-info btn-lg text-dark" href="{{ route('admin.categories.create') }}"><i class="fas fa-plus mx-2"></i>Ajouter une
-            catégorie de recettes</a>
+            catégorie</a>
     </div>
     <div class="card mt-3">
         <div class="card-header">

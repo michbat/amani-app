@@ -87,7 +87,8 @@
                                 <label class="form-label">Nom et prénom sur la carte <span
                                         class="text-danger">*</span></label>
                                 <input type="text" class="form-control" wire:model="nameOnCard"
-                                    placeholder="Nom et prénom" @disabled($paymentMode === 'cash' || $paymentMode === 'paypal')>
+                                    value="{{ old('nameOnCard') }}" placeholder="Nom et prénom"
+                                    @disabled($paymentMode === 'cash' || $paymentMode === 'paypal')>
                                 @error('nameOnCard')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -95,7 +96,8 @@
                             <div class="form-group mb-3">
                                 <label class="form-label">Numéro de carte<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" wire:model="number"
-                                    placeholder="Numéro de carte de crédit" @disabled($paymentMode === 'cash' || $paymentMode === 'paypal')>
+                                    value="{{ old('number') }}" placeholder="Numéro de carte de crédit"
+                                    @disabled($paymentMode === 'cash' || $paymentMode === 'paypal')>
                                 @error('number')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -104,20 +106,13 @@
                                 <div class="col-md-6">
                                     <label>Date d'expiration<span class="text-danger">*</span></label>
                                     <div class="row">
-                                        <div class="col-md-6 col-6">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" wire:model="exp_month"
-                                                    placeholder="mm" @disabled($paymentMode === 'cash' || $paymentMode === 'paypal')>
-                                                @error('exp_month')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-6">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" wire:model="exp_year"
-                                                    placeholder="aaaa" @disabled($paymentMode === 'cash' || $paymentMode === 'paypal')>
-                                                @error('exp_year')
+                                        <div class="col-md-12 col-12">
+                                            <div class="form-group" for="expdate">
+                                                <input id="expdate" type="date" min="{{ date('Y-m-d') }}"
+                                                    value="{{ old('expirationDate') }}" name="expirationDate"
+                                                    class="form-control" wire:model="expirationDate">
+
+                                                @error('expirationDate')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
@@ -146,7 +141,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="payment_select {{ auth()->user()->firstname === 'Generic' ? 'd-none' : '' }}" id="paypal">
+                            <div class="payment_select {{ auth()->user()->firstname === 'Generic' ? 'd-none' : '' }}"
+                                id="paypal">
                                 <label class="container_radio">Payer avec Paypal
                                     <input type="radio" value="paypal" wire:model="paymentMode">
                                     <span class="checkmark"></span>
@@ -160,7 +156,7 @@
                                 <i class="icon_wallet"></i>
                             </div>
                             <div>
-                                <input type="checkbox"  wire:model="acceptance">
+                                <input type="checkbox" wire:model="acceptance">
                                 <a href="{{ route('reglement') }}" alt="Lire les termes et conditions">
                                     <span class="text-dark">J'accepte les termes et conditions de vente</span>
                                 </a>
@@ -168,13 +164,12 @@
                         </div>
 
                         <div class="button-wrapper d-flex flex-column justify-content-center align-items-center mb-5">
-                            {{-- @dd($isAccepted) --}}
                             <button type="submit" id="commander"
-                                class="btn btn-success btn-lg {{ $acceptance == false ? 'disabled' : '' }}"
+                                class="btn btn-success btn-lg {{ $acceptance !== true? 'disabled' : '' }}"
                                 wire:click.prevent="placeOrder">
                                 Commander
                             </button>
-                            <span class="message text-danger {{ $acceptance == false ? 'disabled' : '' }}">Vous
+                            <span class="message text-danger {{ $acceptance !== true ? 'disabled' : '' }}">Vous
                                 devez accepter d'abord les termes et conditions
                                 de vente</span>
                         </div>
