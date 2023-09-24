@@ -55,35 +55,6 @@ class DetailsComponent extends Component
          * par le nombre de fois qu'on ajoute ce plat dans le panier est inférieure ou égale au seuil de quantité minimale de l'ingrédient.
          */
 
-
-        if (Cart::instance('cart')->content()->count() > 0) {
-            foreach (Cart::instance('cart')->content() as $content) {
-                $plat = Plat::where('name', $plat_name)->first();
-
-                $ingredients = $plat->ingredients;
-
-                foreach ($ingredients as $ingredient) {
-                    if ((($ingredient->quantityInStock / 3) - ($ingredient->pivot->amount * $content->qty)) <= $ingredient->quantityMinimum) {
-                        session()->flash('warning_message', 'Vous ne pouvez plus ajouter ce plat. Stock limité.');
-                        return redirect()->back();
-                    }
-                }
-            }
-        } else {
-            // Sinon, c'est la première qu'on ajoute le plat. On vérifie tout de même si les quantités sont suffisante pour un premier ajout
-
-            $plat = Plat::where('name', $plat_name)->first();
-
-            $ingredients = $plat->ingredients;
-
-            foreach ($ingredients as $ingredient) {
-                if ((($ingredient->quantityInStock / 3) - $ingredient->pivot->amount) <= $ingredient->quantityMinimum) {
-                    session()->flash('warning_message', 'Vous ne pouvez plus ajouter ce plat. Stock limité');
-                    return redirect()->back();
-                }
-            }
-        }
-
         // Si nous n'avons pas de problème au niveau du stock, on ajoute le plat
 
         Cart::instance('cart')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');

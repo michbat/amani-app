@@ -18,16 +18,33 @@ class HomeComponent extends Component
 
     public function storePlat($plat_id, $plat_name, $plat_price)
     {
-        Cart::instance('cart')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
-        session()->flash('success_message', 'Plat ajouté dans votre panier');
-        return redirect()->route('cart');
+
+        if (!Auth::user() || Auth::user()->firstname !== 'Generic') {
+
+            if (Cart::instance('cart')->content()->count() > 0) {
+                foreach (Cart::instance('cart')->content() as $content) {
+                    if ($content->associatedModel == 'App\Models\Plat' && $content->id == $plat_id && $content->qty >= 6) {
+                        return redirect()->route('plat')->with('warning', 'Vous avez déjà 6  articles de ce plat dans le panier! Impossible d\'en ajouter encore un!');
+                    }
+                }
+            }
+
+            Cart::instance('cart')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
+            session()->flash('success_message', 'Plat ajouté dans votre panier');
+            return redirect()->route('cart');
+        }
+
+        if (Auth::user()->firstname == 'Generic') {
+            Cart::instance('cart')->add($plat_id, $plat_name, 1, $plat_price)->associate('App\Models\Plat');
+            session()->flash('success_message', 'Plat ajouté dans votre panier');
+            return redirect()->route('cart');
+        }
     }
     public function render()
     {
         // On récupère un tableau de tous les objets sliders
-        $sliders = Slider::all();
 
-        // dd($sliders);
+        $sliders = Slider::all();
 
         // On récupére l'objet restaurant dont le nom est 'Amani' (objet eloquent = enregistrement dans une table)
 

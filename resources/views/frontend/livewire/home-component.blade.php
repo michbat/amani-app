@@ -71,7 +71,7 @@
             <div class="main_title center mb-5">
                 <span style="background-color: green!important"><em
                         style="background-color: green!important"></em></span>
-                <h2>Menu à la carte</h2>
+                <h2>À la carte</h2>
             </div>
             <div class="row homepage add_bottom_25">
                 <div class="col-xl-12">

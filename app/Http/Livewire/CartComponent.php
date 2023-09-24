@@ -3,8 +3,6 @@
 namespace App\Http\Livewire;
 
 use Carbon\Carbon;
-use App\Models\Plat;
-use App\Models\Drink;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -21,33 +19,6 @@ class CartComponent extends Component
     public function increaseQuantity($rowId)
     {
         $item = Cart::instance('cart')->get($rowId);
-
-        if ($item->associatedModel === "App\Models\Plat") {
-            foreach (Cart::instance('cart')->content() as $content) {
-                $plat = Plat::where('name', $item->name)->first();
-
-                $ingredients = $plat->ingredients;
-
-                foreach ($ingredients as $ingredient) {
-                    if ((($ingredient->quantityInStock / 3) - ($ingredient->pivot->amount * $content->qty)) <= $ingredient->quantityMinimum) {
-                        session()->flash('warning_message', 'Vous ne pouvez plus ajouter ce plat. Stock limité.');
-                        return redirect()->back();
-                    }
-                }
-            }
-        }
-
-        if ($item->associatedModel === "App\Models\Drink") {
-            foreach (Cart::instance('cart')->content() as $content) {
-                $drink = Drink::where('name', $item->name)->first();
-
-                if ($content->associatedModel == 'App\Models\Drink' && (($drink->quantityInStock / 3) - $content->qty) <= $drink->quantityMinimum) {
-                    session()->flash('warning_message', 'Vous ne pouvez plus ajouter cette boisson. Stock limité.');
-                    return redirect()->back();
-                }
-            }
-        }
-
         $qty = $item->qty + 1;
         Cart::instance('cart')->update($rowId, $qty);
         $this->emitTo('cart-icon-component', 'refreshComponent');

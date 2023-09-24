@@ -63,24 +63,11 @@ class DrinkComponent extends Component
             if (Cart::instance('cart')->content()->count() > 0) {
 
                 foreach (Cart::instance('cart')->content() as $content) {
-                    $drink = Drink::where('name', $drink_name)->first();
-
-                    if ($content->associatedModel == 'App\Models\Drink' && (($drink->quantityInStock / 3) - $content->qty) <= $drink->quantityMinimum) {
-                        return redirect()->route('drink')->with('warning', 'Vous ne pouvez plus ajouter cette boisson. Stock limité.');
-                    }
-
                     if ($content->associatedModel == 'App\Models\Drink' && $content->id == $drink_id && $content->qty >= 10) {
                         return redirect()->route('drink')->with('warning', 'Vous avez déjà 10 articles de cette boisson dans le panier! Impossible d\'en ajouter encore un!');
                     }
                 }
-            } else {
-                $drink = drink::where('name', $drink_name)->first();
-
-                if (($drink->quantityInStock / 3) <= $drink->quantityMinimum) {
-                    return redirect()->route('drink')->with('warning', 'Vous ne pouvez plus ajouter cette boisson. Stock limité.');
-                }
             }
-
             // Si la limite n'a pas été atteinte, on ajoute le produit dans le panier
 
             Cart::instance('cart')->add($drink_id, $drink_name, 1, $drink_price)->associate('App\Models\Drink');
@@ -89,23 +76,6 @@ class DrinkComponent extends Component
 
 
         if (Auth::user()->firstname == 'Generic') {
-            if (Cart::instance('cart')->content()->count() > 0) {
-
-                foreach (Cart::instance('cart')->content() as $content) {
-                    $drink = Drink::where('name', $drink_name)->first();
-
-                    if ($content->associatedModel == 'App\Models\Drink' && (($drink->quantityInStock / 3) - $content->qty) <= $drink->quantityMinimum) {
-                        return redirect()->route('drink')->with('warning', 'Vous ne pouvez plus ajouter cette boisson. Stock limité.');
-                    }
-                }
-            } else {
-                $drink = Drink::where('name', $drink_name)->first();
-
-
-                if (($drink->quantityInStock / 3) <= $drink->quantityMinimum) {
-                    return redirect()->route('plat')->with('warning', 'Vous ne pouvez plus ajouter cette boisson. Stock limité.');
-                }
-            }
             Cart::instance('cart')->add($drink_id, $drink_name, 1, $drink_price)->associate('App\Models\Drink');
             return redirect()->route('drink')->with('success', 'Boisson ajoutée dans votre panier');
         }
