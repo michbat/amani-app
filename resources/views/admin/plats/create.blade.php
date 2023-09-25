@@ -16,7 +16,7 @@
                 <div class="form-group row mb-4">
                     <div class="col-sm-12">
                         <label for="name" class="form-label">Nom du plat</label>
-                        <input type="text" class="form-control" name="name" id="name" placeholder="Nom du menu"
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Nom du plat"
                             value="{{ old('name') }}">
 
                         @error('name')
@@ -29,7 +29,7 @@
                     <div class="col-sm-12">
                         <label class="form-label">Description</label>
                         <textarea name="description" id="tiny" cols="30" rows="30" class="form-control"
-                            placeholder="Description de la recette"></textarea>
+                            placeholder="Description du plat"></textarea>
                         @error('description')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -135,7 +135,6 @@
                                                 style="max-width: 200px">
                                         </div>
                                     <td>
-
                                 </tr>
                             @endforeach
                         </tbody>
