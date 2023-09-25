@@ -60,6 +60,7 @@ use App\Http\Controllers\Personnel\CategoryPersonnelController;
 use App\Http\Controllers\Personnel\IngredientPersonnelController;
 use App\Http\Controllers\Personnel\RestaurantPersonnelController;
 use App\Http\Controllers\Personnel\RepresentationPersonnelController;
+use App\Http\Livewire\ContactComponent;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,11 +91,12 @@ Route::get('/drink/{slug}', DetailsDrinkComponent::class)->name('details.drink')
 Route::get('/checkout', CheckoutComponent::class)->name('checkout');
 Route::get('/checkout-success', CheckoutSuccessComponent::class)->name('checkout.success');
 Route::get('/wishlist', WishlistComponent::class)->name('wishlist');
-Route::get('/review/{slug}/{user}', ReviewComponent::class)->name('review');
+Route::get('/review/{slug}/{user}', ReviewComponent::class)->name('review')->middleware('auth');
 Route::get('/reglement', ReglementComponent::class)->name('reglement');
 Route::get('/photo', PhotoGalleryComponent::class)->name('photo');
 Route::get('/video', VideoGalleryComponent::class)->name('video');
 Route::get('/show', ShowComponent::class)->name('show');
+Route::get('/contact', ContactComponent::class)->name('contact');
 
 // Paypal routes
 
@@ -273,7 +275,7 @@ Route::middleware(['auth'])->name('user.')->prefix('/user')->group(function () {
     Route::get('/invoice/{order}/generate', [UserAuthController::class, 'getOrderInvoice'])->name('invoice.generate');
     Route::get('/invoice/{order}/download', [UserAuthController::class, 'downloadPDFInvoice'])->name('invoice.download');
 
-    // Suppression de compte
+    // Suppression de compte par l'utilisateur
 
     Route::delete('/account/{user}/delete', [UserAuthController::class, 'deleteAccount'])->name('delete.account');
 });

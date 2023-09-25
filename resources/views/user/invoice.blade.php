@@ -48,7 +48,7 @@
         <div class="card-header d-flex justify-content-between p-4">
             <div>
 
-                <p>Nom: {{ $order->user->firstname }}</p>
+                <p>Nom: {{ $order->user->lastname }}</p>
                 <p>Prénom: {{ $order->user->firstname }}</p>
                 <p>Date de la Commande: {{ $order->created_at->format('d/m/Y') }}</p>
                 <p>Numéro de la commande: COM-00{{ $order->id }}</p>

@@ -25,7 +25,7 @@ class OrderPickupFailListener
     {
         $subject = "Votre commande annulée (non-recupération)";
         $message = "Bonjour,<br><br>";
-        $message .= "Nous vous informons que votre commande a été annulée faute d'avoir été récupérée 2 heures après sa préparation.<br>";
+        $message .= "Nous vous informons que votre commande a été annulée faute d'avoir été récupérée 1h30 après sa préparation.<br>";
         $message .= "Malheuresement, aucun remboursement n'est possible conformement à notre règlement.<br><br>";
         $message .= "Cordialement, <br><br>Amani Resto.";
         $view = 'mails.account_activation_mail';

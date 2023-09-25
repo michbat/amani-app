@@ -5,8 +5,6 @@ namespace App\Listeners;
 use App\Mail\AmaniRestaurantMail;
 use App\Events\OrderCanceledEvent;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class OrderCanceledListener
 {
@@ -26,7 +24,7 @@ class OrderCanceledListener
         $subject = "Votre commande a été annulée";
         $message = "Bonjour,<br><br>";
         $message .= "Par la présente, nous vous informons de l'annulation de votre commande<br>";
-        $message .= "Veuillez prendre contact avec nous pour le remboursement.<br><br>";
+        $message .= "Nous allons procéder au remboursement.<br><br>";
         $message .= "Cordialement, <br><br>Amani Resto.";
         $view = 'mails.account_activation_mail';
 

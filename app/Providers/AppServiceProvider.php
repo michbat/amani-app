@@ -46,5 +46,13 @@ class AppServiceProvider extends ServiceProvider
             $minimumValue = $validator->getData()[$minimumField];
             return $value > $minimumValue;
         });
+
+        // Implémentation de la règle de validation 'human_verification'. On vérifie si la valeur saisie par l'utilisateur $value est égale au résultat  de test conservé dans la variable de session 'test_answer'
+
+        Validator::extend('human_verification', function ($attribute, $value, $parameters, $validator) {
+            return (int)$value === (int)session('test_answer');  // renvoit true ou false
+        });
+
+
     }
 }

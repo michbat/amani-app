@@ -7,12 +7,27 @@
                 width="140" height="35" alt=""></a>
     </div>
     <ul>
+        <li class="submenu">
+            <a href="{{ route('home') }}" class="show-submenu">Accueil</a>
+        </li>
 
         {{-- Seul le guest et un utilisateur autre que 'Generic' peuvent voir l'icône wishlist --}}
 
         @if (!auth()->user() || auth()->user()->firstname !== 'Generic')
             <li class="submenu">
                 @livewire('wishlist-icon-component')
+            </li>
+        @endif
+        <li class="submenu">
+            <a href="{{ route('cart') }}" class="show">Panier<i class="fas fa-shopping-cart ms-1"></i>
+                <strong>
+                    {{ Cart::instance('cart')->count() ?? 0 }}
+                </strong>
+            </a>
+        </li>
+        @if (Cart::instance('cart')->count() > 0 || (auth()->user() && auth()->user()->firstname == 'Generic'))
+            <li class="submenu">
+                <a href="{{ route('drink') }}" class="btn btn-info"><i class="fas fa-plus-circle mx-2"></i>Boissons</a>
             </li>
         @endif
         @auth
@@ -31,9 +46,7 @@
                     compte</a>
             </li>
         @endauth
-        <li class="submenu">
-            <a href="{{ route('home') }}" class="show-submenu">Accueil</a>
-        </li>
+
         <li class="submenu">
             <a href="{{ route('plat') }}" class="show-submenu">Plats</a>
         </li>
@@ -49,7 +62,7 @@
             </ul>
         </li>
         <li class="submenu">
-            <a href="#" class="show-submenu">Contactez-nous</a>
+            <a href="{{ route('contact') }}" class="show-submenu">Contactez-nous</a>
         </li>
 
         @guest

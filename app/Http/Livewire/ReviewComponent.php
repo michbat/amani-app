@@ -12,7 +12,8 @@ class ReviewComponent extends Component
     public $slug;
     public $user_id;
     public $plat;
-    public $title, $comment, $rating;
+    public $title, $comment;
+    public $rating;
     public $alreadyCommented;
 
     // Règles de validation
@@ -38,6 +39,7 @@ class ReviewComponent extends Component
         if ($this->alreadyCommented != null) {
             session()->flash('warning_message', 'Vous avez déjà commenté ce plat. Vous ne pouvez pas commenter un produit plus d\'une fois.');
         }
+
     }
 
     public function updated($fields)

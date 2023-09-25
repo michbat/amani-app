@@ -25,7 +25,7 @@ class OrderCompletedListener
     {
         $subject = "Votre commande est prête";
         $message = "Bonjour,<br><br> Par la présente, nous vous informons que votre commande est prête.<br>";
-        $message .= "Vous avez 2 heures pour la récupérer à notre restaurant. Au délà de ce temps, votre commande sera considérée comme annulée à votre detriment.<b>Vous ne serez pas remboursé si vous ne venez pas récupérer votre commande endéans 2 heures.</b><br>";
+        $message .= "Vous avez 1h30 pour la récupérer à notre restaurant. Au délà de ce temps, votre commande sera considérée comme annulée et ce,à votre detriment.<b>Vous ne serez pas remboursé si vous ne venez pas récupérer votre commande.</b><br>";
         $message .= "Cordialement, <br><br>Amani Resto.";
         $view = 'mails.account_activation_mail';
 

@@ -28,10 +28,10 @@
                                 <img src="{{ asset($plat->image) }}" alt="{{ $plat->name }}" width="150">
                             </a>
                         </p>
-                        <form wire:submit.prevent="postReview">
+                        <div class="write_review">
                             <div class="rating_submit">
                                 <div class="form-group mb-2">
-                                    <label class="d-block">Avis <span class="text-danger">*</span></label>
+                                    <label class="d-block">Avis<span class="text-danger">*</span></label>
                                     <span class="rating mb-0">
                                         <input type="radio" class="rating-input" id="5_star" name="rating-input"
                                             value="5" wire:model="rating"><label for="5_star"
@@ -72,10 +72,10 @@
                             </div>
 
                             <div>
-                                <button type="submit"
-                                    class="btn btn-success {{ $alreadyCommented != null ? 'disabled' : '' }}">Envoyez</button>
+                                <button type="submit" wire:click.prevent="postReview"
+                                    class="btn btn-success {{ $alreadyCommented != null || auth()->user()->censoredCommments >= 5? 'disabled' : '' }}">Envoyez</button>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>

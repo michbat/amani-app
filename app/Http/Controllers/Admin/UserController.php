@@ -39,10 +39,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-
         /**
          * On vérifie d'abord si les données saisies respectent nos règles de validation.
-         * Des messages d'erreur s'affichent si les données saisies ne respectent pas cess règles.
+         * Des messages d'erreur s'affichent si les données saisies ne respectent pas ces règles.
          */
 
         $request->validate(
@@ -51,8 +50,6 @@ class UserController extends Controller
                 'lastname' => 'required|string|min:2|max:60',
                 'email' => 'required|email|unique:users,email',
                 'phone' => 'required|regex:/^([0-9\s\-\+\(\)\/]*)$/|min:9|unique:users,phone',
-                // 'password' => 'required|min:6',
-                // 'password_confirmation' => 'required|same:password',
 
             ],
             [
@@ -149,7 +146,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        // Validation des données
+        // Règles de validation des données
 
         $request->validate(
             [
@@ -274,31 +271,35 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')->with('toast_success', 'L\'utilisateur a été supprimé de la base de données');
     }
 
-    // Générateur de mots de passe aléatoire
+    // Générateur d'un mot de passe aléatoire composé de 8 caractères lors de la création d'un compte utilisateur en backend
 
-    private static function generatePassword($minLength = 8) : string
+    private static function generatePassword($minLength = 8): string
     {
+        // Le mot de passe aléatoire doit au moins être composé d'une lettre majuscule, d'une lettre miniscule, d'un entier,
+        // et d'un caractère "special"
+
         $password = '';
 
         $specialCharacters = '!?@#&~$*';
         $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789' . $specialCharacters;
 
-        $password .= $characters[random_int(0, 25)]; // Ajouter au moins une lettre majuscule
-        $password .= $characters[random_int(26, 51)]; // Ajouter au moins une lettre minuscule
-        $password .= $characters[random_int(52, 61)]; // Ajouter au moins un chiffre entre 0 et 9
-        $password .= $specialCharacters[random_int(0, strlen($specialCharacters) - 1)]; // Ajouter au moins un caractère spécial
+        $password .= $characters[random_int(0, 25)]; // Choisir au moins une lettre majuscule entre A et Z
+        $password .= $characters[random_int(26, 51)]; // Choisir au moins une lettre minuscule entre a et z
+        $password .= $characters[random_int(52, 61)]; // Choisir au moins un chiffre entre 0 et 9
+        $password .= $specialCharacters[random_int(0, strlen($specialCharacters) - 1)]; // Choisir au moins un caractère spécial
 
-        // On remplit le reste de caractères manquant c'est à dire  4 (8-4)
+        // On remplit les 4 derniers caractères manquants de manière aléatoire
+
         while (strlen($password) < $minLength) {
             $randomChar = $characters[random_int(0, strlen($characters) - 1)];
             $password .= $randomChar;
         }
 
-        // On mixe par hasard les caractères composant le mot passe crée.
+        // Les caractères composant le mot passe de passe final sont ordonnés par hasard en faisant appel à la fonction PHP str_shuffle()
 
         $password = str_shuffle($password);
 
 
-        return $password;  // On renvoit le mot de passe.
+        return $password;  // On retourne le mot de passe crée (un string)
     }
 }

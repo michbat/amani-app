@@ -37,12 +37,10 @@
                                 <td>{{ $loop->index + 1 }}</td>
                                 <td>
                                     <span style="font-weight: 900">
-                                        <a href="{{ route('personnel.users.show', $order->user_id) }}">
-                                            @if ($order->user)
-                                                {{ $order->user->firstname }}
-                                                {{ $order->user->lastname }}
-                                            @endif
-                                        </a>
+                                        @if ($order->user)
+                                            {{ $order->user->firstname }}
+                                            {{ $order->user->lastname }}
+                                        @endif
                                     </span>
                                 </td>
                                 <td>

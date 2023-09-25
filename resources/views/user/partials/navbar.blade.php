@@ -41,12 +41,14 @@
                         Galeries
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{{ route('photo') }}"><i class="fas fa-camera mx-2"></i>Photos</a></li>
-                        <li><a class="dropdown-item" href="{{ route('video') }}"><i class="fas fa-video mx-2"></i>Vidéos</a></li>
+                        <li><a class="dropdown-item" href="{{ route('photo') }}"><i
+                                    class="fas fa-camera mx-2"></i>Photos</a></li>
+                        <li><a class="dropdown-item" href="{{ route('video') }}"><i
+                                    class="fas fa-video mx-2"></i>Vidéos</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active mx-2" aria-current="page" href="#">Contactez-nous</a>
+                    <a class="nav-link active mx-2" aria-current="page" href="{{ route('contact') }}">Contactez-nous</a>
                 </li>
                 @guest
                     @if (Route::has('login'))
@@ -62,8 +64,8 @@
                     @endif
                 @else
                     <li class="nav-item dropdown">
-                        <a style="color: black;" id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a style="color: black;" id="navbarDropdown" class="nav-link dropdown-toggle" href="#"
+                            role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             Hello, {{ Auth::user()->firstname }}
                         </a>
 
@@ -74,7 +76,7 @@
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                          document.getElementById('logout-form').submit();">
-                               <i class="fas fa-sign-out-alt mx-2"></i>Deconnexion
+                                <i class="fas fa-sign-out-alt mx-2"></i>Deconnexion
                             </a>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

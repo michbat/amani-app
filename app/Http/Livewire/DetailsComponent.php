@@ -94,6 +94,10 @@ class DetailsComponent extends Component
         $reviews = Review::where('published', 1)->where('censored', 0)->where('plat_id', $this->plat->id)->orderBy('created_at', 'DESC')->get();
         $user = Auth::user();
 
+        if ($user->censoredComments >= 5) {
+            session()->flash('warning_message', 'Vous ne pouvez malheureusement plus commenter des plats');
+        }
+
 
         $avg = floor($reviews->avg('rating'));  // Moyenne des reviews publiés!
 
