@@ -26,7 +26,7 @@ class OrderCanceledListener
         $message .= "Par la présente, nous vous informons de l'annulation de votre commande<br>";
         $message .= "Nous allons procéder au remboursement.<br><br>";
         $message .= "Cordialement, <br><br>Amani Resto.";
-        $view = 'mails.account_activation_mail';
+        $view = 'mails.amanimail';
 
         Mail::to($event->user->email)->send(new AmaniRestaurantMail($subject, $message, $view));
     }

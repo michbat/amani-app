@@ -28,7 +28,7 @@ class OrderPendingListener
         $message .= "Votre commande est en préparation. Vous ne pouvez plus l'annuler.<br>";
         $message .= "Nous informerons dès qu'elle est prête.<br><br>";
         $message .= "Cordialement, <br><br>Amani Resto.";
-        $view = 'mails.account_activation_mail';
+        $view = 'mails.amanimail';
 
         Mail::to($event->user->email)->send(new AmaniRestaurantMail($subject, $message, $view));
     }

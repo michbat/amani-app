@@ -26,7 +26,7 @@ class ReviewPublishedListenerEvent
         $message = "Bonjour,<br><br>";
         $message .= "Votre commentaire a été publiée. Merci de votre contribution!<br><br>";
         $message .= "Cordialement, <br><br>Amani Resto.";
-        $view = 'mails.account_activation_mail';
+        $view = 'mails.amanimail';
 
         Mail::to($event->user->email)->send(new AmaniRestaurantMail($subject, $message, $view));
     }

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Review;
 use App\Events\ReviewCensoredEvent;
-use App\Events\ReviewDeletedEvent;
 use App\Events\ReviewPublishedEvent;
 use App\Http\Controllers\Controller;
 

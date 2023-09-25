@@ -107,21 +107,21 @@ Route::get('/paypal/cancel', [CheckoutComponent::class, 'cancel'])->name('paypal
 // Login & logout routes
 
 Route::get('/login', [LoginController::class, 'login'])->name('login');
-Route::post('/login-submit', [LoginController::class, 'login_submit'])->name('login.submit');
+Route::post('/login-submit', [LoginController::class, 'loginSubmit'])->name('login.submit');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
 // Registration routes
 
 Route::get('/register', [RegistrationController::class, 'register'])->name('register');
-Route::post('/register-submit', [RegistrationController::class, 'register_submit'])->name('register.submit');
-Route::get('/register-verify/{token}/{email}', [RegistrationController::class, 'register_verify'])->name('register.verify');
+Route::post('/register-submit', [RegistrationController::class, 'registerSubmit'])->name('register.submit');
+Route::get('/register-verify/{token}/{email}', [RegistrationController::class, 'registerVerify'])->name('register.verify');
 
 // Password routes
 
-Route::get('/forgot-password', [PasswordController::class, 'forgot_password'])->name('forgot.password');
-Route::post('/forgot-password-submit', [PasswordController::class, 'forgot_password_submit'])->name('forgot.password.submit');
-Route::get('/reset-password/{token}/{email}', [PasswordController::class, 'reset_password'])->name('reset.password');
-Route::post('/reset-password-submit', [PasswordController::class, 'reset_password_submit'])->name('reset.password.submit');
+Route::get('/forgot-password', [PasswordController::class, 'forgotPassword'])->name('forgot.password');
+Route::post('/forgot-password-submit', [PasswordController::class, 'forgotPasswordSubmit'])->name('forgot.password.submit');
+Route::get('/reset-password/{token}/{email}', [PasswordController::class, 'resetPassword'])->name('reset.password');
+Route::post('/reset-password-submit', [PasswordController::class, 'resetPasswordSubmit'])->name('reset.password.submit');
 
 
 //  Admin routes

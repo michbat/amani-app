@@ -28,7 +28,7 @@ class OrderPickupFailListener
         $message .= "Nous vous informons que votre commande a été annulée faute d'avoir été récupérée 1h30 après sa préparation.<br>";
         $message .= "Malheuresement, aucun remboursement n'est possible conformement à notre règlement.<br><br>";
         $message .= "Cordialement, <br><br>Amani Resto.";
-        $view = 'mails.account_activation_mail';
+        $view = 'mails.amanimail';
 
         Mail::to($event->user->email)->send(new AmaniRestaurantMail($subject, $message, $view));
     }

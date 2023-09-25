@@ -27,7 +27,7 @@ class ResentLinkSubmitListener
         $subject = 'Changement de votre mot de passe';
         $message = 'Bonjour, <br><br>Veuillez cliquer sur ce lien pour changer votre mot de passe: <a href="' . $reset_link . '">Cliquez ici</a>';
         $message .= '<br><br>Cordialement,<br><br>Amani Resto.';
-        $view = 'mails.account_activation_mail';
+        $view = 'mails.amanimail';
 
         Mail::to($event->user->email)->send(new AmaniRestaurantMail($subject, $message, $view));
 

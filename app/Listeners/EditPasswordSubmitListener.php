@@ -25,7 +25,7 @@ class EditPasswordSubmitListener
         $message = "Bonjour,<br><br> Nous confirmons la modification de votre mot de passe par vos soins.<br>";
         $message .= "Veuillez la prochaine fois vous connecter avec votre nouveau mot de passe.<br><br>";
         $message .= "Cordialement, <br><br>Amani Resto.";
-        $view = 'mails.account_activation_mail';
+        $view = 'mails.amanimail';
 
         Mail::to($event->user->email)->send(new AmaniRestaurantMail($subject, $message, $view));
     }

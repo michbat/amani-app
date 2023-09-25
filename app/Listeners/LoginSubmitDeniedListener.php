@@ -25,7 +25,7 @@ class LoginSubmitDeniedListener
         $subject = "Rappel pour l'activation de votre compte";
         $message = 'Bonjour, <br><br> Bienvenu(e) sur notre site.<br>Veuillez cliquer sur ce lien pour activer votre compte:';
         $message .= '<a href= "' . $activation_link . '">Cliquez ici</a> <br><br> Cordialement, <br><br> Amani Resto.';
-        $view = 'mails.account_activation_mail';
+        $view = 'mails.amanimail';
 
         // Envoi de l'email
 

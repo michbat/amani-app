@@ -30,7 +30,7 @@ class EditProfileSubmitListener
         $message .= '<a href= "' . $verification_link . '">Cliquez ici</a><br>';
         $message .= 'Sans vérification de votre nouvelle adresse e-mail, votre compte restera désactivé.';
         $message .= '<br><br> Cordialement, <br><br> Amani Resto.';
-        $view = 'mails.account_activation_mail'; // Lien vers la vue contenant l'email
+        $view = 'mails.amanimail'; // Lien vers la vue contenant l'email
 
         // Envoi de l'email.
 

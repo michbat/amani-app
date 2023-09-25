@@ -27,7 +27,7 @@ class OrderCompletedListener
         $message = "Bonjour,<br><br> Par la présente, nous vous informons que votre commande est prête.<br>";
         $message .= "Vous avez 1h30 pour la récupérer à notre restaurant. Au délà de ce temps, votre commande sera considérée comme annulée et ce,à votre detriment.<b>Vous ne serez pas remboursé si vous ne venez pas récupérer votre commande.</b><br>";
         $message .= "Cordialement, <br><br>Amani Resto.";
-        $view = 'mails.account_activation_mail';
+        $view = 'mails.amanimail';
 
         Mail::to($event->user->email)->send(new AmaniRestaurantMail($subject, $message, $view));
     }

@@ -7,7 +7,6 @@ use App\Events\RegisterConfirmationEvent;
 use App\Events\RegisterVerifyEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterSubmitRequest;
-use App\Listeners\RegisterConfirmationListener;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -27,7 +26,7 @@ class RegistrationController extends Controller
     /**
      * Méthode qui enregistre les données saisies dans le formulaire dans la BDD
      */
-    public function register_submit(RegisterSubmitRequest $request)
+    public function registerSubmit(RegisterSubmitRequest $request)
     {
 
         /**
@@ -83,7 +82,7 @@ class RegistrationController extends Controller
     /**
      * Méthode pour vérifier si le token et le mail contenu dans le lien cliquable envoyé par mail matchent ceux contenus dans la BDD.
      */
-    public function register_verify($token, $email)
+    public function registerVerify($token, $email)
     {
 
         /**

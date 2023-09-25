@@ -9,8 +9,6 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Route;
-use App\Events\LoginSubmitDeniedEvent;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\LoginSubmitRequest;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -35,7 +33,7 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
-    public function login_submit(LoginSubmitRequest $request)
+    public function loginSubmit(LoginSubmitRequest $request)
     {
 
         // On fait appel à la méthode validated() pour appliquer les règles de validation que nous avons définies dans la classe LoginSubmitRequest
@@ -123,22 +121,6 @@ class LoginController extends Controller
 
             return redirect()->back()->with('error', 'Mot de passe incorrect');
         } else {
-
-            /**
-             * Si les crédentials sont bons mais que la connexion est réfusée, cela est dûe au fait que l'utilisateur n'a pas valide son compte
-             * en cliquant sur le lien qui lui a été envoyé lors de son inscription. Nous devons donc renvoyer par mail un nouveau lien à l'utilisateur.
-             * On va utiliser le système de gestion d'événement de Laravel (Events & Listeners) pour gérer cette tâche
-             */
-
-            // On déclenche l'événement à l'intérieur duquel on instancie un objet de la classe LoginSubmitDeniedEvent que nous avons crée
-
-            //$user->token = hash('sha256', time());  // On crée un nouveau token puisqu'on va envoyer un lien de vérification
-            //$user->update();  // Enregistrement effectif de ce token dans la BDD
-
-            // event(new LoginSubmitDeniedEvent($user));
-
-            // L'utilisateur reste sur la page login et reçoit un message flash l'informant de la nécessité d'activer son compte pour se connecter.
-
             return redirect()
                 ->back()
                 ->with('error', 'Votre compte n\'est pas activé. Activez-le en cliquant sur le lien envoyé à votre boîte e-mail ou prenez contact avec nous.');

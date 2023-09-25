@@ -30,7 +30,7 @@ class RegisterVerifyListener
          $subject = 'Activation de votre nouveau compte';
          $message = 'Bonjour, <br><br> Bienvenu(e) sur notre site.<br>Veuillez cliquer sur ce lien pour activer votre compte: ';
          $message .= '<a href= "' . $verification_link . '">Cliquez ici</a> <br><br> Cordialement, <br><br> Amani Resto.';
-         $view = 'mails.account_activation_mail'; // Lien vers la vue contenant l'email
+         $view = 'mails.amanimail'; // Lien vers la vue contenant l'email
 
          // Envoi de l'email. On met en paramètre de la méthode send() un objet de la classe AmaniRestaurantMail qui reçoit 3 paramètres (voir la classe en question dans le sous-dossier Mail/ du dossier app/)
 

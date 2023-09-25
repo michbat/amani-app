@@ -4,9 +4,7 @@ namespace App\Listeners;
 
 use App\Mail\AmaniRestaurantMail;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Queue\InteractsWithQueue;
 use App\Events\ForgotPasswordSubmitEvent;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class ForgotPasswordSubmitListener
 {
@@ -29,7 +27,7 @@ class ForgotPasswordSubmitListener
          $subject = 'Changement de votre mot de passe';
          $message = 'Bonjour, <br><br>Veuillez cliquer sur ce lien pour changer votre mot de passe: <a href="' . $reset_link . '">Cliquez ici</a>';
          $message .= '<br><br>Cordialement,<br><br>Amani Resto.';
-         $view = 'mails.account_activation_mail'; // La vue contenant l'email (voir le dossier 'resources/views/mails')
+         $view = 'mails.amanimail'; // La vue contenant l'email (voir le dossier 'resources/views/mails')
 
          // Envoi de l'email. On met en paramètre de la méthode send() un objet de la classe AmaniRestaurantMail qui reçoit 3 paramètres (voir la classe en question dans le sous-dossier Mail/ du dossier app/)
 

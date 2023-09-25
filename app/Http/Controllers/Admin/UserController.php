@@ -109,7 +109,7 @@ class UserController extends Controller
         $subject = 'Confirmation de votre nouveau compte';
         $message = 'Bonjour, <br><br> Bienvenu(e) sur notre site.<br>Veuillez cliquer sur ce lien pour activer votre compte:  ';
         $message .= '<a href= "' . $verification_link . '">Cliquez ici</a><br> Votre mot de passe par défaut est: ' . $pwd . '<br> Changez-le en vous connectant sur votre compte dès que possible! <br><br> Cordialement, <br><br> Amani Resto.';
-        $view = 'mails.account_activation_mail';
+        $view = 'mails.amanimail';
 
         // Envoi de l'email. On met en paramètre de la méthode send() un objet de la classe AmaniRestaurantMail qui reçoit 3 paramètres (voir la classe en question dans le sous-dossier Mail/ du dossier app/)
 
@@ -203,7 +203,7 @@ class UserController extends Controller
 
             $user->update(); // On rend effectif ces changements
 
-            // On declenche un événement afin d'envoyer à l'utiliser un lien cliquable de vérification à sa nouvelle adresse e-mail
+            // On declenche un événement afin d'envoyer à l'utilisateur un lien cliquable de vérification à sa nouvelle adresse e-mail
 
             event(new EditProfileSubmitEvent($user));
         } else {
@@ -220,7 +220,7 @@ class UserController extends Controller
                 $subject1 = 'Compte actif et information à jour';
                 $message1 = 'Bonjour, <br><br>Votre compte est actif et vos informations à jour.<br>';
                 $message1 .= 'En espérant vous revoir bientôt.<br><br> Cordialement, <br><br> Amani Resto.';
-                $view = 'mails.account_activation_mail';
+                $view = 'mails.amanimail';
                 Mail::to($user->email)->send(new AmaniRestaurantMail($subject1, $message1, $view));
             }
 
@@ -233,7 +233,7 @@ class UserController extends Controller
                 $message2 .= 'Vous ne pouvez plus vous connecter sur notre site.<br>';
                 $message2 .= 'Veuillez prendre contact avec nous pour de plus âpres informations.<br><br>';
                 $message2 .= 'Cordialement, <br><br> Amani Resto.';
-                $view = 'mails.account_activation_mail';
+                $view = 'mails.amanimail';
                 Mail::to($user->email)->send(new AmaniRestaurantMail($subject2, $message2, $view));
             }
         }
@@ -263,7 +263,7 @@ class UserController extends Controller
 
         $subject = 'Suppression de votre compte';
         $message = 'Bonjour,<br><br>Nous avons supprimé votre compte. Vous ne pouvez plus vous connecter sur notre site avec des identifiants liés à ce compte.<br><br>Bien à vous, <br><br> Amani Resto.';
-        $view = 'mails.account_activation_mail';
+        $view = 'mails.amanimail';
         Mail::to($user->email)->send(new AmaniRestaurantMail($subject, $message, $view));
 
         // Redirection vers la page index des utilisateurs.

@@ -11,9 +11,8 @@ use App\Http\Requests\ForgotPasswordSubmitRequest;
 use App\Http\Requests\ResentLinkSubmitRequest;
 use App\Http\Requests\ResetPasswordSubmitRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
+
 
 class PasswordController extends Controller
 {
@@ -21,7 +20,7 @@ class PasswordController extends Controller
      * Méthode qui renvoit la vue pour permettre à l'utilisateur de saisir son adresse e-mail en vue du renouvellement de son mot de passe
      */
 
-    public function forgot_password()
+    public function forgotPassword()
     {
         return view('auth.password.forgot_password');
     }
@@ -30,7 +29,7 @@ class PasswordController extends Controller
      * Methode pour gérer le formulaire d'envoi de l'e-mail
      */
 
-    public function forgot_password_submit(ForgotPasswordSubmitRequest $request)
+    public function forgotPasswordSubmit(ForgotPasswordSubmitRequest $request)
     {
         /**
          * On vérifie si nos règles de validation définies dans la classe ForgotPasswordSubmitRequest ont été respectées
@@ -64,14 +63,13 @@ class PasswordController extends Controller
          */
         event(new ForgotPasswordSubmitEvent($user));
         return redirect()->route('home')->with('info', 'Un lien pour changer votre mot de passe a été envoyé à votre adresse e-mail.');
-
     }
 
     /**
      * Méthode pour vérifier "l'intégrite" du lien envoyée en vue du renouvellement du mot de passe
      */
 
-    public function reset_password($token, $email)
+    public function resetPassword($token, $email)
     {
         // On cherche l'objet $user qui possède le token et l'adresse e-mail contenu dans le lien cliqué
 
@@ -90,7 +88,7 @@ class PasswordController extends Controller
         return view('auth.password.reset_password', compact('token', 'email'));
     }
 
-    public function reset_password_submit(ResetPasswordSubmitRequest $request)
+    public function resetPasswordSubmit(ResetPasswordSubmitRequest $request)
     {
         // On vérifie si les données saisies respectent nos règles de validation définies dans la classe ResetPasswordSubmitRequest
 
@@ -114,36 +112,34 @@ class PasswordController extends Controller
         return redirect()->route('login')->with('success', 'Votre mot de passe a été mis à jour. Vous pouvez maintenant l\'utiliser pour vous connecter.');
     }
 
-    public function resent_link()
-    {
-        return view('auth.password.resent_link');
-    }
-    public function resent_link_submit(ResentLinkSubmitRequest $request)
-    {
+    // public function resentLink()
+    // {
+    //     return view('auth.password.resent_link');
+    // }
+    // public function resentLinkSubmit(ResentLinkSubmitRequest $request)
+    // {
 
-        // On vérifie si l'adresse e-mail saisie respecte nos règles de validation définies dans la classe ResentLinkSubmitRequest
+    //     // On vérifie si l'adresse e-mail saisie respecte nos règles de validation définies dans la classe ResentLinkSubmitRequest
 
-        $request->validated();
+    //     $request->validated();
 
-        /**
-         * Si un lien de renouvellement du mot de passé a déjà été envoyé à l'utilisateur, on lui envoit à nouveau
-         * un lien cliquable avec le couple token/e-mail
-         */
+    //     /**
+    //      * Si un lien de renouvellement du mot de passé a déjà été envoyé à l'utilisateur, on lui envoit à nouveau
+    //      * un lien cliquable avec le couple token/e-mail
+    //      */
 
-        $user = User::where('email', $request->email)->first(); // On cherche l'utilisateur avec l'e-mail entré dans le formulaire
-        $user->token = hash('sha256', time()); // On regèner un token que l'on affecte au champ token de la table users
-        $user->update(); // On rend le changement effectif
+    //     $user = User::where('email', $request->email)->first(); // On cherche l'utilisateur avec l'e-mail entré dans le formulaire
+    //     $user->token = hash('sha256', time()); // On regèner un token que l'on affecte au champ token de la table users
+    //     $user->update(); // On rend le changement effectif
 
-        /**
-         * On déclenche un événement ResentLinkSubmitEvent afin d'informer l'utilisation du nouveau envoi du lien cliquable en vue
-         * de changer son mot de passe
-         * On redirige l'utilisateur vers la page d'accueil avec un message de session flash l'informant de l'envoie du lien
-         */
+    //     /**
+    //      * On déclenche un événement ResentLinkSubmitEvent afin d'informer l'utilisation du nouveau envoi du lien cliquable en vue
+    //      * de changer son mot de passe
+    //      * On redirige l'utilisateur vers la page d'accueil avec un message de session flash l'informant de l'envoie du lien
+    //      */
 
-        event(new ResentLinkSubmitEvent($user));
+    //     event(new ResentLinkSubmitEvent($user));
 
-        return redirect()->route('home')->with('info', 'Un lien pour changer votre mot de passe a été à nouveau envoyé à votre adresse e-mail.');
-
-    }
-
+    //     return redirect()->route('home')->with('info', 'Un lien pour changer votre mot de passe a été à nouveau envoyé à votre adresse e-mail.');
+    // }
 }

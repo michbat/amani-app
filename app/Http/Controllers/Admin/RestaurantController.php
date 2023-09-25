@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Tag;
 use App\Models\Restaurant;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RestaurantEditRequest;
