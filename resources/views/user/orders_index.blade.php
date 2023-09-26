@@ -68,7 +68,7 @@
                                             <button class="btn btn-warning mx-2" type="button" data-bs-toggle="collapse"
                                                 data-bs-target="#order_{{ $order->id }}"><i
                                                     class="fas fa-eye mx-2"></i>Détails</button>
-                                            <a class="btn btn-success mx-2"
+                                            <a class="btn btn-success mx-2 {{ $order->orderStatus !== App\Enums\OrderStatus::COMPLETED && $order->orderStatus !== App\Enums\OrderStatus::PICKEDUP ? 'disabled' : '' }}"
                                                 href="{{ route('user.invoice.download', $order->id) }}">
                                                 <i class="fas fa-file-alt mx-2"></i>Facture
                                             </a>
@@ -98,15 +98,18 @@
                                                         <td>{{ $loop->index + 1 }}</td>
                                                         {{-- Si $item est un plat --}}
                                                         @if ($item->plat)
-                                                            <td class="text-center"><img src="{{ asset($item->plat->image) }}"
+                                                            <td class="text-center"><img
+                                                                    src="{{ asset($item->plat->image) }}"
                                                                     alt="{{ $item->plat->name }}" style="width: 60px;">
                                                             </td>
                                                             <td class="text-center">{{ $item->plat->name }}</td>
                                                             <td class="text-center">{{ $item->plat->price }}&euro;</td>
                                                         @else
                                                             {{-- Si $item est un drink --}}
-                                                            <td class="text-center"><img src="{{ asset($item->drink->image) }}"
-                                                                    alt="{{ $item->drink->name }}" style="width: 60px; height: 40px;">
+                                                            <td class="text-center"><img
+                                                                    src="{{ asset($item->drink->image) }}"
+                                                                    alt="{{ $item->drink->name }}"
+                                                                    style="width: 60px; height: 40px;">
                                                             </td>
                                                             <td class="text-center">{{ $item->drink->name }}</td>
                                                             <td class="text-center">{{ $item->drink->price }}&euro;</td>

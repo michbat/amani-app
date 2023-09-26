@@ -28,14 +28,18 @@ class PlatDrinkOrderPermission extends Command
      */
     public function handle()
     {
+        // Je récupère tous les plats et boissons en vue de les rendre indisponibles à la commande en dehors des heures d'ouverture
+
         $plats = Plat::all();
         $drinks = Drink::all();
+        // Je récupère l'heure courante en Belgique
         $currentTime = Carbon::now('Europe/Brussels')->format('H:i');
-        $openKitchenTime = '00:00';
-        $closeKitchenTime = '23:00';
+        $openTime = '10:00';
+        $closeTime = '23:00';
 
 
-        if ($currentTime >= $openKitchenTime && $currentTime <= $closeKitchenTime) {
+        if ($currentTime >= $openTime && $currentTime <= $closeTime) {
+            // Lorsqu'on est en dehors de la plage horaire, les plats et les boissons ne sont pas disponibles à la commande
             foreach ($plats as $plat) {
                 $plat->canBeCommended = 1;
                 $plat->update();
@@ -45,6 +49,8 @@ class PlatDrinkOrderPermission extends Command
                 $drink->update();
             }
         } else {
+            // Sinon, ils sont disponibles à la commande
+
             foreach ($plats as $plat) {
                 $plat->canBeCommended = 0;
                 $plat->update();

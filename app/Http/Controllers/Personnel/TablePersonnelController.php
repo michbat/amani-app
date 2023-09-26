@@ -14,9 +14,8 @@ class TablePersonnelController extends Controller
      */
     public function index()
     {
-        $nt = Table::all()->count();
         $tables = Table::orderBy('id', 'ASC')->paginate(5);
-        return view('personnel.tables.index', compact('tables','nt'));
+        return view('personnel.tables.index', compact('tables'));
     }
 
     /**

@@ -75,6 +75,10 @@ class PasswordController extends Controller
 
         $user = User::where('token', $token)->where('email', $email)->first();
 
+        if (url()->previous() == 'http://localhost:8000/login') {
+            return redirect()->route('home');
+        }
+
         // Si on ne trouve pas d'utilisateur parce que le token ou l'adresse e-mail ne sont pas bons.
 
         if (!$user) {

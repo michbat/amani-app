@@ -14,9 +14,8 @@ class TableController extends Controller
      */
     public function index()
     {
-        $nt = Table::all()->count();
         $tables = Table::orderBy('id', 'ASC')->paginate(5);
-        return view('admin.tables.index', compact('tables','nt'));
+        return view('admin.tables.index', compact('tables'));
     }
 
     /**

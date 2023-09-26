@@ -32,29 +32,33 @@ class IngredientDrinkStockMonitoring extends Command
 
         /**
          *  Pour monitorer les stocks des boissons et des ingrédients en vue d'indisponibiliser des plats ou des boissons dont le stock
-         * est critique, on sélectionne tous les ingrédients et tous les boisssons
+         * est critique, je sélectionne tous les ingrédients et tous les boisssons
          */
 
         $ingredients = Ingredient::all();
         $drinks = Drink::all();
 
-        // Chaque seconde, on vérifie si chaque ingrédient et chaque boisson sont en quantité suffisante en comparant leur stock courant
-        // avec le seuil de quantité minimal à partir duquel le plat qui contient l'ingrédient et le boisson deviennent indisponibles
+        // Chaque seconde, je vérifie si chaque ingrédient et chaque boisson sont en quantité suffisante en comparant leur stock courant
+        // avec le seuil de quantité minimale à partir duquel le plat qui contient l'ingrédient et le boisson deviennent indisponibles
 
         foreach ($ingredients as $ingredient) {
+            // Si le 1/3 de la quantité en stock est <= au seuil de quantité minimale, l'ingrédient devient indisponible
+
             if (($ingredient->quantityInStock / 3) <= $ingredient->quantityMinimum) {
-                $ingredient->stockStatus = StockStatus::NOTAVAILABLE->value;
+                $ingredient->stockStatus = StockStatus::NOTAVAILABLE->value; // On met la propriété enum "stockStatus" à "NOTAVAILABLE"
                 $ingredient->update();
 
-                // On parcourt les plats lié à cet ingrédient pour les rendre indisponibles.
+                // On parcourt les plats contenant cet ingrédient pour les rendre indisponibles.
 
                 foreach ($ingredient->plats as $plat) {
-                    $plat->available = 0; // on met la propriété available à false (0)
+                    $plat->available = 0; // on met la propriété 'available' à false (0), le plat n'est plus commandable.
                     $plat->save();
                 }
             }
         }
 
+        // On fait la même chose pour les boissons
+        
         foreach ($drinks as $drink) {
             if (($drink->quantityInStock / 3) <= $drink->quantityMinimum) {
                 $drink->available = 0;

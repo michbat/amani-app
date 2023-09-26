@@ -12,6 +12,7 @@ class AmaniRestaurantMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    // 
 
     public $subject;
     public $body;

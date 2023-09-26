@@ -41,7 +41,7 @@ class RegistrationController extends Controller
          * qui est envoyé par mail au nouveau utilisateur inscrit.
          */
 
-        $token = hash('sha256', time()); // La fonction native PHP hash() hâche l'heure courante mesurée en secondes depuis le 1er janvier 1970 00:00:00 GMT retournée par time()
+        $token = hash('sha256', time()); // La fonction native PHP hash() hâche l'heure courante mesurée en secondes depuis le 1er janvier 1970 00:00:00 GMT retournée par time() en utilisant l'algorithme de hachage sha256
 
         // On crée un nouvel objet $user de la classe Model User.
 
