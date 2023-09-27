@@ -42,7 +42,7 @@ class LoginController extends Controller
 
         // On récupère un objet eloquent $user à qui appartient l'adresse e-mail entrée
 
-        $user = User::where('email', $request->email)->first();  // renvoit l'objet en questionb ou null
+        $user = User::where('email', $request->email)->first();  // renvoit l'objet eloquent $user si celui-ci existe dans la BDD ou null
 
         // On vérifie que mot de passe saisi correspond à celui fourni lors de l'enregistrement
 
