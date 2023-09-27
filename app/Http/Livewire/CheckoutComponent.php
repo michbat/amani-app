@@ -285,7 +285,7 @@ class CheckoutComponent extends Component
         $order->tva = Cart::instance('cart')->tax();
         $order->total = Cart::instance('cart')->total();
         $order->paymentMode = PaymentMode::CASH->value;
-        $order->paymentStatus = PaymentStatus::DUE->value;
+        $order->paymentStatus = PaymentStatus::PAID->value;
         $order->orderStatus = OrderStatus::CONFIRMED->value;
 
         return $order;

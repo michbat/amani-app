@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete()->cascadeOnUpdate();
-            $table->decimal('subtotal', 8, 2)->nullable();
-            $table->decimal('tva', 8, 2)->nullable();
-            $table->decimal('total', 8, 2)->nullable();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->decimal('subtotal', 8, 2);
+            $table->decimal('tva', 8, 2);
+            $table->decimal('total', 8, 2);
             $table->string('nameOnCard')->nullable();
             $table->string('numberOnCard')->nullable();
             $table->string('expirationDate')->nullable();
-            $table->enum('paymentMode', ['cash', 'card','paypal'])->nullable();
-            $table->enum('paymentStatus', ['due', 'paid','refunded'])->nullable();
+            $table->enum('paymentMode', ['cash', 'card','paypal']);
+            $table->enum('paymentStatus', ['due', 'paid','refunded'])->default('paid');
             $table->enum('orderStatus', ['pending', 'confirmed', 'completed', 'pickedup', 'canceled'])->default('confirmed');
             $table->timestamps();
         });
