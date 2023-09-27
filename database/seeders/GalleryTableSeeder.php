@@ -66,6 +66,7 @@ class GalleryTableSeeder extends Seeder
             ],
         ];
 
+
         Gallery::insert($galleries);
     }
 }

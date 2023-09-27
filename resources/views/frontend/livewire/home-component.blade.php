@@ -117,7 +117,9 @@
     <!-- /bg_gray -->
     <div class="container margin_120_100">
         <div class="main_title center mb-5">
-            <span><em></em></span>
+            <span style="background-color: green!important">
+                <em style="background-color: green!important"></em>
+            </span>
             <h2>Nos chefs et staff</h2>
         </div>
         <div id="staff" class="owl-carousel owl-theme">

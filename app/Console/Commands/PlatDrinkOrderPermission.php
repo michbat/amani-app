@@ -39,7 +39,7 @@ class PlatDrinkOrderPermission extends Command
 
 
         if ($currentTime >= $openTime && $currentTime <= $closeTime) {
-            // Lorsqu'on est en dehors de la plage horaire, les plats et les boissons ne sont pas disponibles à la commande
+            // Durant les heures d'ouverture, les plats et les boissons  sont  disponibles à la commande
             foreach ($plats as $plat) {
                 $plat->canBeCommended = 1;
                 $plat->update();
@@ -49,7 +49,7 @@ class PlatDrinkOrderPermission extends Command
                 $drink->update();
             }
         } else {
-            // Sinon, ils sont disponibles à la commande
+            // Sinon, ils ne sont pas disponibles à la commande
 
             foreach ($plats as $plat) {
                 $plat->canBeCommended = 0;

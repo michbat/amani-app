@@ -37,7 +37,7 @@ class ReviewComponent extends Component
 
         // Si c'est le cas (si l'objet éloquent renvoyé lors de la requête n'est pas null, on crée un message flash à destination du client)
         if ($this->alreadyCommented != null) {
-            session()->flash('warning_message', 'Vous avez déjà commenté ce plat. Vous ne pouvez pas commenter un produit plus d\'une fois.');
+            session()->flash('warning_message', 'Vous avez déjà commenté ce plat. Vous ne pouvez pas commenter un plat plus d\'une fois.');
         }
 
     }
