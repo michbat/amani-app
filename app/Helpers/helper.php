@@ -20,7 +20,7 @@ function uploadImage($photo, $path, $ancien_path = null): string
     if ($photo) {
         // S'il existe déjà un repertoire
         if (file_exists($ancien_path) && $ancien_path != null) {
-            // On supprimer l'ancien repertoire et le fichier photo
+            // On supprime l'ancien repertoire et le fichier photo
 
             unlink($ancien_path);
         }
