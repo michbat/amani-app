@@ -45,10 +45,6 @@ class AdminController extends Controller
             }
         }
 
-
-
-
-
         return view('admin.index', compact('plats', 'drinks', 'users', 'opened', 'turnover', 'tax', 'ingredients', 'nbrOrders','occupiedTable','nbrTables'));
     }
 
