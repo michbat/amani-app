@@ -34,6 +34,17 @@ class CheckoutComponent extends Component
         'cvc' => 'required|numeric|digits:3',
     ];
 
+
+    public function updated()
+    {
+        session()->put('nOc',$this->nameOnCard);
+        session()->put('nbr',$this->number);
+        session()->put('expD',$this->expirationDate);
+        session()->put('cvc',$this->cvc);
+
+
+    }
+
     // Conserver la valeur de la propriété $acceptance dans une variable de session à chaque fois qu'elle change
 
     public function updatedAcceptance()
@@ -323,6 +334,11 @@ class CheckoutComponent extends Component
         $client = $this->user;
 
         $this->acceptance = session()->get('acc');
+        $this->number = session()->get('nbr');
+        $this->nameOnCard = session()->get('nOc');
+        $this->expirationDate = session()->get('expD');
+        $this->cvc = session()->get('cvc');
+
         return view('frontend.livewire.checkout-component', compact('client'));
     }
 

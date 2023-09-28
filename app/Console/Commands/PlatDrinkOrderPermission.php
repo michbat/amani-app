@@ -34,11 +34,11 @@ class PlatDrinkOrderPermission extends Command
         $drinks = Drink::all();
         // Je récupère l'heure courante en Belgique
         $currentTime = Carbon::now('Europe/Brussels')->format('H:i');
-        $openTime = '00:00';
-        $closeTime = '23:00';
+        $openingTime = '10:00';
+        $closingTime = '23:00';
 
 
-        if ($currentTime >= $openTime && $currentTime <= $closeTime) {
+        if ($currentTime >= $openingTime && $currentTime <= $closingTime) {
             // Durant les heures d'ouverture, les plats et les boissons  sont  disponibles à la commande
             foreach ($plats as $plat) {
                 $plat->canBeCommended = 1;
