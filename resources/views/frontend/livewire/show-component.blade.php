@@ -17,6 +17,52 @@
 @endpush
 <div>
     <main>
+        <!-- /hero_single -->
+
+        <div class="filters_full clearfix">
+            <div class="container">
+                <div class="form-group row">
+                    <div class="col-6">
+
+                        <label for="debut" class="form-label">Date début</label>
+                        <input id="debut" type="date" min="{{ date('Y-m-d') }}" class="form-control"
+                            wire:model="startDate">
+                    </div>
+                    <div class="col-6">
+                        <label for="fin" class="form-label">Date fin</label>
+                        <input id="fin" type="date" min="{{ date('Y-m-d') }}" class="form-control"
+                            wire:model="endDate">
+                    </div>
+
+                </div>
+                <div class="d-flex justify-content-between">
+                    {{-- Filtrage par style de musique --}}
+                    <div class="sort_select">
+                        <select name="sort" id="sort" style="min-width: 150px;" wire:model="music_id">
+                            <option value="0" selected="selected">Style de musique</option>
+                            @foreach ($musics as $music)
+                                <option value="{{ $music->id }}">{{ $music->style }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    {{-- Filtrage par nom de show --}}
+                    <div class="form-group">
+                        <input type="text" class="form-control" wire:model="show"
+                            placeholder="Entrez le nom du show">
+                    </div>
+                    {{-- Filtrage par nom de groupe --}}
+                    <div class="sort_select">
+                        <select name="sort" id="sort" style="min-width: 150px;" wire:model="band_id">
+                            <option value="0" selected="selected">Groupes</option>
+                            @foreach ($bands as $band)
+                                <option value="{{ $band->id }}">{{ $band->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /filters_full -->
         <div class="container margin_60_40">
             <div class="count_results">
                 @if ($shows->count() > 0)
@@ -128,6 +174,12 @@
                         </div>
                     @endforeach
                 @else
+                    <div class="d-flex justify-content-center my-5">
+                        <h2 class="display-3 text-center d-flex flex-column">
+                            <i class="far fa-frown fa-3x"></i>
+                            <span>Aucun spectacle!</span>
+                        </h2>
+                    </div>
                 @endif
             </div>
 

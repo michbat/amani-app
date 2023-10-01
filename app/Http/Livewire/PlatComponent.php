@@ -112,7 +112,6 @@ class PlatComponent extends Component
                 '5-10' => [5, 10],
                 '10-15' => [10, 15],
                 '15-20' => [15, 20],
-                '20-25' => [20, 25],
             ];
 
             // La fonction PHP array_map() recevant en paramètre une fonction callback, un tableau et retournant un tableau, mappe ici des intervalles de prix sélectionnées par le client donc stockées dans la propriété tableau $priceIntervals.
@@ -126,6 +125,7 @@ class PlatComponent extends Component
             $query->orWhere(function ($query) use ($selectedPriceRanges) {
                 // Je parcours les intervalles de prix sélectionnés se trouvant dans le tableau  $selectedPriceRanges
                 foreach ($selectedPriceRanges as $range) {
+                    dd($range);
                     $query->orWhereBetween('price', $range);  // Je vérifie si le prix est compris entre les bornes inférieures et supérieures de chaque intervalle cochée.
                 }
             });

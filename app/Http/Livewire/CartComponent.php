@@ -164,7 +164,7 @@ class CartComponent extends Component
          */
 
         $currentTime = Carbon::now('Europe/Brussels')->format('H:i');  // Récupération de l'heure courante de la Belgique
-        $openTime = '00:00';  // Heure d'ouverture
+        $openTime = '10:00';  // Heure d'ouverture
         $closeTime = '23:00';  // Heure de fermeture
 
         if ($currentTime >= $openTime && $currentTime <= $closeTime) {
