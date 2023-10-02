@@ -9,8 +9,6 @@
     <div class="card mt-3">
         <div class="card-header d-flex flex-column justify-content-center align-items-start">
             <h4>Liste des ingrédients</h4>
-            {{-- <p>{{ $ingredients->count() }} sur {{ $ingredients->total() }}</p> --}}
-            {{-- <p>{{ $ingredients->currentPage() }} sur {{ $ingredients->perPage() }}</p> --}}
             <p>{{ $ingredients->firstItem() }} à {{ $ingredients->lastItem() }} sur {{ $ingredients->total() }}
                 ingrédient(s)</p>
         </div>
@@ -28,7 +26,7 @@
                         <th class="text-center">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="ingredients">
                     @if (count($ingredients) > 0)
                         @foreach ($ingredients as $ingredient)
                             <tr>

@@ -77,7 +77,6 @@ class ShowComponent extends Component
 
         // Filtrage par nom de groupe
 
-
         if($this->band_id)
         {
             $query->whereHas('band', function ($q) {

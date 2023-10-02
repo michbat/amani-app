@@ -17,6 +17,7 @@ class IngredientController extends Controller
      */
     public function index()
     {
+
         $ingredients = Ingredient::orderBy('name')->paginate(10);
         return view('admin.ingredients.index', compact('ingredients'));
     }

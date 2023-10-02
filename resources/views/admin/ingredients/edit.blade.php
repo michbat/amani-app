@@ -69,9 +69,9 @@
                     <div class="col-sm-12">
                         <label for="stockStatus" class="form-label">Disponibilité</label>
                         <select class="form-control selectric" name="stockStatus" id="stockStatus">
-                            @foreach ($stockStatus as $ss)
-                                <option value="{{ $ss->value }}" @selected($ingredient->stockStatus->value === $ss->value)>
-                                    {{ $ss->label() }}
+                            @foreach ($stockStatus as $sost)
+                                <option value="{{ $sost->value }}" @selected($ingredient->stockStatus->value === $sost->value)>
+                                    {{ $sost->label() }}
                                 </option>
                             @endforeach
                         </select>
