@@ -82,8 +82,8 @@ class CheckoutComponent extends Component
             $this->fillPlatOrder($order->id);
 
             if (!$this->decreaseQuantityInStock($order)) {
-                return redirect()->route('cart')->with('warning','nous ne pouvons pas honoré votre commande');
-            }else{
+                return redirect()->route('cart')->with('warning', 'nous ne pouvons pas honoré votre commande');
+            } else {
                 try {
 
                     $stripe = Stripe::make(config('services.stripe.secret'));
@@ -122,7 +122,6 @@ class CheckoutComponent extends Component
                     return redirect()->back();
                 }
             }
-
         }
 
         if ($this->paymentMode == "cash") {
@@ -133,10 +132,8 @@ class CheckoutComponent extends Component
 
 
             if (!$this->decreaseQuantityInStock($order)) {
-                return redirect()->route('cart')->with('warning','nous ne pouvons pas honoré votre commande');
+                return redirect()->route('cart')->with('warning', 'nous ne pouvons pas honoré votre commande');
             } else {
-
-                // $this->decreaseQuantityInStock($order);
 
                 // Destruction du panier
 
@@ -199,35 +196,45 @@ class CheckoutComponent extends Component
 
         $response = $provider->capturePaymentOrder($request->token);
 
-        if (isset($response['status']) && $response['status'] == 'COMPLETED') {
-            $order = new Order();
+        $order = $this->makePayPalOrder();
+        $order->save();
+        $this->fillPlatOrder($order->id);
 
-            $order->user_id = $user->id;
-            $order->subtotal = Cart::instance('cart')->subtotal();
-            $order->tva = Cart::instance('cart')->tax();
-            $order->total = Cart::instance('cart')->total();
-            $order->paymentMode = PaymentMode::PAYPAL->value;
-            $order->paymentStatus = PaymentStatus::PAID->value;
-            $order->orderStatus = OrderStatus::CONFIRMED->value;
-            $order->save();
-
-            $this->fillPlatOrder($order->id);
-
-            // Mise à jour du stock des produits après le checkout
-
-            $this->decreaseQuantityInStock($order);
-
-            // Destruction du panier
-
-            Cart::instance('cart')->destroy();
-
-            // Envoyez l'e-mail au client pour confirmer sa commande en instanciant un événement OrderConfirmedEvent
-
-            event(new OrderConfirmedEvent($user));
-
-            return redirect()->route('checkout.success')->with('success', 'Nous confirmons votre commande. Nous vous informerons dès qu\'elle est prête');
+        if (!$this->decreaseQuantityInStock($order)) {
+            return redirect()->route('cart')->with('warning', 'nous ne pouvons pas honoré votre commande');
         } else {
-            return redirect()->route('paypal.cancel');
+
+
+            if (isset($response['status']) && $response['status'] == 'COMPLETED') {
+                // $order = new Order();
+
+                // $order->user_id = $user->id;
+                // $order->subtotal = Cart::instance('cart')->subtotal();
+                // $order->tva = Cart::instance('cart')->tax();
+                // $order->total = Cart::instance('cart')->total();
+                // $order->paymentMode = PaymentMode::PAYPAL->value;
+                // $order->paymentStatus = PaymentStatus::PAID->value;
+                // $order->orderStatus = OrderStatus::CONFIRMED->value;
+                // $order->save();
+
+                // $this->fillPlatOrder($order->id);
+
+                // // Mise à jour du stock des produits après le checkout
+
+                // $this->decreaseQuantityInStock($order);
+
+                // Destruction du panier
+
+                Cart::instance('cart')->destroy();
+
+                // Envoyez l'e-mail au client pour confirmer sa commande en instanciant un événement OrderConfirmedEvent
+
+                event(new OrderConfirmedEvent($user));
+
+                return redirect()->route('checkout.success')->with('success', 'Nous confirmons votre commande. Nous vous informerons dès qu\'elle est prête');
+            } else {
+                return redirect()->route('paypal.cancel');
+            }
         }
     }
 
@@ -287,6 +294,21 @@ class CheckoutComponent extends Component
         $order->tva = Cart::instance('cart')->tax();
         $order->total = Cart::instance('cart')->total();
         $order->paymentMode = PaymentMode::CASH->value;
+        $order->paymentStatus = PaymentStatus::PAID->value;
+        $order->orderStatus = OrderStatus::CONFIRMED->value;
+
+        return $order;
+    }
+
+    private function makePayPalOrder(): Order
+    {
+        $order = new Order();
+
+        $order->user_id = $this->user->id;
+        $order->subtotal = Cart::instance('cart')->subtotal();
+        $order->tva = Cart::instance('cart')->tax();
+        $order->total = Cart::instance('cart')->total();
+        $order->paymentMode = PaymentMode::PAYPAL->value;
         $order->paymentStatus = PaymentStatus::PAID->value;
         $order->orderStatus = OrderStatus::CONFIRMED->value;
 
