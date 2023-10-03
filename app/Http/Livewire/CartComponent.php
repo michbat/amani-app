@@ -167,12 +167,10 @@ class CartComponent extends Component
         $openTime = '10:00';  // Heure d'ouverture
         $closeTime = '23:00';  // Heure de fermeture
 
-        if ($currentTime >= $openTime && $currentTime <= $closeTime) {
-            return view('frontend.livewire.cart-component');
-        } else {
+        if ($currentTime < $openTime || $currentTime > $closeTime) {
             // On n'appele la méthode closedDoors() en dehors des heures d'ouverture
             $this->closedDoors();
-            return view('frontend.livewire.plat-component');
         }
+        return view('frontend.livewire.cart-component');
     }
 }

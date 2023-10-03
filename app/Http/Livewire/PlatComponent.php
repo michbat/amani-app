@@ -125,7 +125,6 @@ class PlatComponent extends Component
             $query->orWhere(function ($query) use ($selectedPriceRanges) {
                 // Je parcours les intervalles de prix sélectionnés se trouvant dans le tableau  $selectedPriceRanges
                 foreach ($selectedPriceRanges as $range) {
-                    dd($range);
                     $query->orWhereBetween('price', $range);  // Je vérifie si le prix est compris entre les bornes inférieures et supérieures de chaque intervalle cochée.
                 }
             });

@@ -58,7 +58,7 @@ class ContactComponent extends Component
         $subject = "Message provenant de la page de contact";
         $message = $this->message;
         $message .= "<br><br><b>Envoyeur:</b> $this->name";
-        $view = 'mails.account_activation_mail';
+        $view = 'mails.amanimail';
 
         $response = Mail::to($this->email)->send(new AmaniRestaurantMail($subject, $message, $view));
 

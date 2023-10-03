@@ -27,6 +27,8 @@ class EditPasswordSubmitListener
         $message .= "Cordialement, <br><br>Amani Resto.";
         $view = 'mails.amanimail';
 
+        // dd($event->user);
+
         Mail::to($event->user->email)->send(new AmaniRestaurantMail($subject, $message, $view));
     }
 }

@@ -125,7 +125,7 @@
                     <div class="col-sm-8 text-start">
 
                         @foreach (Cart::instance('cart')->content() as $item)
-                            @if ((auth()->user() != null && auth()->user()->firstname == 'Generic') || $item->associatedModel == 'App\Models\Plat')
+                            @if ($item->associatedModel == 'App\Models\Plat')
                                 @php
                                     $platIsAbsent = false;
                                 @endphp

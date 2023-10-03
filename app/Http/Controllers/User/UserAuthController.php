@@ -42,6 +42,7 @@ class UserAuthController extends Controller
         $user->update(); // On met à jour les données dans la BDD
 
         // On envoit un e-mail de confirmation de changement de mot de passe à l'utilisateur en utilisant l'événement EditPasswordSubmitEvent()
+
         event(new EditPasswordSubmitEvent($user));
 
         // On redirige l'utilisateur vers son dashboard

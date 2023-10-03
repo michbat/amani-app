@@ -20,9 +20,6 @@
         @endif
         <li class="submenu">
             <a href="{{ route('cart') }}" class="show">Panier<i class="fas fa-shopping-cart ms-1"></i>
-                <strong>
-                    {{ Cart::instance('cart')->count() ?? 0 }}
-                </strong>
             </a>
         </li>
         @if (Cart::instance('cart')->count() > 0 || (auth()->user() && auth()->user()->firstname == 'Generic'))

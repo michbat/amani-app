@@ -23,7 +23,7 @@ class CheckoutComponent extends Component
 {
     public $paymentMode = "card"; // Méthode de paiement en ligne par défaut
     public $nameOnCard, $number, $expirationDate, $cvc, $user;
-    public $acceptance;
+    public $acceptance; // Propriété pour vérifier si la checkbox des termes et conditions a été "checkée"
 
     //  Règles de validation
 
@@ -34,24 +34,16 @@ class CheckoutComponent extends Component
         'cvc' => 'required|numeric|digits:3',
     ];
 
+    // Nous mettons les propriétés dans des variables de session pour pouvoir les sauvegarder de page en page
 
     public function updated()
     {
-        session()->put('nOc',$this->nameOnCard);
-        session()->put('nbr',$this->number);
-        session()->put('expD',$this->expirationDate);
-        session()->put('cvc',$this->cvc);
-
-
-    }
-
-    // Conserver la valeur de la propriété $acceptance dans une variable de session à chaque fois qu'elle change
-
-    public function updatedAcceptance()
-    {
+        session()->put('nOc', $this->nameOnCard);
+        session()->put('nbr', $this->number);
+        session()->put('expD', $this->expirationDate);
+        session()->put('cvc', $this->cvc);
         session()->put('acc', $this->acceptance);
     }
-
 
     public function mount()
     {
@@ -86,79 +78,78 @@ class CheckoutComponent extends Component
 
 
             $order = $this->makeCardOrder();
+            $order->save();
+            $this->fillPlatOrder($order->id);
 
-            // Création d'un objet $stripe
+            if (!$this->decreaseQuantityInStock($order)) {
+                return redirect()->route('cart')->with('warning','nous ne pouvons pas honoré votre commande');
+            }else{
+                try {
 
-            try {
+                    $stripe = Stripe::make(config('services.stripe.secret'));
 
-                $stripe = Stripe::make(config('services.stripe.secret'));
+                    $customer = $stripe->customers()->create([
+                        'name' => $this->user->firstname . ' ' . $this->user->lastname,
+                        'email' => $this->user->email,
+                        'phone' => $this->user->phone,
+                        'source' => 'tok_visa',
+                    ]);
 
-                $customer = $stripe->customers()->create([
-                    'name' => $this->user->firstname . ' ' . $this->user->lastname,
-                    'email' => $this->user->email,
-                    'phone' => $this->user->phone,
-                    'source' => 'tok_visa',
-                ]);
+                    $charge = $stripe->charges()->create([
+                        'customer' => $customer['id'],
+                        'currency' => 'eur',
+                        'amount' => Cart::instance('cart')->total(),
+                        'description' => 'Paiement par carte de la commande n° ' . $order->id,
+                    ]);
 
-                $charge = $stripe->charges()->create([
-                    'customer' => $customer['id'],
-                    'currency' => 'eur',
-                    'amount' => Cart::instance('cart')->total(),
-                    'description' => 'Paiement par carte de la commande n° ' . $order->id,
-                ]);
+                    if ($charge['status'] == 'succeeded') {
 
-                if ($charge['status'] == 'succeeded') {
-                    $order->save();
-                    $this->fillPlatOrder($order->id);
+                        // Destruction du panier
 
-                    // Mise à jour du stock des produits après le checkout
+                        Cart::instance('cart')->destroy();
 
-                    $this->decreaseQuantityInStock($order);
+                        // On envoit un e-mail au client pour confirmer sa commande
 
-                    // Destruction du panier
+                        event(new OrderConfirmedEvent($this->user));
 
-                    Cart::instance('cart')->destroy();
-
-                    // On envoit un e-mail au client pour confirmer sa commande
-
-                    event(new OrderConfirmedEvent($this->user));
-
-                    return redirect()->route('checkout.success')->with('success', 'Nous confirmons votre commande. Nous vous informerons dès qu\'elle est prête');
-                } else {
-                    session()->flash('payment_error', 'Il y a eu une erreur lors de la transaction!');
+                        return redirect()->route('checkout.success')->with('success', 'Nous confirmons votre commande. Nous vous informerons dès qu\'elle est prête');
+                    } else {
+                        session()->flash('payment_error', 'Il y a eu une erreur lors de la transaction!');
+                        return redirect()->back();
+                    }
+                } catch (Exception $e) {
+                    session()->flash('payment_error', $e->getMessage());
                     return redirect()->back();
                 }
-            } catch (Exception $e) {
-                session()->flash('payment_error', $e->getMessage());
-                return redirect()->back();
             }
+
         }
-
-
 
         if ($this->paymentMode == "cash") {
 
             $order = $this->makeCashOrder();
-
             $order->save();
-
             $this->fillPlatOrder($order->id);
 
-            // Mise à jour du stock des produits après le checkout
 
-            $this->decreaseQuantityInStock($order);
+            if (!$this->decreaseQuantityInStock($order)) {
+                return redirect()->route('cart')->with('warning','nous ne pouvons pas honoré votre commande');
+            } else {
 
-            // Destruction du panier
+                // $this->decreaseQuantityInStock($order);
 
-            Cart::instance('cart')->destroy();
+                // Destruction du panier
 
-            // Envoyez l'e-mail au client pour confirmer sa commande en instanciant un événement OrderConfirmedEvent
+                Cart::instance('cart')->destroy();
 
-            event(new OrderConfirmedEvent($this->user));
+                // Envoyez l'e-mail au client pour confirmer sa commande en instanciant un événement OrderConfirmedEvent
 
-            // Après commande, on dirige le client vers la vue checkout.success
+                event(new OrderConfirmedEvent($this->user));
 
-            return redirect()->route('checkout.success')->with('success', 'Nous confirmons votre commande. Nous vous informerons dès qu\'elle est prête');
+                // Après commande, on dirige le client vers la vue checkout.success
+
+                return redirect()->route('checkout.success')->with('success', 'Nous confirmons votre commande. Nous vous informerons dès qu\'elle est prête');
+            }
         }
 
         if ($this->paymentMode == "paypal") {
@@ -313,17 +304,41 @@ class CheckoutComponent extends Component
              */
 
             $quantity = $lineOrder->quantity;
+            $isOk = true;
 
             if (!empty($lineOrder->plat->ingredients)) {
                 foreach ($lineOrder->plat->ingredients as $lomi) {
                     $lomi->quantityInStock = $lomi->quantityInStock - $lomi->pivot->amount * $quantity;
+
+                    if ($lomi->quantityInStock > 0) {
+                        $isOk = true;
+                    } else {
+                        $isOk = false;
+                        break;
+                    }
+                }
+            }
+
+            if ($isOk) {
+                foreach ($lineOrder->plat->ingredients as $lomi) {
+                    $lomi->quantityInStock = $lomi->quantityInStock - $lomi->pivot->amount * $quantity;
                     $lomi->update();
                 }
+                return true;
+            } else {
+                $order->delete();
+                return false;
             }
 
             if (!empty($lineOrder->drink)) {
                 $lineOrder->drink->quantityInStock = $lineOrder->drink->quantityInStock - $quantity;
-                $lineOrder->drink->update();
+                if ($lineOrder->drink->quantityInStock > 0) {
+                    $lineOrder->drink->update();
+                    return true;
+                } else {
+                    $order->delete();
+                    return false;
+                }
             }
         }
     }
