@@ -9,6 +9,7 @@ use App\Events\LoginSubmitDeniedEvent;
 use App\Events\OrderCanceledEvent;
 use App\Events\OrderCompletedEvent;
 use App\Events\OrderConfirmedEvent;
+use App\Events\OrderFailedRefundedEvent;
 use App\Events\OrderPendingEvent;
 use App\Events\OrderPickedUpEvent;
 use App\Events\OrderPickupFailEvent;
@@ -26,6 +27,7 @@ use App\Listeners\LoginSubmitDeniedListener;
 use App\Listeners\OrderCanceledListener;
 use App\Listeners\OrderCompletedListener;
 use App\Listeners\OrderConfirmedListener;
+use App\Listeners\OrderFailedRefundedListener;
 use App\Listeners\OrderPendingListener;
 use App\Listeners\OrderPickedUpListener;
 use App\Listeners\OrderPickupFailListener;
@@ -115,6 +117,10 @@ class EventServiceProvider extends ServiceProvider
 
         ReviewCensoredEvent::class => [
             ReviewCensoredListenerEvent::class,
+        ],
+
+        OrderFailedRefundedEvent::class=>[
+            OrderFailedRefundedListener::class,
         ],
 
 

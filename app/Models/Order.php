@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\User;
-use App\Models\MenuOrder;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentMode;
 use App\Models\LineOrders;

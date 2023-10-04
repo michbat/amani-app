@@ -17,23 +17,28 @@ class CheckAddedPlat
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $verify = false;
+        $verify = false;  // Variable drapeau pour vérifier la présence d'un plat dans le panier
 
         foreach (Cart::instance('cart')->content() as $content) {
             if ($content->associatedModel == "App\Models\Plat") {
-                $verify = true;
+                $verify = true;  // Se met à true s'il y a un plat dans le panier
+                break;
             }
         }
 
+        // Si l'utilisateur est connecté et qu'il est 'Generic'
         if (Auth::check() && Auth::user()->firstname == "Generic") {
+            // Il peut ajouter les boissons sans les plats
             return $next($request);
         }
 
+        // Si le panier est vide ou qu'il n'y trouve pas de plat
         if (count(Cart::instance('cart')->content()) == 0 || $verify == false) {
-            if ($verify == false) {
-                Cart::instance('cart')->destroy();
-            }
-            return redirect()->route('plat');
+            // S'il n'y a pas de plat
+            // if ($verify == false) {
+            //     Cart::instance('cart')->destroy();  // On dettuit l'instance du panier
+            // }
+            return redirect()->route('plat');  // On redirige l'utilisateur vers la page des plats"
         }
         return $next($request);
     }

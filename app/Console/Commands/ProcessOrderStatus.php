@@ -4,9 +4,11 @@ namespace App\Console\Commands;
 
 use App\Models\Order;
 use App\Enums\OrderStatus;
+use App\Enums\PaymentStatus;
 use Illuminate\Console\Command;
 use App\Events\OrderPendingEvent;
 use App\Events\OrderCompletedEvent;
+use App\Events\OrderFailedRefundedEvent;
 use App\Events\OrderPickedUpEvent;
 use App\Events\OrderPickupFailEvent;
 
@@ -88,6 +90,12 @@ class ProcessOrderStatus extends Command
 
         $ordersToPickupFail = Order::where('orderStatus', OrderStatus::COMPLETED->value)
             ->where('created_at', '<=', now()->subMinutes(6))
+            ->get();
+
+        // Je récupère des commandes annulées et remboursées
+
+        $ordersFailedRefunded = Order::where('orderStatus', OrderStatus::CANCELED->value)
+            ->where('paymentStatus', PaymentStatus::REFUNDED->value)
             ->get();
 
         // S'il existe des commandes confirmées depuis 5 minutes, je les mets en préparation

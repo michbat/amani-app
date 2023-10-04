@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Personnel;
 
+use App\Models\User;
+use App\Models\Order;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentMode;
 use App\Enums\PaymentStatus;
+use Illuminate\Http\Request;
 use App\Events\OrderCanceledEvent;
 use App\Events\OrderPickedUpEvent;
-use App\Models\User;
-use App\Models\Order;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Events\OrderFailedRefundedEvent;
 
 class OrderPersonnelController extends Controller
 {
@@ -79,6 +80,14 @@ class OrderPersonnelController extends Controller
             default:
                 # code...
                 break;
+        }
+
+        // Si le client a été remboursé
+
+        if ($order->paymentStatus == PaymentStatus::REFUNDED->value) {
+            $user = $order->user;
+            // On lui envoit un e-mail l'informant du remboursement
+            event(new OrderFailedRefundedEvent($user));
         }
 
         return redirect()->route('personnel.orders.index')->with('toast_success', 'La commande a été mise à jour');
