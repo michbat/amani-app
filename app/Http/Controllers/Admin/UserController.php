@@ -218,7 +218,7 @@ class UserController extends Controller
 
             if ($user->status === UserStatus::ACTIVE) {
                 $subject1 = 'Compte actif et information à jour';
-                $message1 = 'Bonjour, <br><br>Votre compte est actif et vos informations à jour.<br>';
+                $message1 = 'Bonjour, <br><br>Votre compte est actif.<br>';
                 $message1 .= 'En espérant vous revoir bientôt.<br><br> Cordialement, <br><br> Amani Resto.';
                 $view = 'mails.amanimail';
                 Mail::to($user->email)->send(new AmaniRestaurantMail($subject1, $message1, $view));
@@ -229,7 +229,7 @@ class UserController extends Controller
             if ($user->status === UserStatus::PENDING) {
 
                 $subject2 = 'Suspension de votre compte';
-                $message2 = 'Bonjour, <br><br> Nous vous informons que votre compte utilisateur a été suspendu.<br>';
+                $message2 = 'Bonjour, <br><br> Nous vous informons que votre compte utilisateur est suspendu.<br>';
                 $message2 .= 'Vous ne pouvez plus vous connecter sur notre site.<br>';
                 $message2 .= 'Veuillez prendre contact avec nous pour de plus âpres informations.<br><br>';
                 $message2 .= 'Cordialement, <br><br> Amani Resto.';

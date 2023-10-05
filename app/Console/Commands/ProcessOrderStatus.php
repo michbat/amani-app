@@ -8,7 +8,6 @@ use App\Enums\PaymentStatus;
 use Illuminate\Console\Command;
 use App\Events\OrderPendingEvent;
 use App\Events\OrderCompletedEvent;
-use App\Events\OrderFailedRefundedEvent;
 use App\Events\OrderPickedUpEvent;
 use App\Events\OrderPickupFailEvent;
 

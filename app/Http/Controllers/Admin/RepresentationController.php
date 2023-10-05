@@ -17,6 +17,7 @@ class RepresentationController extends Controller
     public function index()
     {
         $representations =  Representation::orderBy('representationDate', 'DESC')->paginate(10);
+        
         return view('admin.representations.index', compact('representations'));
     }
 

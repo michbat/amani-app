@@ -144,7 +144,7 @@
                                                             @foreach ($show->representations as $representation)
                                                                 <li>
                                                                     <span
-                                                                        class="{{ $representation->canceled === 1 || $representation->canceledThroughShow === 1 ? 'text-decoration-line-through' : '' }}">
+                                                                        class="{{ $representation->canceled === 1 || $representation->isExpired === 1 || $representation->canceledThroughShow === 1 ? 'text-decoration-line-through' : '' }}">
                                                                         {{ $representation->getNameDay($representation->representationDate) }}
                                                                         {{ $representation->getRepresentationDateFormat($representation->representationDate) }}
                                                                         de {{ $representation->startTime }} à
@@ -153,6 +153,11 @@
                                                                     @if ($representation->canceled === 1 || $representation->canceledThroughShow === 1)
                                                                         <span class="text-danger">
                                                                             (Annulée)
+                                                                        </span>
+                                                                    @endif
+                                                                    @if ($representation->isExpired === 1)
+                                                                        <span class="text-danger">
+                                                                            (Expirée)
                                                                         </span>
                                                                     @endif
                                                                 </li>

@@ -22,13 +22,14 @@
                 <thead>
                     <tr>
                         <th>N°</th>
-                        <th>Lieu</th>
+                        {{-- <th>Lieu</th> --}}
                         <th>Nom du spectacle</th>
                         <th>Groupe</th>
                         <th>Date</th>
                         <th>Début</th>
                         <th>Fin</th>
                         <th>Annulée</th>
+                        <th>Expirée</th>
                         <th class="text-center">Actions</th>
                     </tr>
                 </thead>
@@ -37,11 +38,11 @@
                         @foreach ($representations as $representation)
                             <tr>
                                 <td>{{ $loop->index + 1 }}</td>
-                                <td>
+                                {{-- <td>
                                     <span style="font-weight: bolder;">
                                         {{ $representation->restaurant->name }}
                                     </span>
-                                </td>
+                                </td> --}}
                                 <td>
                                     <span class="btn btn-info text-dark" style="border-radius: 50px;">
                                         {{ $representation->show->title }}
@@ -54,7 +55,7 @@
                                 </td>
                                 <td>
                                     <span style="font-weight: bolder;">
-                                        {{ $representation->representationDate }}
+                                        {{ $representation->getRepresentationDateFormat($representation->representationDate) }}
                                     </span>
                                 </td>
                                 <td>
@@ -72,6 +73,13 @@
                                         class="btn {{ $representation->canceled === 0 ? 'btn-success' : 'btn-danger' }} text-dark"
                                         style="border-radius: 50px;">
                                         {{ $representation->canceled === 0 ? 'Non' : 'Oui' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span
+                                        class="btn {{ $representation->isExpired === 0 ? 'btn-success' : 'btn-danger' }} text-dark"
+                                        style="border-radius: 50px;">
+                                        {{ $representation->isExpired === 0 ? 'Non' : 'Oui' }}
                                     </span>
                                 </td>
                                 <td>

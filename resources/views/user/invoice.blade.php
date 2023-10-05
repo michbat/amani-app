@@ -53,10 +53,6 @@
                 <p>Date de la Commande: {{ $order->created_at->format('d/m/Y') }}</p>
                 <p>Numéro de la commande: COM-00{{ $order->id }}</p>
             </div>
-            <div>
-                {{-- <a class="btn btn-primary btn-lg" href="{{ route('user.invoice.download', $order->id) }}">Télécharger en
-                    PDF</a> --}}
-            </div>
         </div>
         <div class="card-body p-4">
             <table class="table table-striped inv">

@@ -28,7 +28,12 @@ class LoginController extends Controller
         // Je stocke dans une variable de session, la route (la page) précédente sur laquelle le visiteur était avant de tenter de se connecter
         // L'intérêt de cette démarche est de le ramèner à la page qu'il visitait une fois authentifié.
 
-        Session::put('previous_url', url()->previous());
+      
+
+        if (url()->previous() != "http://localhost:8000/login") {
+            Session::put('previous_url', url()->previous());
+        }
+
 
         return view('auth.login');
     }

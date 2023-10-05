@@ -28,24 +28,22 @@ class AdminController extends Controller
 
 
 
-        $turnover = 0;
-        $tax = 0;
-        $occupiedTable = 0;
+        $turnover = 0;   // Chiffres d'affaire totale
+        $tax = 0;   // TVA
+        $occupiedTable = 0;  // tables occupées
 
         foreach ($orders as $order) {
             $turnover += $order->total;
             $tax += $order->tva;
         }
 
-        foreach($tables as $table)
-        {
-            if($table->isFree == 0)
-            {
+        foreach ($tables as $table) {
+            if ($table->isFree == 0) {
                 $occupiedTable += 1;
             }
         }
 
-        return view('admin.index', compact('plats', 'drinks', 'users', 'opened', 'turnover', 'tax', 'ingredients', 'nbrOrders','occupiedTable','nbrTables'));
+        return view('admin.index', compact('plats', 'drinks', 'users', 'opened', 'turnover', 'tax', 'ingredients', 'nbrOrders', 'occupiedTable', 'nbrTables'));
     }
 
     /**
@@ -59,6 +57,8 @@ class AdminController extends Controller
 
         $restaurant->update();  // On confirmé le changement de valeur du champ opened dans la BDD
 
-        return redirect()->back();  // On reste sur la page où l'on a appuyé le bouton.
+        $state =  $restaurant->opened == false ? 'Fermé' : 'Ouvert';
+
+        return redirect()->back()->with('toast_success', 'Restaurant ' . $state);  // On reste sur la page où l'on a appuyé le bouton.
     }
 }

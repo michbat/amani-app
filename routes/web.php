@@ -88,8 +88,12 @@ Route::get('/drink', DrinkComponent::class)->name('drink')->middleware('check.ad
 Route::get('/cart', CartComponent::class)->name('cart');
 Route::get('/plat/{slug}', DetailsComponent::class)->name('details');
 Route::get('/drink/{slug}', DetailsDrinkComponent::class)->name('details.drink');
-Route::get('/checkout', CheckoutComponent::class)->name('checkout');
-Route::get('/checkout-success', CheckoutSuccessComponent::class)->name('checkout.success');
+
+// Pour accéder aux routes checkout, il faut être authentifier
+
+Route::get('/checkout', CheckoutComponent::class)->name('checkout')->middleware('auth');
+Route::get('/checkout-success', CheckoutSuccessComponent::class)->name('checkout.success')->middleware('auth');
+
 Route::get('/wishlist', WishlistComponent::class)->name('wishlist');
 Route::get('/review/{slug}/{user}', ReviewComponent::class)->name('review')->middleware('auth');
 Route::get('/reglement', ReglementComponent::class)->name('reglement');
@@ -108,7 +112,7 @@ Route::get('/paypal/cancel', [CheckoutComponent::class, 'cancel'])->name('paypal
 
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/login-submit', [LoginController::class, 'loginSubmit'])->name('login.submit');
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Registration routes
 

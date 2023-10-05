@@ -2,8 +2,11 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -26,5 +29,27 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $exception)
+    {
+        // Customisation de la page 403
+        if ($exception instanceof AuthorizationException) {
+            return response()->view('errors.403', [], 403);
+        }
+
+        // Customisation de l'interdiction d'accéder aux routes POST
+
+        if ($exception instanceof MethodNotAllowedHttpException) {
+            return response()->view('errors.post_route_forbidden', [], 405);
+        }
+
+        // Customisation de la page non trouvé
+
+        if ($exception instanceof NotFoundHttpException) {
+            return response()->view('errors.404', [], 404);
+        }
+
+        return parent::render($request, $exception);
     }
 }
