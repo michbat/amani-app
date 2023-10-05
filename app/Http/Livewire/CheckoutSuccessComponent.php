@@ -4,8 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Order;
 use Livewire\Component;
-use Illuminate\Support\Facades\Auth;
-use Gloudemans\Shoppingcart\Facades\Cart;
+
 
 class CheckoutSuccessComponent extends Component
 {
@@ -24,10 +23,6 @@ class CheckoutSuccessComponent extends Component
         // Si la page checkoutsuccess,le panier n'a plus de contenu mais la wishlist est susceptible de contenir
         // On prend la "photographie" du panier et de la wishlist de l'utilisateur connecté qui n'est pas 'Generic'.
 
-        // if (Auth::check() && Auth::user()->firstname !== 'Generic') {
-        //     Cart::instance('cart')->store(Auth::user()->id);
-        //     Cart::instance('wishlist')->store(Auth::user()->id);
-        // }
 
         session()->forget('acc'); // On détruit la session 'acc' crée dans le composant CheckoutComponent
 

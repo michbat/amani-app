@@ -82,7 +82,7 @@ class CheckoutComponent extends Component
             $this->fillPlatOrder($order->id);
 
             if (!$this->decreaseQuantityInStock($order)) {
-                return redirect()->route('cart')->with('warning', 'nous ne pouvons pas honoré votre commande');
+                return redirect()->route('cart')->with('warning', 'nous ne pouvons pas passer votre commande.');
             } else {
                 try {
 
@@ -156,8 +156,15 @@ class CheckoutComponent extends Component
             $this->fillPlatOrder($order->id);
 
 
+            $names = "";
+
+            foreach (session()->get('lowQuantity') as $name) {
+                $names .= '<br><br>'.$name.'<br>';
+            }
+
+
             if (!$this->decreaseQuantityInStock($order)) {
-                return redirect()->route('cart')->with('warning', 'nous ne pouvons pas honorer votre commande');
+                return redirect()->route('cart')->with('warning', 'nous ne pouvons pas honorer votre commande. Veuillez diminuer la quantité de ce(s) produit(s): ' . $names);
             } else {
 
 
@@ -304,7 +311,7 @@ class CheckoutComponent extends Component
     {
         $isOk_1 = true;
         $isOk_2 = true;
-        $ingredientNotEnough = [];
+        $lowQuantity = [];
 
         foreach ($order->lineOrders as $lineOrder) {
 
@@ -322,7 +329,9 @@ class CheckoutComponent extends Component
 
                     if ($lomi->quantityInStock <= 0) {
                         $isOk_1 = false;
-                        break;
+                        $lowQuantity[] = $lineOrder->plat->name;
+                        // break;
+                        $lomi->quantityInStock += $lomi->pivot->amount * $quantity;
                     }
                 }
             }
@@ -334,18 +343,17 @@ class CheckoutComponent extends Component
 
                 if ($lineOrder->drink->quantityInStock <= 0) {
                     $isOk_2 = false;
+                    $lowQuantity[] = $lineOrder->drink->name;
                 }
             }
 
             if ($isOk_1 && $isOk_2) {
                 foreach ($lineOrder->plat->ingredients as $lomi) {
-                    // $lomi->quantityInStock = $lomi->quantityInStock - $lomi->pivot->amount * $quantity;
                     $lomi->update();
                 }
 
                 if (!empty($lineOrder->drink)) {
 
-                    // $lineOrder->drink->quantityInStock = $lineOrder->drink->quantityInStock - $quantity;
                     $lineOrder->drink->update();
                 }
             } else {
@@ -353,7 +361,7 @@ class CheckoutComponent extends Component
             }
         }
 
-        // dd($isOk_1 && $isOk_2);
+        session(['lowQuantity' => $lowQuantity]);
 
         return ($isOk_1 && $isOk_2);
     }
