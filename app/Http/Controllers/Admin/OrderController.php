@@ -84,9 +84,16 @@ class OrderController extends Controller
 
         // Si le client a été remboursé
 
-        if($order->paymentStatus == PaymentStatus::REFUNDED->value)
-        {
+        if ($order->paymentStatus == PaymentStatus::REFUNDED) {
             $user = $order->user;
+
+            // On met le montant total de la commande à 0 ainsi que le sous-total et la tva
+            
+            $order->total = 0;
+            $order->subtotal = 0;
+            $order->tva = 0;
+
+            $order->update();
             // On lui envoit un e-mail l'informant du remboursement
             event(new OrderFailedRefundedEvent($user));
         }

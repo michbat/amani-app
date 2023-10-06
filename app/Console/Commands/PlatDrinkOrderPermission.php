@@ -34,7 +34,7 @@ class PlatDrinkOrderPermission extends Command
         $drinks = Drink::all();
         // Je récupère l'heure courante en Belgique
         $currentTime = Carbon::now('Europe/Brussels')->format('H:i');
-        $openingTime = '10:00';
+        $openingTime = '00:00';
         $closingTime = '23:00';
 
 

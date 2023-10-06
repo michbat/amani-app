@@ -23,8 +23,13 @@ class CheckoutSuccessComponent extends Component
         // Si la page checkoutsuccess,le panier n'a plus de contenu mais la wishlist est susceptible de contenir
         // On prend la "photographie" du panier et de la wishlist de l'utilisateur connecté qui n'est pas 'Generic'.
 
+        // On destruit les sessions créees sur la page checkout
 
-        session()->forget('acc'); // On détruit la session 'acc' crée dans le composant CheckoutComponent
+        session()->forget('acc');
+        session()->forget('nbr');
+        session()->forget('nOc');
+        session()->forget('expD');
+        session()->forget('cvc');
 
         // On récupére la toute dernière commande qui vient d'être effectuée
 

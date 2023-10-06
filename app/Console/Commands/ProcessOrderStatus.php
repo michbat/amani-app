@@ -4,12 +4,12 @@ namespace App\Console\Commands;
 
 use App\Models\Order;
 use App\Enums\OrderStatus;
-use App\Enums\PaymentStatus;
 use Illuminate\Console\Command;
 use App\Events\OrderPendingEvent;
 use App\Events\OrderCompletedEvent;
+use App\Events\OrderNotCollectedEvent;
 use App\Events\OrderPickedUpEvent;
-use App\Events\OrderPickupFailEvent;
+
 
 class ProcessOrderStatus extends Command
 {
@@ -87,15 +87,11 @@ class ProcessOrderStatus extends Command
 
         // Je récupère des commandes prêtes qui n'ont pas été récupérée depuis 1h30
 
-        $ordersToPickupFail = Order::where('orderStatus', OrderStatus::COMPLETED->value)
+        $ordersNotCollected = Order::where('orderStatus', OrderStatus::COMPLETED->value)
             ->where('created_at', '<=', now()->subMinutes(6))
             ->get();
 
-        // Je récupère des commandes annulées et remboursées
 
-        $ordersFailedRefunded = Order::where('orderStatus', OrderStatus::CANCELED->value)
-            ->where('paymentStatus', PaymentStatus::REFUNDED->value)
-            ->get();
 
         // S'il existe des commandes confirmées depuis 5 minutes, je les mets en préparation
 
@@ -121,11 +117,11 @@ class ProcessOrderStatus extends Command
 
         // Si des commandes prêtes ne sont pas récupérées depuis 1h30, la commande est annulée et au détriment du client
 
-        if ($ordersToPickupFail->count() > 0) {
-            foreach ($ordersToPickupFail as $order) {
-                $order->orderStatus = OrderStatus::CANCELED->value;
+        if ($ordersNotCollected->count() > 0) {
+            foreach ($ordersNotCollected as $order) {
+                $order->orderStatus = OrderStatus::NOTCOLLECTED->value;
                 $user = $order->user;
-                event(new OrderPickupFailEvent($user));
+                event(new OrderNotCollectedEvent($user));
                 $order->update();
             }
         }

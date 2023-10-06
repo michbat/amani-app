@@ -10,15 +10,14 @@ use App\Events\OrderCanceledEvent;
 use App\Events\OrderCompletedEvent;
 use App\Events\OrderConfirmedEvent;
 use App\Events\OrderFailedRefundedEvent;
+use App\Events\OrderNotCollectedEvent;
 use App\Events\OrderPendingEvent;
 use App\Events\OrderPickedUpEvent;
-use App\Events\OrderPickupFailEvent;
 use App\Events\RegisterConfirmationEvent;
 use App\Events\RegisterVerifyEvent;
 use App\Events\ResentLinkSubmitEvent;
 use App\Events\ResetPasswordConfirmationEvent;
 use App\Events\ReviewCensoredEvent;
-use App\Events\ReviewModeratedEvent;
 use App\Events\ReviewPublishedEvent;
 use App\Listeners\EditPasswordSubmitListener;
 use App\Listeners\EditProfileSubmitListener;
@@ -28,18 +27,17 @@ use App\Listeners\OrderCanceledListener;
 use App\Listeners\OrderCompletedListener;
 use App\Listeners\OrderConfirmedListener;
 use App\Listeners\OrderFailedRefundedListener;
+use App\Listeners\OrderNotCollectedListener;
 use App\Listeners\OrderPendingListener;
 use App\Listeners\OrderPickedUpListener;
-use App\Listeners\OrderPickupFailListener;
 use App\Listeners\RegisterConfirmationListener;
 use App\Listeners\RegisterVerifyListener;
 use App\Listeners\ResentLinkSubmitListener;
 use App\Listeners\ResetPasswordConfirmationListener;
 use App\Listeners\ReviewCensoredListenerEvent;
-use App\Listeners\ReviewModeratedListenerEvent;
 use App\Listeners\ReviewPublishedListenerEvent;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
+
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -103,8 +101,8 @@ class EventServiceProvider extends ServiceProvider
             OrderCompletedListener::class,
         ],
 
-        OrderPickupFailEvent::class => [
-            OrderPickupFailListener::class,
+        OrderNotCollectedEvent::class => [
+            OrderNotCollectedListener::class,
         ],
 
         OrderPickedUpEvent::class => [
@@ -122,8 +120,6 @@ class EventServiceProvider extends ServiceProvider
         OrderFailedRefundedEvent::class=>[
             OrderFailedRefundedListener::class,
         ],
-
-
     ];
 
     /**

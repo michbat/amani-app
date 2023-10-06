@@ -9,6 +9,7 @@ enum OrderStatus: string
     case COMPLETED = 'completed';
     case PENDING = 'pending';
     case PICKEDUP = 'pickedup';
+    case NOTCOLLECTED = 'notcollected';
 
     public function label(): string
     {
@@ -17,10 +18,11 @@ enum OrderStatus: string
             self::CANCELED => 'Annulée',
             self::COMPLETED => 'Prête',
             self::PENDING => 'En préparation',
-            self::PICKEDUP => 'Récupérée'
+            self::PICKEDUP => 'Récupérée',
+            self::NOTCOLLECTED => 'Pas récupérée',
         };
     }
-    
+
     public function color(): string
     {
         return match ($this) {
@@ -29,6 +31,7 @@ enum OrderStatus: string
             self::COMPLETED => 'text-dark btn btn-warning',
             self::PENDING => 'text-dark btn btn-info',
             self::PICKEDUP => 'text-dark btn btn-success',
+            self::NOTCOLLECTED => 'text-dark btn btn-secondary',
         };
     }
 }
