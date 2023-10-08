@@ -41,16 +41,28 @@ class RepresentationPersonnelController extends Controller
 
         $request->validate(
             [
-                'representationDate' => 'required|unique:representations,representationDate',
-                'startTime' => 'required',
-                'endTime' => 'required|after:startTime',
+                'representationDate' => [
+                    'required',
+                    'unique:representations,representationDate',
+                    function ($attribute, $value, $fail) {
+                        if (Carbon::parse($value)->dayOfWeek !== Carbon::SATURDAY) {
+                            $fail('La date doit être un samedi');
+                        }
+                    },
+
+                ],
+                'startTime' => 'required|before:endTime|in:19:30',
+                'endTime' => 'required|after:startTime|in:21:30',
             ],
             [
                 'representationDate.required' => 'La date est requise',
                 'representationDate.unique' => 'Cette date est déjà prise',
                 'startTime.required' => 'Indiquez l\'heure du début du spectacle',
                 'endTime.required' => 'Indiquez l\'heure de fin du spectacle',
+                'startTime.before' => 'L\'heure du début doit être antérieure à l\'heure du début',
+                'startTime.in' => 'L\'heure du début doit-être 19:30',
                 'endTime.after' => 'L\'heure de fin doit être postérieure à l\'heure de début',
+                'endTime.in' => 'L\'heure de fin doit être 21:30',
             ]
         );
 
@@ -93,20 +105,35 @@ class RepresentationPersonnelController extends Controller
     {
         // On applique nos règles de validation
 
+        // On applique nos règles de validation
+
         $request->validate(
             [
-                'representationDate' => 'required|unique:representations,representationDate,' . $representation->id,
-                'startTime' => 'required',
-                'endTime' => 'required|after:startTime',
+                'representationDate' => [
+                    'required',
+                    'unique:representations,representationDate,' . $representation->id,
+                    function ($attribute, $value, $fail) {
+                        if (Carbon::parse($value)->dayOfWeek !== Carbon::SATURDAY) {
+                            $fail('La date doit être un samedi');
+                        }
+                    },
+
+                ],
+                'startTime' => 'required|before:endTime|in:19:30',
+                'endTime' => 'required|after:startTime|in:21:30',
             ],
             [
                 'representationDate.required' => 'La date est requise',
                 'representationDate.unique' => 'Cette date est déjà prise',
                 'startTime.required' => 'Indiquez l\'heure du début du spectacle',
                 'endTime.required' => 'Indiquez l\'heure de fin du spectacle',
+                'startTime.before' => 'L\'heure du début doit être antérieure à l\'heure du début',
+                'startTime.in' => 'L\'heure du début doit-être 19:30',
                 'endTime.after' => 'L\'heure de fin doit être postérieure à l\'heure de début',
+                'endTime.in' => 'L\'heure de fin doit être 21:30',
             ]
         );
+
 
 
         $representation->restaurant_id = Restaurant::all()[0]->id;

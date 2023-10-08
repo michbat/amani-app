@@ -11,7 +11,7 @@ use App\Events\OrderPickedUpEvent;
 use App\Events\OrderCompletedEvent;
 use App\Events\OrderInterruptedEvent;
 use App\Events\OrderNotCollectedEvent;
-use Gloudemans\Shoppingcart\Facades\Cart;
+
 
 class ProcessOrderStatus extends Command
 {
@@ -90,7 +90,7 @@ class ProcessOrderStatus extends Command
         // Je récupère des commandes prêtes qui n'ont pas été récupérée depuis 1h30
 
         $ordersNotCollected = Order::where('orderStatus', OrderStatus::COMPLETED->value)
-            ->where('created_at', '<=', now()->subMinutes(5))
+            ->where('created_at', '<=', now()->subMinutes(3))
             ->get();
 
 

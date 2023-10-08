@@ -95,7 +95,7 @@ class OrderPersonnelController extends Controller
         }
 
 
-        return redirect()->route('admin.orders.index')->with('toast_success', 'La commande a été mise à jour');
+        return redirect()->route('personnel.orders.index')->with('toast_success', 'La commande a été mise à jour');
     }
 
     /**

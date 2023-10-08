@@ -58,7 +58,7 @@
                     <div class="col-sm-4">
                         <label for="stime" class="form-label">Début</label>
                         <input type="time" id="stime" name="startTime" class="form-control"
-                            value="{{ $representation->startTime }}">
+                            value="19:30">
                         @error('startTime')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -66,7 +66,7 @@
                     <div class="col-sm-4">
                         <label for="etime" class="form-label">Fin</label>
                         <input type="time" id="etime" name="endTime" class="form-control"
-                            value="{{ $representation->endTime }}">
+                            value="21:30">
                         @error('endTime')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror

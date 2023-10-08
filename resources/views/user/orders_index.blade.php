@@ -68,7 +68,7 @@
                                             <button class="btn btn-warning mx-2" type="button" data-bs-toggle="collapse"
                                                 data-bs-target="#order_{{ $order->id }}"><i
                                                     class="fas fa-eye mx-2"></i>Détails</button>
-                                            <a class="btn btn-success mx-2 {{ $order->orderStatus !== App\Enums\OrderStatus::COMPLETED && $order->orderStatus !== App\Enums\OrderStatus::PICKEDUP ? 'disabled' : '' }}"
+                                            <a class="btn btn-success mx-2 {{ $order->orderStatus !== App\Enums\OrderStatus::PICKEDUP ? 'disabled' : '' }}"
                                                 href="{{ route('user.invoice.download', $order->id) }}">
                                                 <i class="fas fa-file-alt mx-2"></i>Facture
                                             </a>

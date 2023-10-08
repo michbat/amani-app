@@ -347,9 +347,9 @@ class CheckoutComponent extends Component
 
         // Si une session 'lowQuantity' existait déjà, on la detruit
 
-        if (session()->has('lowQuantity')) {
-            session()->forget('lowQuantity');
-        }
+        // if (session()->has('lowQuantity')) {
+        //     session()->forget('lowQuantity');
+        // }
 
 
         // Tableau qui va monitorer des quantités en stock de chaque produit, en fait d'éviter
