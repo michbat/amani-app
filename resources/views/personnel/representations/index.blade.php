@@ -14,7 +14,12 @@
                 {{-- <p>{{ $ingredients->count() }} sur {{ $ingredients->total() }}</p> --}}
                 {{-- <p>{{ $ingredients->currentPage() }} sur {{ $ingredients->perPage() }}</p> --}}
                 <p>{{ $representations->firstItem() }} à {{ $representations->lastItem() }} sur
-                    {{ $representations->total() }} groupe(s)</p>
+                    {{ $representations->total() }} programmation(s)</p>
+                <p style="font-weight: bolder">Date prises:
+                    @foreach ($representations as $representation)
+                        {{ $representation->getRepresentationDateFormat($representation->representationDate) }},
+                    @endforeach
+                </p>
             </div>
         </div>
         <div class="card-body">
@@ -26,9 +31,11 @@
                         <th>Nom du spectacle</th>
                         <th>Groupe</th>
                         <th>Date</th>
+                        <th>Jour</th>
                         <th>Début</th>
                         <th>Fin</th>
                         <th>Annulée</th>
+                        <th>Expirée</th>
                         <th class="text-center">Actions</th>
                     </tr>
                 </thead>
@@ -54,7 +61,12 @@
                                 </td>
                                 <td>
                                     <span style="font-weight: bolder;">
-                                        {{ $representation->representationDate }}
+                                        {{ $representation->getRepresentationDateFormat($representation->representationDate) }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span style="font-weight: bolder;">
+                                        {{ $representation->getNameDay($representation->representationDate) }}
                                     </span>
                                 </td>
                                 <td>
@@ -75,13 +87,21 @@
                                     </span>
                                 </td>
                                 <td>
+                                    <span
+                                        class="btn {{ $representation->isExpired === 0 ? 'btn-success' : 'btn-danger' }} text-dark"
+                                        style="border-radius: 50px;">
+                                        {{ $representation->isExpired === 0 ? 'Non' : 'Oui' }}
+                                    </span>
+                                </td>
+                                <td>
                                     <div class="d-flex justify-content-center">
 
                                         <a class="btn btn-primary mx-2 text-dark"
                                             href="{{ route('personnel.representations.edit', $representation->id) }}"><i
                                                 class="fas fa-edit mx-2"></i>Editer</a>
 
-                                        <form action="{{ route('personnel.representations.destroy', $representation->id) }}"
+                                        <form
+                                            action="{{ route('personnel.representations.destroy', $representation->id) }}"
                                             method="POST">
                                             @csrf
                                             @method('DELETE')
