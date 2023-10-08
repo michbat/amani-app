@@ -12,6 +12,7 @@ use App\Events\OrderCanceledEvent;
 use App\Events\OrderPickedUpEvent;
 use App\Http\Controllers\Controller;
 use App\Events\OrderFailedRefundedEvent;
+use App\Events\OrderInterruptedEvent;
 use App\Models\LineOrders;
 
 class OrderController extends Controller
@@ -27,7 +28,7 @@ class OrderController extends Controller
         // if ($ok) {
         //     dd('supprimer');
         // }
-        
+
         $orders = Order::with('user')->orderBy('created_at', 'DESC')->paginate(10);  // Tous les commandes en commençant par les plus recentes
 
         return view('admin.orders.index', compact('orders'));
@@ -72,7 +73,7 @@ class OrderController extends Controller
         $order->paymentStatus = $request->paymentStatus;
         $order->orderStatus = $request->orderStatus;
 
-        if ($request->paymentMode === PaymentMode::CARD->value) {
+        if ($request->paymentMode === PaymentMode::CARD) {
             $order->nameOnCard = $request->nameOnCard;
         }
 
@@ -80,31 +81,32 @@ class OrderController extends Controller
 
         switch ($order->orderStatus->value) {
             case OrderStatus::CANCELED->value:
+                $order->total = 0;
+                $order->subtotal = 0;
+                $order->tva = 0;
+                $order->update();
                 event(new OrderCanceledEvent($order->user));
                 break;
             case OrderStatus::PICKEDUP->value:
                 event(new OrderPickedUpEvent($order->user));
+                break;
+            case OrderStatus::INTERRUPTED->value:
+                event(new OrderInterruptedEvent($order->user));
+                $order->total = 0;
+                $order->subtotal = 0;
+                $order->tva = 0;
+                $order->update();
+                event(new OrderInterruptedEvent($order->user));
                 break;
             default:
                 # code...
                 break;
         }
 
-        // Si le client a été remboursé
 
-        if ($order->paymentStatus == PaymentStatus::REFUNDED) {
-            $user = $order->user;
 
-            // On met le montant total de la commande à 0 ainsi que le sous-total et la tva
 
-            $order->total = 0;
-            $order->subtotal = 0;
-            $order->tva = 0;
 
-            $order->update();
-            // On lui envoit un e-mail l'informant du remboursement
-            event(new OrderFailedRefundedEvent($user));
-        }
 
         return redirect()->route('admin.orders.index')->with('toast_success', 'La commande a été mise à jour');
     }

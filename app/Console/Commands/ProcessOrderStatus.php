@@ -7,9 +7,10 @@ use App\Enums\OrderStatus;
 use Illuminate\Console\Command;
 use App\Events\OrderPendingEvent;
 use App\Events\OrderCompletedEvent;
+use App\Events\OrderInterruptedEvent;
 use App\Events\OrderNotCollectedEvent;
 use App\Events\OrderPickedUpEvent;
-
+use App\Models\Restaurant;
 
 class ProcessOrderStatus extends Command
 {
@@ -88,9 +89,48 @@ class ProcessOrderStatus extends Command
         // Je récupère des commandes prêtes qui n'ont pas été récupérée depuis 1h30
 
         $ordersNotCollected = Order::where('orderStatus', OrderStatus::COMPLETED->value)
-            ->where('created_at', '<=', now()->subMinutes(3))
+            ->where('created_at', '<=', now()->subMinutes(5))
             ->get();
 
+
+
+        // $ordersInterrupted = Order::where('orderStatus', OrderStatus::INTERRUPTED->value)->get();
+        $restaurant = Restaurant::all()[0];
+
+        if ($restaurant->opened == 0) {
+            // info('hello');
+            if ($ordersToPending->count() > 0) {
+                foreach ($ordersToPending as $order) {
+                    $order->orderStatus = OrderStatus::INTERRUPTED->value;
+                    $user = $order->user;
+                    event(new OrderInterruptedEvent($user));
+                    $order->update();
+                }
+            }
+
+
+            if ($ordersToComplete->count() > 0) {
+                foreach ($ordersToComplete as $order) {
+                    $order->orderStatus = OrderStatus::INTERRUPTED->value;
+                    $user = $order->user;
+                    event(new OrderInterruptedEvent($user));
+                    $order->update();
+                }
+            }
+
+            if ($ordersNotCollected->count() > 0) {
+                foreach ($ordersNotCollected as $order) {
+                    $order->orderStatus = OrderStatus::INTERRUPTED->value;
+                    $user = $order->user;
+                    event(new OrderInterruptedEvent($user));
+                    $order->update();
+                }
+            }
+
+            $ordersToPending =  null;
+            $ordersToComplete = null;
+            $ordersNotCollected = null;
+        }
 
 
         // S'il existe des commandes confirmées depuis 5 minutes, je les mets en préparation

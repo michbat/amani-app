@@ -10,6 +10,7 @@ use App\Events\OrderCanceledEvent;
 use App\Events\OrderCompletedEvent;
 use App\Events\OrderConfirmedEvent;
 use App\Events\OrderFailedRefundedEvent;
+use App\Events\OrderInterruptedEvent;
 use App\Events\OrderNotCollectedEvent;
 use App\Events\OrderPendingEvent;
 use App\Events\OrderPickedUpEvent;
@@ -27,6 +28,7 @@ use App\Listeners\OrderCanceledListener;
 use App\Listeners\OrderCompletedListener;
 use App\Listeners\OrderConfirmedListener;
 use App\Listeners\OrderFailedRefundedListener;
+use App\Listeners\OrderInterruptedListener;
 use App\Listeners\OrderNotCollectedListener;
 use App\Listeners\OrderPendingListener;
 use App\Listeners\OrderPickedUpListener;
@@ -119,6 +121,10 @@ class EventServiceProvider extends ServiceProvider
 
         OrderFailedRefundedEvent::class=>[
             OrderFailedRefundedListener::class,
+        ],
+
+        OrderInterruptedEvent::class=>[
+            OrderInterruptedListener::class,
         ],
     ];
 

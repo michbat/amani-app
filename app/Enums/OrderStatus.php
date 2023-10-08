@@ -10,6 +10,7 @@ enum OrderStatus: string
     case PENDING = 'pending';
     case PICKEDUP = 'pickedup';
     case NOTCOLLECTED = 'notcollected';
+    case INTERRUPTED='interrupted';
 
     public function label(): string
     {
@@ -20,6 +21,7 @@ enum OrderStatus: string
             self::PENDING => 'En préparation',
             self::PICKEDUP => 'Récupérée',
             self::NOTCOLLECTED => 'Pas récupérée',
+            self::INTERRUPTED => 'Interrompue',
         };
     }
 
@@ -32,6 +34,7 @@ enum OrderStatus: string
             self::PENDING => 'text-dark btn btn-info',
             self::PICKEDUP => 'text-dark btn btn-success',
             self::NOTCOLLECTED => 'text-dark btn btn-secondary',
+            self::INTERRUPTED => 'text-white btn btn-dark',
         };
     }
 }

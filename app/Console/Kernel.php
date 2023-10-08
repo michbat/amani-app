@@ -17,6 +17,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('orders:process')->everyFiveSeconds()->runInBackground();
         $schedule->command('ingredientsDrinks:monitoring')->everySecond()->runInBackground();
         $schedule->command('representation:expired')->everyFiveMinutes()->runInBackground();
+        $schedule->command('order:refunded')->everyTenSeconds()->runInBackground();
+
     }
     /**
      * Get the timezone that should be used by default for scheduled events.
