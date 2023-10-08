@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Restaurant;
 use Carbon\Carbon;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
@@ -127,11 +128,18 @@ class CartComponent extends Component
 
     // Méthode appelée lorque le restautant est fermé pour empêcher d'accèder au panier tout ne le vidant (au cas où le client y aurait ajouté un produit avant la fermeture)
 
-    public function closedDoors()
+    private function closedDoors()
     {
         Cart::instance('cart')->destroy();
         $this->emitTo('cart-icon-component', 'refreshComponent');
-        return redirect()->route('plat')->with('info', 'Désolé, vous ne pouvez commander qu\'entre 10h00 et 23h00. Merci de votre compréhension.');
+        return redirect()->route('home')->with('info', 'Désolé, vous ne pouvez commander qu\'entre 10h00 et 23h00. Merci de votre compréhension.');
+    }
+
+    private function isOpened()
+    {
+        Cart::instance('cart')->destroy();
+        $this->emitTo('cart-icon-component', 'refreshComponent');
+        return redirect()->route('home')->with('info', 'Le restaurant est fermé, vous ne pouvez pas commander');
     }
 
     public function checkout()
@@ -161,6 +169,7 @@ class CartComponent extends Component
         }
 
 
+
         /**
          * Lorsque le restaurant n'est pas oouvert, on empêche le client d'accéder au panier
          */
@@ -173,6 +182,17 @@ class CartComponent extends Component
             // On n'appele la méthode closedDoors() en dehors des heures d'ouverture
             $this->closedDoors();
         }
+
+        // Si le restaurant est fermé pour d'autres raisons que les heures d'ouverture
+
+        $opened = Restaurant::all()[0]->opened;   // on récupère la propriété $opened de l'objet de type 'Restauranr'
+
+        if (!$opened) {
+            $this->isOpened();
+        }
+
+
+
         return view('frontend.livewire.cart-component');
     }
 }

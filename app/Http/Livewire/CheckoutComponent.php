@@ -16,6 +16,7 @@ use App\Enums\PaymentStatus;
 use Cartalyst\Stripe\Stripe;
 use Illuminate\Http\Request;
 use App\Events\OrderConfirmedEvent;
+use App\Models\Restaurant;
 use Illuminate\Support\Facades\Auth;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
@@ -52,13 +53,18 @@ class CheckoutComponent extends Component
         $this->user = Auth::user(); // On récupère l'utilisateur authentifié.
         $this->acceptance = false;
 
+        $restaurant = Restaurant::all()[0];
+
 
         if (!Session()->has('cart') || Cart::instance('cart')->count() === 0) {
             return redirect()->route('plat')->with('info', 'Vous n\'avez aucun produit dans le panier!');
         }
-        // if ($this->user === null) {
-        //     return redirect()->route('login')->with('info', 'Vous devez être connecté pour effectuer le paiement');
-        // }
+
+        // Si le restaurant est fermé et que la personne veut accéder à la page checkout, son panier est
+        if ($restaurant->opened == 0) {
+            Cart::instance('cart')->destroy();
+            redirect()->route('home')->with('info', 'Le restaurant est fermé, vous ne pouvez pas faire de commande');
+        }
     }
 
     public function placeOrder()
@@ -341,8 +347,7 @@ class CheckoutComponent extends Component
 
         // Si une session 'lowQuantity' existait déjà, on la detruit
 
-        if(session()->has('lowQuantity'))
-        {
+        if (session()->has('lowQuantity')) {
             session()->forget('lowQuantity');
         }
 

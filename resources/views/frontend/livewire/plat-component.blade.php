@@ -147,11 +147,11 @@
 
                 <div class="row justify-content-center  mb-5 gy-3">
                     {{-- On récupère les id des plats qui ont été ajouté à la wishlist --}}
-                    @php
+                    {{-- @php
                         $wishplats = Cart::instance('wishlist')
                             ->content()
                             ->pluck('id');
-                    @endphp
+                    @endphp --}}
                     @if (count($plats) > 0)
                         @foreach ($plats as $plat)
                             <div class="col-md-4 col-xl-3" wire:key="plat-{{ $plat->id }}">

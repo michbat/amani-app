@@ -36,7 +36,7 @@
 
     <div class="pattern_2">
         <div class="container margin_120_100 home_intro">
-            @if ($global && $global->opened == 0)
+            @if ($restaurant->opened == 0)
                 <p style="color: red; font-size: 23px; text-align: center;">Restaurant fermé! PAS DE COMMANDES!!!</p>
             @endif
             <div class="row justify-content-center d-flex align-items-center">
@@ -57,9 +57,9 @@
                                 style="background-color: green!important"></em></span>
                         <h2>À propos de nous</h2>
                     </div>
-                    @if ($global)
-                        <p>{!! $global->aboutUs !!}</p>
-                    @endif
+
+                    <p>{!! $restaurant->aboutUs !!}</p>
+
                 </div>
             </div>
         </div>

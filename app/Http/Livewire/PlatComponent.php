@@ -106,7 +106,7 @@ class PlatComponent extends Component
         // Je vérifie d'abord si $priceIntervals n'est pas vide auquel cas, l'utilisateur n'a pas utilisé le filtre par prix. la propriété $priceIntervals est bindée dans la vue associée à notre composant
 
         if (!empty($this->priceIntervals)) {
-            // Je crée un tableau qui accueille les intervalles de prix affichées dans la vue
+            // Je remplis le tableau qui accueille les intervalles de prix affichées dans la vue
             $priceIntervalRanges = [
                 '0-5' => [0, 5],   // 'O-5' est associée à la borne [0-5]
                 '5-10' => [5, 10],
@@ -178,9 +178,13 @@ class PlatComponent extends Component
             Cart::instance('cart')->store(Auth::user()->id);
         }
 
+        $wishplats = Cart::instance('wishlist')
+            ->content()
+            ->pluck('id');
+
 
         // On retourne la vue avec la collection d'objets "Plat" et "Category"
 
-        return view('frontend.livewire.plat-component', compact('plats', 'categories'));
+        return view('frontend.livewire.plat-component', compact('plats', 'categories','wishplats'));
     }
 }

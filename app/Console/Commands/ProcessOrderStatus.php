@@ -4,13 +4,14 @@ namespace App\Console\Commands;
 
 use App\Models\Order;
 use App\Enums\OrderStatus;
+use App\Models\Restaurant;
 use Illuminate\Console\Command;
 use App\Events\OrderPendingEvent;
+use App\Events\OrderPickedUpEvent;
 use App\Events\OrderCompletedEvent;
 use App\Events\OrderInterruptedEvent;
 use App\Events\OrderNotCollectedEvent;
-use App\Events\OrderPickedUpEvent;
-use App\Models\Restaurant;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class ProcessOrderStatus extends Command
 {
@@ -98,7 +99,6 @@ class ProcessOrderStatus extends Command
         $restaurant = Restaurant::all()[0];
 
         if ($restaurant->opened == 0) {
-            // info('hello');
             if ($ordersToPending->count() > 0) {
                 foreach ($ordersToPending as $order) {
                     $order->orderStatus = OrderStatus::INTERRUPTED->value;
