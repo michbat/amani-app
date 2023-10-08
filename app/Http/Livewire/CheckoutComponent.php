@@ -25,7 +25,11 @@ use Srmklive\PayPal\Services\PayPal as PayPalClient;
 class CheckoutComponent extends Component
 {
     public $paymentMode = "card"; // Méthode de paiement en ligne par défaut
-    public $nameOnCard, $number, $expirationDate, $cvc, $user;
+    public $nameOnCard;
+    public $number;
+    public $expirationDate;
+    public $cvc;
+    public $user;
     public $acceptance; // Propriété pour vérifier si la checkbox des termes et conditions a été "checkée"
 
     //  Règles de validation
