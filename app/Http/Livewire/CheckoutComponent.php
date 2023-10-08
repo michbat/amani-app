@@ -10,6 +10,7 @@ use App\Models\Order;
 use Livewire\Component;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentMode;
+use App\Models\Ingredient;
 use App\Models\LineOrders;
 use App\Enums\PaymentStatus;
 use Cartalyst\Stripe\Stripe;
@@ -18,6 +19,7 @@ use App\Events\OrderConfirmedEvent;
 use Illuminate\Support\Facades\Auth;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
+
 
 class CheckoutComponent extends Component
 {
@@ -73,7 +75,7 @@ class CheckoutComponent extends Component
                 'expirationDate.after_or_equal' => 'La date d\'expiration doit être supérieure ou égale à celle d\'aujourd\'hui',
                 'cvc.required' => 'Le CCV est requis',
                 'cvc.numeric' => 'Le CCV doit être en chiffres',
-                'cvc' => 'Le CVV doit comporter 3 chiffres',
+                'cvc.digits' => 'Le CVV doit comporter 3 chiffres',
             ]);
 
 
@@ -83,19 +85,19 @@ class CheckoutComponent extends Component
 
             $names = "";
 
-            if (session()->get('lowQuantity') != null) {
+            if (session()->has('lowQuantity')) {
                 foreach (session()->get('lowQuantity') as $name) {
-                    $names .= '<br><br>' . $name . '<br>';
+                    $names .= '<br>' . $name . '<br>';
                 }
             }
 
 
 
             if (!$this->decreaseQuantityInStock($order)) {
-                $order->delete();
                 return redirect()->route('cart')->with('warning', 'nous ne pouvons pas honorer votre commande. Veuillez diminuer la quantité de ce(s) produit(s): ' . $names);
             } else {
                 try {
+                    session()->forget('lowQuantity');  // On detruit la session 'lowQuantity'
 
                     $stripe = Stripe::make(config('services.stripe.secret'));
 
@@ -141,11 +143,19 @@ class CheckoutComponent extends Component
             $order->save();
             $this->fillPlatOrder($order->id);
 
+            $names = "";
+
+            if (session()->has('lowQuantity')) {
+                foreach (session()->get('lowQuantity') as $name) {
+                    $names .= '<br>' . $name . '<br>';
+                }
+            }
 
             if (!$this->decreaseQuantityInStock($order)) {
-                $order->delete();
-                return redirect()->route('cart')->with('warning', 'nous ne pouvons pas honoré votre commande');
+                return redirect()->route('cart')->with('warning', 'nous ne pouvons pas honorer votre commande. Veuillez diminuer la quantité de ce(s) produit(s): ' . $names);
             } else {
+
+                session()->forget('lowQuantity');  // On detruit la session 'lowQuantity'
 
                 // Destruction du panier
 
@@ -170,18 +180,18 @@ class CheckoutComponent extends Component
 
             $names = "";
 
-            if (session()->get('lowQuantity') != null) {
+            if (session()->has('lowQuantity')) {
                 foreach (session()->get('lowQuantity') as $name) {
-                    $names .= '<br><br>' . $name . '<br>';
+                    $names .= '<br>' . $name . '<br>';
                 }
             }
 
 
             if (!$this->decreaseQuantityInStock($order)) {
-                $order->delete();
                 return redirect()->route('cart')->with('warning', 'nous ne pouvons pas honorer votre commande. Veuillez diminuer la quantité de ce(s) produit(s): ' . $names);
             } else {
 
+                session()->forget('lowQuantity');  // On detruit la session 'lowQuantity'
 
                 $provider = new PayPalClient;
                 $provider->setApiCredentials(config('paypal'));
@@ -327,7 +337,24 @@ class CheckoutComponent extends Component
 
         $isOk_1 = true;
         $isOk_2 = true;
+
+
+        // Si une session 'lowQuantity' existait déjà, on la detruit
+
+        if(session()->has('lowQuantity'))
+        {
+            session()->forget('lowQuantity');
+        }
+
+
+        // Tableau qui va monitorer des quantités en stock de chaque produit, en fait d'éviter
+
+        $ingredientQuantities = [];
+
+        // Tableau où je stocke des produits en quantité insuffisance
         $lowQuantity = [];
+
+        // dd($order->lineOrders);
 
         foreach ($order->lineOrders as $lineOrder) {
 
@@ -338,83 +365,107 @@ class CheckoutComponent extends Component
 
             $quantity = $lineOrder->quantity;
 
-            if (!empty($lineOrder->plat->ingredients)) {
+            if ($lineOrder->plat && !empty($lineOrder->plat->ingredients)) {
                 foreach ($lineOrder->plat->ingredients as $ingredient) {
-                    // La nouvelle quantité en stock - la quantité de cet ingrédient dans le plat
+                    // Si la quantité en stock de cet ingredient n'a pas encore été ajoutée dans notre tableau, on l'ajoute
+                    if (!isset($ingredientQuantities[$ingredient->name])) {
+                        $ingredientCopy = $this->shallowCopy($ingredient);
+                        $ingredientQuantities[$ingredient->name] = $ingredientCopy;
+                    }
+                    // On met à jour la quantité en stock de cet ingredient décrémenté de la quantité nécessaire de cet ingrédient dans le plat concerné
 
-                    $ingredient->quantityInStock = $ingredient->quantityInStock - $ingredient->pivot->amount * $quantity;
+                    $ingredientQuantities[$ingredient->name]->quantityInStock -= $ingredient->pivot->amount * $quantity;
 
-                    // dd($ingredient->quantityInStock);
-                    // $ingredient->update();
+                    // Si la quantité en stock de ce produit est inférieur à la quantité minimale
 
-
-                    if ($ingredient->quantityInStock  <= $ingredient->quantityMinimum) {
+                    if ($ingredientQuantities[$ingredient->name]->quantityInStock <= $ingredientQuantities[$ingredient->name]->quantityMinimum) {
+                        $order->delete();
                         $isOk_1 = false;
                         $lowQuantity[] = $lineOrder->plat->name;
-                        $ingredient->quantityInStock += $ingredient->pivot->amount * $quantity;
-                        $ingredient->update();
-                        break;
                     }
                 }
             }
 
-            if (!empty($lineOrder->drink)) {
-                $lineOrder->drink->quantityInStock = $lineOrder->drink->quantityInStock - $quantity;
+            if ($lineOrder->drink) {
+                // Check if we have encountered this drink before
+                if (!isset($ingredientQuantities[$lineOrder->drink->name])) {
+                    // Create a shallow copy of the drink to avoid affecting the database
+                    $drinkCopy = $this->shallowCopy($lineOrder->drink);
+                    $ingredientQuantities[$lineOrder->drink->name] = $drinkCopy;
+                }
 
-                if ($lineOrder->drink->quantityInStock <=  $lineOrder->drink->quantityMinimum) {
+                // Calculate the updated quantity without affecting the database
+                $ingredientQuantities[$lineOrder->drink->name]->quantityInStock -= $quantity;
+
+                // Check if the updated quantity falls below the minimum
+                if ($ingredientQuantities[$lineOrder->drink->name]->quantityInStock <= $ingredientQuantities[$lineOrder->drink->name]->quantityMinimum) {
+                    $order->delete();
                     $isOk_2 = false;
                     $lowQuantity[] = $lineOrder->drink->name;
                 }
             }
-
-            // if ($isOk_1 && $isOk_2) {
-
-            //     if (!empty($lineOrder->plat->ingredients)) {
-            //         foreach ($lineOrder->plat->ingredients as $ingredient) {
-            //             $ingredient->quantityInStock -= $ingredient->pivot->amount * $quantity;
-            //             $ingredient->update();
-            //         }
-            //     }
-
-            //     if (!empty($lineOrder->drink)) {
-            //         $lineOrder->drink->quantityInStock -= $quantity;
-            //         $lineOrder->drink->update();
-            //     }
-            // } else {
-            //     $order->delete();
-            // }
         }
 
-        // if ($isOk_1 != false || $isOk_2 != false) {
-        // if (!empty($lineOrder->plat->ingredients)) {
-        //     foreach ($lineOrder->plat->ingredients as $ingredient) {
-        //         $ingredient->quantityInStock =  $ingredient->quantityInStock - $ingredient->pivot->amount * $quantity;
-        //         $ingredient->update();
-        //     }
-        // }
+        // Si aucun ingredient ou boisson n'est pas en danger de rupture de stock
+        // on décremente du stock des ingredients, des quantités necessaires pour préparer chaque plat commandé su
+        // on décremente du stock des boissons des quantités de chaque boisson commandée
 
-        // if (!empty($lineOrder->drink)) {
-        //     $lineOrder->drink->quantityInStock =  $lineOrder->drink->quantityInStock  - $quantity;
-        //     $lineOrder->drink->update();
-        // }
-        //     $order->delete();
-        // }
 
-        // else {
-        //     $order->delete();
-        // }
+        $ingredientQuantities = [];
+
+        if ($isOk_1 && $isOk_2) {
+            foreach ($order->lineOrders as $lineOrder) {
+                $quantity = $lineOrder->quantity;
+                if ($lineOrder->plat && !empty($lineOrder->plat->ingredients)) {
+                    foreach ($lineOrder->plat->ingredients as $ingredient) {
+
+                        if (!isset($ingredientQuantities[$ingredient->name])) {
+                            $ingredientQuantities[$ingredient->name] = $ingredient;
+                        }
+                        // On met à jour la quantité en stock de cet ingredient décrémenté de la quantité nécessaire de cet ingrédient dans le plat concerné
+
+                        $ingredientQuantities[$ingredient->name]->quantityInStock -= $ingredient->pivot->amount * $quantity;
+                        $ingredientQuantities[$ingredient->name]->update();
+                    }
+                }
+
+                if ($lineOrder->drink) {
+                    if (!isset($ingredientQuantities[$lineOrder->drink->name])) {
+                        $ingredientQuantities[$lineOrder->drink->name] = $lineOrder->drink;
+                    }
+
+                    $ingredientQuantities[$lineOrder->drink->name]->quantityInStock -= $quantity;
+                    $ingredientQuantities[$lineOrder->drink->name]->update();
+                }
+            }
+        }
 
         if (!empty($lowQuantity)) {
-            session(['lowQuantity' => $lowQuantity]);
+            session()->put('lowQuantity', $lowQuantity);
         }
 
         return ($isOk_1 && $isOk_2);
     }
 
+    private function shallowCopy($object)
+    {
+        $newObject = new  Ingredient();
+
+        $newObject->id = $object->id;
+        $newObject->name = $object->name;
+        $newObject->quantityInStock = $object->quantityInStock;
+        $newObject->quantityMinimum = $object->quantityMinimum;
+
+        return $newObject;
+    }
+
     public function render()
     {
         //On injecte dans la vue le client authentifié le seul à même d'accéder à la page de paiement et procéder à la commande
+
         $client = $this->user;
+
+        // On detruit les sessions qui nous permettent de sauvegarder les valeurs nos propriétés dans le formulaire de paiement par carte
 
         $this->acceptance = session()->get('acc');
         $this->number = session()->get('nbr');
@@ -429,6 +480,8 @@ class CheckoutComponent extends Component
 
     private static function cardMasking($number, $mask = 'X')
     {
-        return substr($number, 0, 4) . str_repeat($mask, strlen($number) - 8) . substr($number, -4);
+        // On extrait une sous-chaîne de  4 premiers chiffres de la carte, puis on concatène avec 8 mask 'X', puis on concatène avec 4 derniers chiffres de la
+        // carte
+        return substr($number, 0, 4) . str_repeat($mask, strlen($number) - 8) . substr($number, 12, 15);
     }
 }

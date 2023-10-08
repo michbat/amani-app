@@ -13,8 +13,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('orders:process')->everyFiveSeconds()->runInBackground();
         $schedule->command('platsDrinks:order')->everySecond()->runInBackground();
+        $schedule->command('orders:process')->everyFiveSeconds()->runInBackground();
         $schedule->command('ingredientsDrinks:monitoring')->everySecond()->runInBackground();
         $schedule->command('representation:expired')->everyFiveMinutes()->runInBackground();
     }

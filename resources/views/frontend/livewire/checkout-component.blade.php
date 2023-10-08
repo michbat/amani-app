@@ -110,7 +110,8 @@
                                             <div class="form-group" for="expdate">
                                                 <input id="expdate" type="date" min="{{ date('Y-m-d') }}"
                                                     value="{{ old('expirationDate') }}" name="expirationDate"
-                                                    class="form-control" wire:model="expirationDate">
+                                                    class="form-control" wire:model="expirationDate"
+                                                    @disabled($paymentMode === 'cash' || $paymentMode === 'paypal')>
 
                                                 @error('expirationDate')
                                                     <span class="text-danger">{{ $message }}</span>
@@ -165,7 +166,7 @@
 
                         <div class="button-wrapper d-flex flex-column justify-content-center align-items-center mb-5">
                             <button type="submit" id="commander"
-                                class="btn btn-success btn-lg {{ $acceptance !== true? 'disabled' : '' }}"
+                                class="btn btn-success btn-lg {{ $acceptance !== true ? 'disabled' : '' }}"
                                 wire:click.prevent="placeOrder">
                                 Commander
                             </button>

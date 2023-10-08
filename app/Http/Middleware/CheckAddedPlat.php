@@ -19,14 +19,19 @@ class CheckAddedPlat
     {
         $verify = false;  // Variable drapeau pour vérifier la présence d'un plat dans le panier
 
-        foreach (Cart::instance('cart')->content() as $content) {
-            if ($content->associatedModel == "App\Models\Plat") {
-                $verify = true;  // Se met à true s'il y a un plat dans le panier
-                break;
+
+        if(Cart::instance('cart')->count() > 0)
+        {
+            foreach (Cart::instance('cart')->content() as $content) {
+                if ($content->associatedModel == "App\Models\Plat") {
+                    $verify = true;  // Se met à true s'il y a un plat dans le panier
+                    break;  // On arrête l'itération si un plat est trouvé dans le panier
+                }
             }
         }
 
-        // Si l'utilisateur est connecté et qu'il est 'Generic'
+
+        // Si l'utilisateur est connecté et qu'il est 'Generic', il a la permission de franchir le middleware
         if (Auth::check() && Auth::user()->firstname == "Generic") {
             // Il peut ajouter les boissons sans les plats
             return $next($request);

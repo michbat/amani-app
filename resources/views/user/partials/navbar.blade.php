@@ -32,6 +32,11 @@
                 <li class="nav-item">
                     <a class="nav-link active mx-2" aria-current="page" href="{{ route('plat') }}">Plats</a>
                 </li>
+                @if (auth()->user() && auth()->user()->firstname == 'Generic')
+                    <li class="nav-item">
+                        <a class="nav-link active mx-2" aria-current="page" href="{{ route('drink') }}">Boissons</a>
+                    </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link active mx-2" aria-current="page" href="{{ route('show') }}">Spectacles</a>
                 </li>
@@ -48,7 +53,8 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active mx-2" aria-current="page" href="{{ route('contact') }}">Contactez-nous</a>
+                    <a class="nav-link active mx-2" aria-current="page"
+                        href="{{ route('contact') }}">Contactez-nous</a>
                 </li>
                 @guest
                     @if (Route::has('login'))

@@ -112,8 +112,15 @@ class DrinkController extends Controller
         $drink->category_id = $request->category_id;
         $drink->quantityMinimum = $request->quantityMinimum;
         $drink->quantityInStock = $request->quantityInStock;
-        $drink->available = $request->available;
         $drink->canBeCommended = $request->canBeCommended;
+
+        if ($request->quantityInStock / 3 > $request->quantityMinimum) {
+            $drink->available = 1;
+        }
+        else
+        {
+            $drink->available = 0;
+        }
 
         $drink->update();
 

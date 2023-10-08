@@ -19,7 +19,7 @@ class Ingredient extends Model
     public $timestamps = false;
 
     // Tous les champs de la table 'ingredients' peuvent faire l'objet de mass assignment sauf le champ id qui s'autoincremente.
-    protected $guarderd = ['id'];
+    protected $guarded = ['id'];
 
     // La prise en compte du champ 'mediatype' de type enum 'StockStatus' dans le modèle 'Ingredient'
     protected $casts = [
@@ -39,13 +39,6 @@ class Ingredient extends Model
     {
         return $this->belongsTo(Unit::class);
     }
-
-    // Matérialisation de la relation un ingredient peut entrer dans la composition de plusieurs recettes
-
-    // public function menus(): HasMany
-    // {
-    //     return $this->hasMany(Menu::class);
-    // }
 
     public function plats(): BelongsToMany
     {

@@ -12,6 +12,7 @@ use App\Events\OrderCanceledEvent;
 use App\Events\OrderPickedUpEvent;
 use App\Http\Controllers\Controller;
 use App\Events\OrderFailedRefundedEvent;
+use App\Models\LineOrders;
 
 class OrderController extends Controller
 {
@@ -20,6 +21,13 @@ class OrderController extends Controller
      */
     public function index()
     {
+        // $ok = LineOrders::getQuery()->delete();
+        // $ok = Order::getQuery()->delete();
+
+        // if ($ok) {
+        //     dd('supprimer');
+        // }
+        
         $orders = Order::with('user')->orderBy('created_at', 'DESC')->paginate(10);  // Tous les commandes en commençant par les plus recentes
 
         return view('admin.orders.index', compact('orders'));
@@ -88,7 +96,7 @@ class OrderController extends Controller
             $user = $order->user;
 
             // On met le montant total de la commande à 0 ainsi que le sous-total et la tva
-            
+
             $order->total = 0;
             $order->subtotal = 0;
             $order->tva = 0;

@@ -24,7 +24,7 @@ class HomeComponent extends Component
             if (Cart::instance('cart')->content()->count() > 0) {
                 foreach (Cart::instance('cart')->content() as $content) {
                     if ($content->associatedModel == 'App\Models\Plat' && $content->id == $plat_id && $content->qty >= 6) {
-                        return redirect()->route('plat')->with('warning', 'Vous avez déjà 6  articles de ce plat dans le panier! Impossible d\'en ajouter encore un!');
+                        return redirect()->route('home')->with('warning', 'Vous avez déjà 6  articles de ce plat dans le panier! Impossible d\'en ajouter encore un!');
                     }
                 }
             }
@@ -74,7 +74,6 @@ class HomeComponent extends Component
         if (Auth::check() && Auth::user()->firstname === 'Generic') {
             Cart::instance('cart')->store(Auth::user()->id);
         }
-
 
         // On injecte les objets récupérés dans la vue
 

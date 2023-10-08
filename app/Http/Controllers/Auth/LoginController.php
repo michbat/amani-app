@@ -19,7 +19,7 @@ class LoginController extends Controller
     public function login()
     {
 
-        //Si la personne est connectée, elle ne doit pas accéder à nouveau à la page login
+        //Si la personne est connectée, elle ne doit pas accéder à nouveau à la page login (imaginons une personne qui tape la route vers la page login la barre d'adresse de son navigateur)
 
         if (Auth::check()) {
             return redirect()->back()->with('warning', 'Vous êtes déjà connecté!');
@@ -28,7 +28,7 @@ class LoginController extends Controller
         // Je stocke dans une variable de session, la route (la page) précédente sur laquelle le visiteur était avant de tenter de se connecter
         // L'intérêt de cette démarche est de le ramèner à la page qu'il visitait une fois authentifié.
 
-      
+
 
         if (url()->previous() != "http://localhost:8000/login") {
             Session::put('previous_url', url()->previous());
@@ -106,8 +106,9 @@ class LoginController extends Controller
                     Cart::instance('wishlist')->restore(Auth::user()->id);
                 }
 
+                // S'il est 'Generic', on restaure uniquement son panier
+
                 if (Auth::check() && Auth::user()->firstname === 'Generic') {
-                    Cart::instance('wishlist')->destroy();
                     Cart::instance('cart')->restore(Auth::user()->id);
                 }
 
@@ -140,6 +141,10 @@ class LoginController extends Controller
 
         Cart::instance('cart')->destroy();
         Cart::instance('wishlist')->destroy();
+
+        // On detruit la session 'previous_url
+
+        session()->forget('previous_url');
 
         // On redirige l'utilisateur déconnecté (donc qui devient un guestà vers la page d'accueil
 

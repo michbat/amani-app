@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Enums\UserStatus;
-use App\Events\RegisterConfirmationEvent;
-use App\Events\RegisterVerifyEvent;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\RegisterSubmitRequest;
 use App\Models\Role;
 use App\Models\User;
+use App\Enums\UserStatus;
+use App\Events\RegisterVerifyEvent;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Events\RegisterConfirmationEvent;
+use App\Http\Requests\RegisterSubmitRequest;
 
 class RegistrationController extends Controller
 {
@@ -18,6 +19,15 @@ class RegistrationController extends Controller
      */
     public function register()
     {
+        //Si la personne est connectée, donc dispose d'une compte, elle ne doit pas accéder à nouveau à la page register (imaginons une personne qui tape la route vers la page register la barre d'adresse de son navigateur)
+
+        if (Auth::check()) {
+            if (url()->previous() == "http://localhost:8000/login") {
+                return redirect()->route('home');
+            } else {
+            return redirect()->route('home')->with('warning', 'Vous avez déjà un compte!');
+            }
+        }
         // Renvoie la vue dans laquelle se trouve le formulaire d'inscription.
 
         return view('auth.registration.register');
@@ -76,7 +86,6 @@ class RegistrationController extends Controller
         event(new RegisterVerifyEvent($user));
 
         return redirect()->route('home')->with('info', 'Votre nouveau compte doit être activé pour pouvoir vous connecter. Un lien a été envoyé à votre adresse e-mail.');
-
     }
 
     /**
@@ -91,8 +100,7 @@ class RegistrationController extends Controller
          */
 
 
-        if(url()->previous() == 'http://localhost:8000/login')
-        {
+        if (url()->previous() == 'http://localhost:8000/login') {
             return redirect()->route('home');
         }
 

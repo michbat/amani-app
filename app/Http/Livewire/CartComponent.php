@@ -45,6 +45,8 @@ class CartComponent extends Component
             }
         }
 
+        // Si la personne est un guest qui simule son panier et qu'il n'a plus de plat dans son panier
+
         if (!Auth::user() && $verify == false) {
             // Dans ce cas, on vide complètement en detruisant l'instance 'cart' en appelant la méthode clearCart()
             Cart::instance('cart')->destroy();
@@ -165,7 +167,7 @@ class CartComponent extends Component
 
         $currentTime = Carbon::now('Europe/Brussels')->format('H:i');  // Récupération de l'heure courante de la Belgique
         $openTime = '00:00';  // Heure d'ouverture
-        $closeTime = '23:00';  // Heure de fermeture
+        $closeTime = '23:59';  // Heure de fermeture
 
         if ($currentTime < $openTime || $currentTime > $closeTime) {
             // On n'appele la méthode closedDoors() en dehors des heures d'ouverture

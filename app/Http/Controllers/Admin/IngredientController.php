@@ -105,7 +105,7 @@ class IngredientController extends Controller
             [
                 'name' => 'required|unique:ingredients,name,' . $ingredient->id,
                 'quantityInStock' => 'required|numeric',
-                'quantityMinimum' => 'required|numeric',
+                'quantityMinimum' => ['required', 'numeric', 'stock_check_update'],
                 'stockStatus' => ['required', new Enum(StockStatus::class)],
             ],
             [
@@ -115,6 +115,7 @@ class IngredientController extends Controller
                 'quantityInStock.numeric' => 'La quantité doit être sous format numérique',
                 'quantityMinimum.required' => 'Vous devez indiquer le seuil minimum exigé',
                 'quantityMinimum.numeric' => 'La quantité doit être sous format numérique',
+                'quantityMinimum.stock_check_update' => 'Le seuil de quantité minimale dans le stock doit être inférieure au stock principal ',
                 'stockStatus.required' => 'Vous devez indiquer le status de disponibilité de cet ingredient',
 
             ]

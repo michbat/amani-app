@@ -82,13 +82,13 @@ class ProcessOrderStatus extends Command
 
         // Je récupère des commandes en préparation depuis 30 minutes
         $ordersToComplete = Order::where('orderStatus', OrderStatus::PENDING->value)
-            ->where('created_at', '<=', now()->subMinutes(3))
+            ->where('created_at', '<=', now()->subMinutes(2))
             ->get();
 
         // Je récupère des commandes prêtes qui n'ont pas été récupérée depuis 1h30
 
         $ordersNotCollected = Order::where('orderStatus', OrderStatus::COMPLETED->value)
-            ->where('created_at', '<=', now()->subMinutes(6))
+            ->where('created_at', '<=', now()->subMinutes(3))
             ->get();
 
 
