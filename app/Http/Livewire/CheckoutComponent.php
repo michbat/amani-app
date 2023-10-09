@@ -225,11 +225,12 @@ class CheckoutComponent extends Component
                     ]
                 ]);
 
+            
 
                 if (isset($response['id']) && $response['id'] != null) {
                     foreach ($response['links'] as $link) {
                         if ($link['rel'] === 'approve') {
-                            return redirect()->away($link['href']);
+                            return redirect()->away($link['href']);  //
                         }
                     }
                 } else {
